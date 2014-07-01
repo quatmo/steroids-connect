@@ -1,5 +1,5 @@
 steroidsConnectModules = angular.module "SteroidsConnect", [
-    require("./directives").name
+    require("./logs").name
   ]
 
 require "../templates/SteroidsConnectTemplates"
