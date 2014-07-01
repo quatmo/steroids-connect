@@ -180,13 +180,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/log-filters-view.html',
     "<div id=\"view-log-filters\">\n" +
     "\n" +
-    "  <div ng-click=\"LogsFilterAPI.clearFilters()\">\n" +
-    "    {{LogsFilterAPI.filters | json}}\n" +
-    "  </div>\n" +
-    "\n" +
     "  <div>\n" +
-    "    <select name=\"filterByType\" ng-model=\"currentTypeFilter\" ng-init=\"currentTypeFilter=LogsFilterAPI.filters.type\" ng-change=\"LogsFilterAPI.filterByType(currentTypeFilter)\" ng-options=\"x.type as x.label for x in LogsFilterAPI.availableTypeFilters()\"></select>\n" +
-    "    <select name=\"filterByDeviceName\" ng-model=\"currentDeviceNameFilter\" ng-init=\"currentDeviceNameFilter=LogsFilterAPI.filters.deviceName\" ng-change=\"LogsFilterAPI.filterByDeviceName(currentDeviceNameFilter)\" ng-options=\"x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\"></select>\n" +
+    "    <select name=\"filterByType\" ng-model=\"LogsFilterAPI.filters.type\" ng-options=\"x.type as x.label for x in LogsFilterAPI.availableTypeFilters()\"></select>\n" +
+    "    <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\"></select>\n" +
+    "    <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsFilterAPI.clearFilters()\">Clear</button>\n" +
     "  </div>\n" +
     "\n" +
     "  <br><br>\n" +
