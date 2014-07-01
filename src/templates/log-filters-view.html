@@ -1,0 +1,14 @@
+<div id="view-log-filters">
+
+  <div ng-click="LogsFilterAPI.clearFilters()">
+    {{LogsFilterAPI.filters | json}}
+  </div>
+
+  <div>
+    <select name="filterByType" ng-model="currentTypeFilter" ng-init="currentTypeFilter=LogsFilterAPI.filters.type" ng-change="LogsFilterAPI.filterByType(currentTypeFilter)" ng-options="x.type as x.label for x in LogsFilterAPI.availableTypeFilters()"></select>
+    <select name="filterByDeviceName" ng-model="currentDeviceNameFilter" ng-init="currentDeviceNameFilter=LogsFilterAPI.filters.deviceName" ng-change="LogsFilterAPI.filterByDeviceName(currentDeviceNameFilter)" ng-options="x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()"></select>
+  </div>
+
+  <br><br>
+
+</div>

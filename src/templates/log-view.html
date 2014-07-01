@@ -1,9 +1,11 @@
-<div>
+<div id="view-log-view">
+
+  <log-filters-view></log-filters-view>
 
   <!-- Table containing the erros -->
   <table>
-    <tr ng-repeat="logMsg in logsApi.logs" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
-      <td clas="logMsg-device-name">{{logMsg.deviceName}}</td>
+    <tr ng-repeat="logMsg in logsApi.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
+      <td clas="logMsg-device-name" ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</td>
       <td clas="logMsg-time">{{logMsg.timestamp | logTimeFormat}}</td>
       <td clas="logMsg-content">{{logMsg.message}}</td>
     </tr>

@@ -6,7 +6,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":6,"./logs":3}],2:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":8,"./logs":4}],2:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -29,8 +29,8 @@ module.exports = [
         }
       ],
       add: function(newLogMsg) {
-        if (newLogMsg == null) {
-          return logs.push(newLogMsg);
+        if (newLogMsg != null) {
+          return this.logs.push(newLogMsg);
         }
       }
     };
@@ -40,10 +40,93 @@ module.exports = [
 
 },{}],3:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", []).directive("logView", _dereq_("./logViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI"));
+module.exports = [
+  function() {
+    return {
+
+      /*
+      EXPOSED LOGS FILTER API DEFINITION
+       */
+      filters: {
+        deviceName: "",
+        type: ""
+      },
+      clearFilters: function() {
+        return this.filters = {
+          deviceName: "",
+          type: ""
+        };
+      },
+      filterByDeviceName: function(deviceName) {
+        if (deviceName != null) {
+          return this.filters['deviceName'] = deviceName;
+        } else {
+          return this.filters['deviceName'] = "";
+        }
+      },
+      availableDeviceNameFilters: function() {
+        return [
+          {
+            label: "All",
+            deviceName: ""
+          }, {
+            label: "Tomi's iPhone",
+            deviceName: "Tomi's iPhone"
+          }, {
+            label: "Persephone",
+            deviceName: "Persephone"
+          }
+        ];
+      },
+      filterByType: function(type) {
+        if (type != null) {
+          return this.filters['type'] = type;
+        } else {
+          return this.filters['type'] = "";
+        }
+      },
+      availableTypeFilters: function() {
+        return [
+          {
+            label: "All devices",
+            type: ""
+          }, {
+            label: "Logs",
+            type: "log"
+          }, {
+            label: "Errors",
+            type: "error"
+          }
+        ];
+      }
+    };
+  }
+];
 
 
-},{"./LogsAPI":2,"./logTimeFormatFilter":4,"./logViewDirective":5}],4:[function(_dereq_,module,exports){
+},{}],4:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.logs", []).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+
+
+},{"./LogsAPI":2,"./LogsFilterAPI":3,"./logFiltersViewDirective":5,"./logTimeFormatFilter":6,"./logViewDirective":7}],5:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "/steroids-connect/log-filters-view.html",
+      link: function(scope, element, attrs) {
+        scope.logsApi = LogsAPI;
+        return scope.LogsFilterAPI = LogsFilterAPI;
+      }
+    };
+  }
+];
+
+
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -74,24 +157,43 @@ module.exports = [
 ];
 
 
-},{}],5:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "LogsAPI", function(LogsAPI) {
+  "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
     return {
       restrict: "A",
       templateUrl: "/steroids-connect/log-view.html",
       link: function(scope, element, attrs) {
-        return scope.logsApi = LogsAPI;
+        scope.logsApi = LogsAPI;
+        return scope.LogsFilterAPI = LogsFilterAPI;
       }
     };
   }
 ];
 
 
-},{}],6:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
+
+  $templateCache.put('/steroids-connect/log-filters-view.html',
+    "<div id=\"view-log-filters\">\n" +
+    "\n" +
+    "  <div ng-click=\"LogsFilterAPI.clearFilters()\">\n" +
+    "    {{LogsFilterAPI.filters | json}}\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div>\n" +
+    "    <select name=\"filterByType\" ng-model=\"currentTypeFilter\" ng-init=\"currentTypeFilter=LogsFilterAPI.filters.type\" ng-change=\"LogsFilterAPI.filterByType(currentTypeFilter)\" ng-options=\"x.type as x.label for x in LogsFilterAPI.availableTypeFilters()\"></select>\n" +
+    "    <select name=\"filterByDeviceName\" ng-model=\"currentDeviceNameFilter\" ng-init=\"currentDeviceNameFilter=LogsFilterAPI.filters.deviceName\" ng-change=\"LogsFilterAPI.filterByDeviceName(currentDeviceNameFilter)\" ng-options=\"x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\"></select>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <br><br>\n" +
+    "\n" +
+    "</div>"
+  );
+
 
   $templateCache.put('/steroids-connect/log-message.html',
     "<div>\n" +
@@ -101,12 +203,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/log-view.html',
-    "<div>\n" +
+    "<div id=\"view-log-view\">\n" +
+    "\n" +
+    "  <log-filters-view></log-filters-view>\n" +
     "\n" +
     "  <!-- Table containing the erros -->\n" +
     "  <table>\n" +
-    "    <tr ng-repeat=\"logMsg in logsApi.logs\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
-    "      <td clas=\"logMsg-device-name\">{{logMsg.deviceName}}</td>\n" +
+    "    <tr ng-repeat=\"logMsg in logsApi.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
+    "      <td clas=\"logMsg-device-name\" ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</td>\n" +
     "      <td clas=\"logMsg-time\">{{logMsg.timestamp | logTimeFormat}}</td>\n" +
     "      <td clas=\"logMsg-content\">{{logMsg.message}}</td>\n" +
     "    </tr>\n" +
