@@ -19,11 +19,13 @@ module.exports = [
         {
           message: "Error msg",
           timestamp: 1404217782263,
-          type: "error"
+          type: "error",
+          deviceName: "Tomi's iPhone"
         }, {
           message: "Log msg",
           timestamp: 1304217782283,
-          type: "log"
+          type: "log",
+          deviceName: "Tomi's iPhone"
         }
       ],
       add: function(newLogMsg) {
@@ -103,9 +105,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <!-- Table containing the erros -->\n" +
     "  <table>\n" +
-    "    <tr ng-repeat=\"logMsg in logsApi.logs\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
-    "      <td>{{logMsg.timestamp | logTimeFormat}}</td>\n" +
-    "      <td>{{logMsg.message}}</td>\n" +
+    "    <tr ng-repeat=\"logMsg in logsApi.logs\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
+    "      <td clas=\"logMsg-device-name\">{{logMsg.deviceName}}</td>\n" +
+    "      <td clas=\"logMsg-time\">{{logMsg.timestamp | logTimeFormat}}</td>\n" +
+    "      <td clas=\"logMsg-content\">{{logMsg.message}}</td>\n" +
     "    </tr>\n" +
     "  </table>\n" +
     "\n" +

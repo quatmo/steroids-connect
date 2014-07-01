@@ -2,9 +2,10 @@
 
   <!-- Table containing the erros -->
   <table>
-    <tr ng-repeat="logMsg in logsApi.logs" ng-class="{'type-error': logMsg.type == 'error'}">
-      <td>{{logMsg.timestamp | logTimeFormat}}</td>
-      <td>{{logMsg.message}}</td>
+    <tr ng-repeat="logMsg in logsApi.logs" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
+      <td clas="logMsg-device-name">{{logMsg.deviceName}}</td>
+      <td clas="logMsg-time">{{logMsg.timestamp | logTimeFormat}}</td>
+      <td clas="logMsg-content">{{logMsg.message}}</td>
     </tr>
   </table>
 
