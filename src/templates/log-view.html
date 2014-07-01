@@ -1,8 +1,11 @@
 <div id="view-log-view">
 
+  <!-- Filter options -->
   <log-filters-view></log-filters-view>
 
-  <!-- Table containing the erros -->
+  <br>
+
+  <!-- Table containing the log entries -->
   <table>
     <tr ng-repeat="logMsg in logsApi.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
       <td clas="logMsg-device-name" ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</td>

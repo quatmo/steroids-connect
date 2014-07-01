@@ -64,19 +64,33 @@ module.exports = [
           return this.filters['deviceName'] = "";
         }
       },
-      availableDeviceNameFilters: function() {
-        return [
-          {
-            label: "All",
+      availableDeviceNameFilters: function(includeAll) {
+        var availableForFiltering, device, devices, _i, _len;
+        if (includeAll == null) {
+          includeAll = true;
+        }
+        availableForFiltering = [];
+        if (includeAll === true) {
+          availableForFiltering.push({
+            label: "All devices",
             deviceName: ""
+          });
+        }
+        devices = [
+          {
+            name: "Tomi's iPhone"
           }, {
-            label: "Tomi's iPhone",
-            deviceName: "Tomi's iPhone"
-          }, {
-            label: "Persephone",
-            deviceName: "Persephone"
+            name: "Persephone"
           }
         ];
+        for (_i = 0, _len = devices.length; _i < _len; _i++) {
+          device = devices[_i];
+          availableForFiltering.push({
+            label: device.name,
+            deviceName: device.name
+          });
+        }
+        return availableForFiltering;
       },
       filterByType: function(type) {
         if (type != null) {
@@ -88,7 +102,7 @@ module.exports = [
       availableTypeFilters: function() {
         return [
           {
-            label: "All devices",
+            label: "All",
             type: ""
           }, {
             label: "Logs",
@@ -186,8 +200,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsFilterAPI.clearFilters()\">Clear</button>\n" +
     "  </div>\n" +
     "\n" +
-    "  <br><br>\n" +
-    "\n" +
     "</div>"
   );
 
@@ -202,9 +214,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/log-view.html',
     "<div id=\"view-log-view\">\n" +
     "\n" +
+    "  <!-- Filter options -->\n" +
     "  <log-filters-view></log-filters-view>\n" +
     "\n" +
-    "  <!-- Table containing the erros -->\n" +
+    "  <br>\n" +
+    "\n" +
+    "  <!-- Table containing the log entries -->\n" +
     "  <table>\n" +
     "    <tr ng-repeat=\"logMsg in logsApi.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "      <td clas=\"logMsg-device-name\" ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</td>\n" +
