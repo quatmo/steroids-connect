@@ -1838,7 +1838,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":15,"./connect-ui":4,"./logs":8,"./preview":13}],6:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":16,"./connect-ui":4,"./logs":8,"./preview":14}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1955,10 +1955,32 @@ module.exports = [
 
 },{}],8:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", []).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", []).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./LogsAPI":6,"./LogsFilterAPI":7,"./logFiltersViewDirective":9,"./logTimeFormatFilter":10,"./logViewDirective":11}],9:[function(_dereq_,module,exports){
+},{"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logViewDirective":12}],9:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return function(input) {
+      var dd, inputDateTime, mm, yyyy;
+      inputDateTime = new Date(input);
+      dd = inputDateTime.getDate();
+      if (dd < 10) {
+        dd = "0" + dd;
+      }
+      mm = inputDateTime.getMonth();
+      if (mm < 10) {
+        mm = "0" + mm;
+      }
+      yyyy = inputDateTime.getFullYear();
+      return "" + yyyy + "-" + mm + "-" + dd;
+    };
+  }
+];
+
+
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1975,7 +1997,7 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2006,7 +2028,7 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2023,7 +2045,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2036,12 +2058,12 @@ _dereq_("../../../bower_components/angular-qrcode/qrcode.js");
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],13:[function(_dereq_,module,exports){
+},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective"));
 
 
-},{"./angular-qrcode":12,"./previewViewDirective":14}],14:[function(_dereq_,module,exports){
+},{"./angular-qrcode":13,"./previewViewDirective":15}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2057,7 +2079,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2154,18 +2176,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <!-- Filter options -->\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <log-filters-view></log-filters-view>\n" +
+    "      <h2 class=\"no-margin pull-left\">Device logs</h2>\n" +
+    "      <log-filters-view class=\"pull-left\" style=\"margin-left: 20px;\"></log-filters-view>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <br>\n" +
-    "\n" +
-    "  <style>\n" +
-    "    .logMsg-device-name, .logMsg-time {\n" +
-    "      padding-right: 20px;\n" +
-    "      white-space: nowrap;\n" +
-    "    }\n" +
-    "  </style>\n" +
+    "  <br><br>\n" +
     "\n" +
     "  <!-- Table containing the log entries -->\n" +
     "  <div class=\"row\">\n" +
@@ -2173,7 +2189,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <table>\n" +
     "        <tr ng-repeat=\"logMsg in logsApi.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "          <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
-    "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> {{logMsg.timestamp | logTimeFormat}}</td>\n" +
+    "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}</abbr></td>\n" +
     "          <td class=\"logMsg-content\">{{logMsg.message}}</td>\n" +
     "        </tr>\n" +
     "      </table>\n" +
