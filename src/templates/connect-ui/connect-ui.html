@@ -1,0 +1,47 @@
+<div id="view-connect-ui">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container-fluid">
+
+      <!-- Navbar header -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Steroids Connect</a>
+      </div>
+
+      <!-- Navbar links -->
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-class="{'active': currentTab() == 'qr'}"><a ng-click="setTab('qr')">Preview</a></li>
+        <li ng-class="{'active': currentTab() == 'navigation'}"><a ng-click="setTab('navigation')">Navigation</a></li>
+        <li ng-class="{'active': currentTab() == 'backend'}"><a ng-click="setTab('backend')">Backend</a></li>
+        <li ng-class="{'active': currentTab() == 'logs'}"><a ng-click="setTab('logs')">Logs &amp; Errors</a></li>
+        <li ng-class="{'active': currentTab() == 'generators'}"><a ng-click="setTab('generators')">Generators</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <!-- Subviews -->
+  <div class="container-fluid" ng-switch on="currentTab()">
+
+    <!-- Preview -->
+
+    <!-- Navigation -->
+
+    <!-- Backend -->
+
+    <!-- Logs -->
+    <div ng-switch-when="logs">
+      <log-view></log-view>
+    </div>
+
+    <!-- Generators -->
+
+  </div>
+
+</div>

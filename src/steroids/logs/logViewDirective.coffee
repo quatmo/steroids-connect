@@ -7,8 +7,9 @@ module.exports =
     "LogsFilterAPI"
     (LogsAPI, LogsFilterAPI) ->
       {
-        restrict: "A"
-        templateUrl: "/steroids-connect/log-view.html"
+        restrict: "EA"
+        replace: true
+        templateUrl: "/steroids-connect/logs/log-view.html"
         link: (scope, element, attrs) ->
 
           scope.logsApi = LogsAPI

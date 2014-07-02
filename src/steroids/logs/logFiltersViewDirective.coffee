@@ -9,7 +9,7 @@ module.exports =
       {
         restrict: "E"
         replace: true
-        templateUrl: "/steroids-connect/log-filters-view.html"
+        templateUrl: "/steroids-connect/logs/log-filters-view.html"
         link: (scope, element, attrs) ->
 
           scope.logsApi = LogsAPI

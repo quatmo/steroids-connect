@@ -1,9 +1,0 @@
-<div id="view-log-filters">
-
-  <div>
-    <select name="filterByType" ng-model="LogsFilterAPI.filters.type" ng-options="x.type as x.label for x in LogsFilterAPI.availableTypeFilters()"></select>
-    <select name="filterByDeviceName" ng-model="LogsFilterAPI.filters.deviceName" ng-options="x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()"></select>
-    <button name="clearFiltersBtn" type="button" ng-click="LogsFilterAPI.clearFilters()">Clear</button>
-  </div>
-
-</div>

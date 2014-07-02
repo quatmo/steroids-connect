@@ -1,0 +1,24 @@
+<div id="view-log-filters">
+
+  <form class="form-inline" role="form" id="log-view-filters-form">
+
+    <!-- Filter for log msg type -->
+    <div class="form-group">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.type == availableType.type}" ng-click="LogsFilterAPI.filterByType(availableType.type)" ng-repeat="availableType in LogsFilterAPI.availableTypeFilters()">{{availableType.label}}</button>
+      </div>
+    </div>
+
+    <!-- Filter for device name -->
+    <div class="form-group">
+      <select name="filterByDeviceName" ng-model="LogsFilterAPI.filters.deviceName" ng-options="x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()" class="form-control"></select>
+    </div>
+
+    <!-- Button for clearing out all filters -->
+    <div class="form-group">
+      <button name="clearFiltersBtn" type="button" ng-click="LogsFilterAPI.clearFilters()" class="btn btn-default">Clear</button>
+    </div>
+
+  </form>
+
+</div>
