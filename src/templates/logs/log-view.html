@@ -9,14 +9,21 @@
 
   <br>
 
+  <style>
+    .logMsg-device-name, .logMsg-time {
+      padding-right: 20px;
+      white-space: nowrap;
+    }
+  </style>
+
   <!-- Table containing the log entries -->
   <div class="row">
     <div class="col-xs-12">
       <table>
         <tr ng-repeat="logMsg in logsApi.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
-          <td clas="logMsg-device-name" ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</td>
-          <td clas="logMsg-time">{{logMsg.timestamp | logTimeFormat}}</td>
-          <td clas="logMsg-content">{{logMsg.message}}</td>
+          <td class="text-muted logMsg-device-name"><span class="glyphicon glyphicon-phone"></span> <a ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</a></td>
+          <td class="text-muted logMsg-time"><span class="glyphicon glyphicon-time"></span> {{logMsg.timestamp | logTimeFormat}}</td>
+          <td class="logMsg-content">{{logMsg.message}}</td>
         </tr>
       </table>
     </div>

@@ -14,7 +14,15 @@ module.exports =
           Tabs
           ###
 
-          selectedTab = "qr"
+          scope.tabs = [
+            { name: "qr", label: "Preview" }
+            { name: "navigation", label: "Navigation" }
+            { name: "backend", label: "Backend" }
+            { name: "logs", label: "Logs & Errors" }
+            { name: "generators", label: "Generators" }
+          ]
+
+          selectedTab = scope.tabs[0].name
 
           scope.setTab = (tab) ->
             selectedTab = tab

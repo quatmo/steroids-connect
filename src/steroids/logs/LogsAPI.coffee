@@ -28,6 +28,12 @@ module.exports =
             type: "log"
             deviceName: "Tomi's iPhone"
           }
+          {
+            message: "Log msg"
+            timestamp: 1304217782282
+            type: "log"
+            deviceName: "Persephone"
+          }
         ]
 
         # Method for adding new log msg to cache

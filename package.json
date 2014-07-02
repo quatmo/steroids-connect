@@ -19,7 +19,8 @@
   },
   "devDependencies": {
     "grunt-contrib-coffee": "~0.10.1",
-    "grunt-contrib-concat": "~0.4.0"
+    "grunt-contrib-concat": "~0.4.0",
+    "browserify-shim": "~3.6.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

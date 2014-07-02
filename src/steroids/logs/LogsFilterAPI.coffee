@@ -50,8 +50,7 @@ module.exports =
           if type? then @filters['type'] = type else @filters['type'] = ""
 
         # Returns a list of available types to filter on
-        availableTypeFilters: () ->
-          [
+        availableTypeFilters: [
             {
               label: "All"
               type: ""

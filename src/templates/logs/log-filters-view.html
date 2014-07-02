@@ -5,7 +5,7 @@
     <!-- Filter for log msg type -->
     <div class="form-group">
       <div class="btn-group">
-        <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.type == availableType.type}" ng-click="LogsFilterAPI.filterByType(availableType.type)" ng-repeat="availableType in LogsFilterAPI.availableTypeFilters()">{{availableType.label}}</button>
+        <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.type == availableType.type}" ng-click="LogsFilterAPI.filterByType(availableType.type)" ng-repeat="availableType in LogsFilterAPI.availableTypeFilters">{{availableType.label}}</button>
       </div>
     </div>
 
@@ -16,7 +16,7 @@
 
     <!-- Button for clearing out all filters -->
     <div class="form-group">
-      <button name="clearFiltersBtn" type="button" ng-click="LogsFilterAPI.clearFilters()" class="btn btn-default">Clear</button>
+      <button name="clearFiltersBtn" type="button" ng-click="LogsFilterAPI.clearFilters()" class="btn btn-default">Clear filters</button>
     </div>
 
   </form>

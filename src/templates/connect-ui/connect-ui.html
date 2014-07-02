@@ -16,11 +16,7 @@
 
       <!-- Navbar links -->
       <ul class="nav navbar-nav navbar-right">
-        <li ng-class="{'active': currentTab() == 'qr'}"><a ng-click="setTab('qr')">Preview</a></li>
-        <li ng-class="{'active': currentTab() == 'navigation'}"><a ng-click="setTab('navigation')">Navigation</a></li>
-        <li ng-class="{'active': currentTab() == 'backend'}"><a ng-click="setTab('backend')">Backend</a></li>
-        <li ng-class="{'active': currentTab() == 'logs'}"><a ng-click="setTab('logs')">Logs &amp; Errors</a></li>
-        <li ng-class="{'active': currentTab() == 'generators'}"><a ng-click="setTab('generators')">Generators</a></li>
+        <li ng-class="{'active': currentTab() == tab.name}" ng-repeat="tab in tabs"><a ng-click="setTab(tab.name)">{{tab.label}}</a></li>
       </ul>
 
     </div>
@@ -30,10 +26,19 @@
   <div class="container-fluid" ng-switch on="currentTab()">
 
     <!-- Preview -->
+    <div ng-switch-when="qr">
+      <preview-view></preview-view>
+    </div>
 
     <!-- Navigation -->
+    <div ng-switch-when="navigation">
+      Navigation
+    </div>
 
     <!-- Backend -->
+    <div ng-switch-when="backend">
+      <iframe src="http://composer.testgyver.com/wizard_iframe_providers/592" id="provider-wizard" frameborder="0" width="100%" scrolling="no" style="overflow: hidden; height: 181px;"></iframe>
+    </div>
 
     <!-- Logs -->
     <div ng-switch-when="logs">
@@ -41,6 +46,9 @@
     </div>
 
     <!-- Generators -->
+    <div ng-switch-when="generators">
+      Generators
+    </div>
 
   </div>
 

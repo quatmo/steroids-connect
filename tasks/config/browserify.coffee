@@ -1,11 +1,11 @@
 module.exports =
   options:
-    transform: ['coffeeify']
+    transform: ["coffeeify"]
     browserifyOptions:
-      extensions: ['.coffee', '.js']
+      extensions: [".coffee", ".js", ".shim"]
     bundleOptions:
-      standalone: 'steroids.connect'
+      standalone: "steroids.connect"
 
   dist:
-    src: '<%= dir.temp %>/steroids/connect.coffee'
-    dest: '<%= dir.dist %>/steroids.connect.js'
+    src: "<%= dir.temp %>/steroids/connect.coffee"
+    dest: "<%= dir.dist %>/steroids.connect.js"
