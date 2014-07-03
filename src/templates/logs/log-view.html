@@ -14,7 +14,7 @@
   <div class="row">
     <div class="col-xs-12">
       <table>
-        <tr ng-repeat="logMsg in logsApi.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
+        <tr ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
           <td class="text-muted logMsg-device-name"><span class="glyphicon glyphicon-phone"></span> <a ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</a></td>
           <td class="text-muted logMsg-time"><span class="glyphicon glyphicon-time"></span> <abbr title="{{logMsg.timestamp | logDateFormat}}">{{logMsg.timestamp | logTimeFormat}}</abbr></td>
           <td class="logMsg-content">{{logMsg.message}}</td>

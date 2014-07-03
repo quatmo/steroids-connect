@@ -1869,6 +1869,9 @@ module.exports = [
         if (newLogMsg != null) {
           return this.logs.push(newLogMsg);
         }
+      },
+      clear: function() {
+        return this.logs = [];
       }
     };
   }
@@ -1983,7 +1986,7 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/logs/log-filters-view.html",
       link: function(scope, element, attrs) {
-        scope.logsApi = LogsAPI;
+        scope.LogsAPI = LogsAPI;
         return scope.LogsFilterAPI = LogsFilterAPI;
       }
     };
@@ -2031,7 +2034,7 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/logs/log-view.html",
       link: function(scope, element, attrs) {
-        scope.logsApi = LogsAPI;
+        scope.LogsAPI = LogsAPI;
         return scope.LogsFilterAPI = LogsFilterAPI;
       }
     };
@@ -2117,8 +2120,7 @@ module.exports = [
           }
           return paramObj;
         };
-        scope.qrCode = parseQueryParams()["qrcode"];
-        return console.log(parseQueryParams());
+        return scope.qrCode = parseQueryParams()["qrcode"];
       }
     };
   }
@@ -2210,6 +2212,11 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsFilterAPI.clearFilters()\" class=\"btn btn-default\">Clear filters</button>\n" +
     "    </div>\n" +
     "\n" +
+    "    <!-- Button for clearing all of logs -->\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 20px;\">\n" +
+    "      <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsAPI.clear()\" class=\"btn btn-danger\">Clear log</button>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </form>\n" +
     "\n" +
     "</div>"
@@ -2233,7 +2240,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <table>\n" +
-    "        <tr ng-repeat=\"logMsg in logsApi.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
+    "        <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "          <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
     "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}</abbr></td>\n" +
     "          <td class=\"logMsg-content\">{{logMsg.message}}</td>\n" +

@@ -21,11 +21,7 @@ module.exports =
               paramObj[param[0]] = param[1]
             paramObj
 
-
           scope.qrCode = parseQueryParams()["qrcode"]
-
-
-          console.log parseQueryParams()
 
       }
   ]

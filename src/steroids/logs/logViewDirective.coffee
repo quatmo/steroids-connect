@@ -12,7 +12,7 @@ module.exports =
         templateUrl: "/steroids-connect/logs/log-view.html"
         link: (scope, element, attrs) ->
 
-          scope.logsApi = LogsAPI
+          scope.LogsAPI = LogsAPI
           scope.LogsFilterAPI = LogsFilterAPI
 
       }

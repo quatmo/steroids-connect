@@ -40,5 +40,9 @@ module.exports =
         add: (newLogMsg) ->
           @logs.push newLogMsg if newLogMsg?
 
+        # Method for clearing the whole log cache
+        clear: () ->
+          @logs = []
+
       }
   ]
