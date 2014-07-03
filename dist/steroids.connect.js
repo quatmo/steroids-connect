@@ -1949,10 +1949,10 @@ module.exports = [
 
 },{}],8:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", []).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logViewDirective":12}],9:[function(_dereq_,module,exports){
+},{"./../preview":15,"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logViewDirective":12}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
