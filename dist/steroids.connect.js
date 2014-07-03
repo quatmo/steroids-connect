@@ -2095,13 +2095,30 @@ module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-q
 },{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "$location", function($location) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/preview/preview-view.html",
       link: function(scope, element, attrs) {
-        return scope.qrCode = "vittu";
+        var parseQueryParams;
+        parseQueryParams = function() {
+          var param, paramObj, params, _i, _len;
+          params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
+          if (params == null) {
+            return {};
+          }
+          params = params[1].split("&");
+          paramObj = {};
+          for (_i = 0, _len = params.length; _i < _len; _i++) {
+            param = params[_i];
+            param = param.split("=");
+            paramObj[param[0]] = param[1];
+          }
+          return paramObj;
+        };
+        scope.qrCode = parseQueryParams()["qrcode"];
+        return console.log(parseQueryParams());
       }
     };
   }
