@@ -2291,6 +2291,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <ul class=\"devices-list\">\n" +
     "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
+    "          <!-- Status indicator -->\n" +
+    "          <div class=\"status-indicator\" ng-class=\"{'yellow': !device.connected && device.error != null, 'green': device.connected}\"></div>\n" +
     "          <!-- Device name -->\n" +
     "          <h2 class=\"no-margin\">{{device.name}}</h2>\n" +
     "          <!-- Connection status -->\n" +

@@ -2,6 +2,31 @@ ul.devices-list {
   list-style: none;
 }
 
+  ul.devices-list > li {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      -moz-border-radius: 100%;
+      -webkit-border-radius: 100%;
+      background: red;
+      position: absolute;
+      left: -26px;
+      top: 16px;
+    }
+
+    .status-indicator.yellow {
+      background: orange;
+    }
+
+    .status-indicator.green {
+      background: green;
+    }
+
 h1.no-margin, h2.no-margin, h3.no-margin {
   margin: 0px;
 }

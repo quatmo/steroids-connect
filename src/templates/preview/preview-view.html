@@ -31,6 +31,8 @@
       <ul class="devices-list">
 
         <li ng-repeat="device in DevicesAPI.devices">
+          <!-- Status indicator -->
+          <div class="status-indicator" ng-class="{'yellow': !device.connected && device.error != null, 'green': device.connected}"></div>
           <!-- Device name -->
           <h2 class="no-margin">{{device.name}}</h2>
           <!-- Connection status -->
