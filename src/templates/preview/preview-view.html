@@ -3,7 +3,25 @@
 
     <!-- QR code -->
     <div class="col-xs-12 col-md-4">
-      <qrcode version="3" error-correction-level="M" size="360" data="{{qrCode}}"></qrcode>
+      <div class="row">
+        <div class="col-xs-12">
+          <qrcode version="3" error-correction-level="M" size="360" data="{{qrCode}}" class="img-responsive"></qrcode>
+          <br><br>
+        </div>
+        <div class="col-xs-12">
+          <h3>AppGyver Scanner</h3>
+          <p>
+            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.
+            Download scanner from App Store or Google Play.
+          </p>
+        </div>
+        <div class="col-xs-6">
+          <img src="//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png" alt="Download Scanner from App Store" class="img-responsive">
+        </div>
+        <div class="col-xs-6">
+          <img src="//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png" alt="Download Scanner from Google Play" class="img-responsive">
+        </div>
+      </div>
     </div>
 
     <!-- Connected devices -->

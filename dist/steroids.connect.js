@@ -2149,7 +2149,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span class=\"icon-bar\"></span>\n" +
     "          <span class=\"icon-bar\"></span>\n" +
     "        </button>\n" +
-    "        <a class=\"navbar-brand\" href=\"#\">Steroids Connect</a>\n" +
+    "        <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/steroids-logo.png\" alt=\"Steroids Connect\" class=\"navbar-brand\">\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Navbar links -->\n" +
@@ -2263,7 +2263,25 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- QR code -->\n" +
     "    <div class=\"col-xs-12 col-md-4\">\n" +
-    "      <qrcode version=\"3\" error-correction-level=\"M\" size=\"360\" data=\"{{qrCode}}\"></qrcode>\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"360\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
+    "          <br><br>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "          <h3>AppGyver Scanner</h3>\n" +
+    "          <p>\n" +
+    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.\n" +
+    "            Download scanner from App Store or Google Play.\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-6\">\n" +
+    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-6\">\n" +
+    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Connected devices -->\n" +

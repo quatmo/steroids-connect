@@ -1,3 +1,7 @@
+ul.devices-list {
+  list-style: none;
+}
+
 h1.no-margin, h2.no-margin, h3.no-margin {
   margin: 0px;
 }
