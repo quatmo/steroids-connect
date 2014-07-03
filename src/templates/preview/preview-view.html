@@ -1,14 +1,26 @@
-<div id="view-preview-view">
+<div id="view-preview-view" class="container">
   <div class="row">
 
     <!-- QR code -->
-    <div class="col-xs-4">
-      <qrcode version="3" error-correction-level="M" size="400" data="{{qrCode}}"></qrcode>
+    <div class="col-xs-12 col-md-4">
+      <qrcode version="3" error-correction-level="M" size="360" data="{{qrCode}}"></qrcode>
     </div>
 
     <!-- Connected devices -->
-    <div class="col-xs-8">
-      Connected devices here...
+    <div class="col-xs-12 col-md-7 col-md-offset-1">
+      <h2 class="no-margin">Connected devices:</h2>
+      <br><br>
+      <ul class="devices-list">
+
+        <li ng-repeat="device in DevicesAPI.devices">
+          <!-- Device name -->
+          <h2 class="no-margin">{{device.name}}</h2>
+          <!-- Connection status -->
+          <span ng-if="device.connected">Connected: </span>
+          <span ng-if="!device.connected">Not connected: </span>
+        </li>
+
+      </ul>
     </div>
 
   </div>

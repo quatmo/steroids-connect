@@ -21,6 +21,7 @@ module.exports =
             type: "iphone"
             connected: true
             error: null
+            lastAppLoad: 1404217782263
           }
           {
             name: "Bogs' iPhone"
@@ -29,12 +30,14 @@ module.exports =
             error:
               code: 1
               message: "Old version of AppGyver Scanner"
+            lastAppLoad: 1404217782263
           }
           {
             name: "Simulator"
             type: "ios-simulator"
             connected: false
             error: null
+            lastAppLoad: 0
           }
         ]
 

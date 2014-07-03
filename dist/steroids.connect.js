@@ -2056,7 +2056,8 @@ module.exports = [
           name: "Tomi's iPhone",
           type: "iphone",
           connected: true,
-          error: null
+          error: null,
+          lastAppLoad: 1404217782263
         }, {
           name: "Bogs' iPhone",
           type: "iphone",
@@ -2064,12 +2065,14 @@ module.exports = [
           error: {
             code: 1,
             message: "Old version of AppGyver Scanner"
-          }
+          },
+          lastAppLoad: 1404217782263
         }, {
           name: "Simulator",
           type: "ios-simulator",
           connected: false,
-          error: null
+          error: null,
+          lastAppLoad: 0
         }
       ]
     };
@@ -2098,13 +2101,14 @@ module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-q
 },{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$location", function($location) {
+  "$location", "DevicesAPI", function($location, DevicesAPI) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/preview/preview-view.html",
       link: function(scope, element, attrs) {
         var parseQueryParams;
+        scope.DevicesAPI = DevicesAPI;
         parseQueryParams = function() {
           var param, paramObj, params, _i, _len;
           params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
@@ -2254,17 +2258,29 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/preview/preview-view.html',
-    "<div id=\"view-preview-view\">\n" +
+    "<div id=\"view-preview-view\" class=\"container\">\n" +
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- QR code -->\n" +
-    "    <div class=\"col-xs-4\">\n" +
-    "      <qrcode version=\"3\" error-correction-level=\"M\" size=\"400\" data=\"{{qrCode}}\"></qrcode>\n" +
+    "    <div class=\"col-xs-12 col-md-4\">\n" +
+    "      <qrcode version=\"3\" error-correction-level=\"M\" size=\"360\" data=\"{{qrCode}}\"></qrcode>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Connected devices -->\n" +
-    "    <div class=\"col-xs-8\">\n" +
-    "      Connected devices here...\n" +
+    "    <div class=\"col-xs-12 col-md-7 col-md-offset-1\">\n" +
+    "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
+    "      <br><br>\n" +
+    "      <ul class=\"devices-list\">\n" +
+    "\n" +
+    "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
+    "          <!-- Device name -->\n" +
+    "          <h2 class=\"no-margin\">{{device.name}}</h2>\n" +
+    "          <!-- Connection status -->\n" +
+    "          <span ng-if=\"device.connected\">Connected: </span>\n" +
+    "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +
+    "        </li>\n" +
+    "\n" +
+    "      </ul>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +

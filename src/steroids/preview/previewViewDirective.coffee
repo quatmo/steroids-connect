@@ -4,12 +4,15 @@
 module.exports =
   [
     "$location"
-    ($location) ->
+    "DevicesAPI"
+    ($location, DevicesAPI) ->
       {
         restrict: "EA"
         replace: true
         templateUrl: "/steroids-connect/preview/preview-view.html"
         link: (scope, element, attrs) ->
+
+          scope.DevicesAPI = DevicesAPI
 
           parseQueryParams = () ->
             params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec $location.absUrl()
