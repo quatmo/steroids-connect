@@ -5,3 +5,4 @@ module.exports = angular.module "SteroidsConnect.preview", [
     require("./angular-qrcode").name
   ]
   .directive "previewView", require("./previewViewDirective")
+  .factory "DevicesAPI", require("./DevicesAPI")

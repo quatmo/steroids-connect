@@ -3,7 +3,8 @@
 # API for handling and serving log view filters
 module.exports =
   [
-    () ->
+    "DevicesAPI"
+    (DevicesAPI) ->
       {
 
         ###
@@ -37,8 +38,7 @@ module.exports =
             label: "All devices"
             deviceName: ""
           # Include available devices
-          devices = [{ name: "Tomi's iPhone" },{ name: "Persephone" }] # MOCK DEVICES, REPLACE WITH CORRECT API
-          for device in devices
+          for device in DevicesAPI.devices
             availableForFiltering.push
               label: device.name
               deviceName: device.name

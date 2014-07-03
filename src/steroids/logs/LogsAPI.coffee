@@ -32,7 +32,7 @@ module.exports =
             message: "Log msg"
             timestamp: 1304217782282
             type: "log"
-            deviceName: "Persephone"
+            deviceName: "Bogs' iPhone"
           }
         ]
 

@@ -1838,7 +1838,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":16,"./connect-ui":4,"./logs":8,"./preview":14}],6:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":17,"./connect-ui":4,"./logs":8,"./preview":15}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1862,7 +1862,7 @@ module.exports = [
           message: "Log msg",
           timestamp: 1304217782282,
           type: "log",
-          deviceName: "Persephone"
+          deviceName: "Bogs' iPhone"
         }
       ],
       add: function(newLogMsg) {
@@ -1878,7 +1878,7 @@ module.exports = [
 },{}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "DevicesAPI", function(DevicesAPI) {
     return {
 
       /*
@@ -1902,7 +1902,7 @@ module.exports = [
         }
       },
       availableDeviceNameFilters: function(includeAll) {
-        var availableForFiltering, device, devices, _i, _len;
+        var availableForFiltering, device, _i, _len, _ref;
         if (includeAll == null) {
           includeAll = true;
         }
@@ -1913,15 +1913,9 @@ module.exports = [
             deviceName: ""
           });
         }
-        devices = [
-          {
-            name: "Tomi's iPhone"
-          }, {
-            name: "Persephone"
-          }
-        ];
-        for (_i = 0, _len = devices.length; _i < _len; _i++) {
-          device = devices[_i];
+        _ref = DevicesAPI.devices;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          device = _ref[_i];
           availableForFiltering.push({
             label: device.name,
             deviceName: device.name
@@ -2047,6 +2041,41 @@ module.exports = [
 
 },{}],13:[function(_dereq_,module,exports){
 "use strict";
+module.exports = [
+  function() {
+    return {
+
+      /*
+      EXPOSED DEVICES API DEFINITION
+       */
+      devices: [
+        {
+          name: "Tomi's iPhone",
+          type: "iphone",
+          connected: true,
+          error: null
+        }, {
+          name: "Bogs' iPhone",
+          type: "iphone",
+          connected: false,
+          error: {
+            code: 1,
+            message: "Old version of AppGyver Scanner"
+          }
+        }, {
+          name: "Simulator",
+          type: "ios-simulator",
+          connected: false,
+          error: null
+        }
+      ]
+    };
+  }
+];
+
+
+},{}],14:[function(_dereq_,module,exports){
+"use strict";
 var qrcode;
 
 qrcode = _dereq_("../../../bower_components/qrcode-generator/js/qrcode.js");
@@ -2058,12 +2087,12 @@ _dereq_("../../../bower_components/angular-qrcode/qrcode.js");
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],14:[function(_dereq_,module,exports){
+},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],15:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective"));
+module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./angular-qrcode":13,"./previewViewDirective":15}],15:[function(_dereq_,module,exports){
+},{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2079,7 +2108,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
