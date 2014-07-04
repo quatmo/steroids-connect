@@ -1,0 +1,131 @@
+// Import style dependencies
+
+@import "basics/font_faces.css.scss"
+@import "basics/typography.css.sass"
+@import "basics/color_classes.css.sass"
+
+////////////////////////////////////////////////////////////////
+// GLOBAL HEADER
+////////////////////////////////////////////////////////////////
+
+/*
+ * Keep things nice and scoped!
+ */
+
+.ag-header
+
+  z-index: 500
+  position: relative
+
+  background-color: white
+  color: $color-gray
+  font-family: "Proxima N W01 Smbd"
+  *:not(.glyphicon)
+    font-family: "Proxima N W01 Smbd"
+  padding-top: 10px
+  padding-bottom: 10px
+  border-bottom: 4px $color-blue solid
+  margin-bottom: 0px
+
+  .navbar-brand
+    padding-top: 0px
+    padding-bottom: 0px
+    height: 40px
+
+  .navbar-toggle
+    margin-top: 3px
+    margin-bottom: 0px
+
+  .btn-header-login
+    border: 1px $color-blue solid
+    text-transform: lowercase
+    color: $color-blue !important
+    padding-top: 6px
+    padding-bottom: 6px
+    margin-left: 15px
+    margin-top: 7px
+    .glyphicon
+      margin-left: 10px
+    *
+      color: $color-blue !important
+
+  .collapse.in
+    margin-top: 15px
+
+  .nav
+    li
+      a
+        cursor: pointer
+      a:not(.btn)
+        font-size: 14px
+        text-transform: uppercase
+        color: $color-gray-2
+        height: 40px
+        &:active, &:hover, &.active
+          color: $color-gray
+      .pointer
+        display: none
+      &.active
+        .pointer
+          position: absolute
+          width: 20px
+          height: 10px
+          bottom: 0px
+          left: 50%
+          margin-left: -10px
+          overflow: hidden
+          > div
+            position: absolute
+            width: 10px
+            height: 10px
+            bottom: -5px
+            left: 50%
+            margin-left: -5px
+            -ms-transform: rotate(45deg)
+            -webkit-transform: rotate(45deg)
+            transform: rotate(45deg)
+            background: $color-blue
+
+@media (min-width: 768px)
+  .ag-header
+    padding-top: 32px
+    padding-bottom: 32px
+
+////////////////////////////////////////////////////////////////
+// PREVIEW VIEW
+////////////////////////////////////////////////////////////////
+
+ul.devices-list
+  list-style: none
+
+  > li
+    position: relative
+    margin-bottom: 20px
+
+    .status-indicator
+      width: 12px
+      height: 12px
+      border-radius: 100%
+      -moz-border-radius: 100%
+      -webkit-border-radius: 100%
+      background: red
+      position: absolute
+      left: -26px
+      top: 16px
+
+      &.yellow
+        background: orange
+
+      &.green
+        background: green
+
+.no-margin
+  margin: 0px
+
+////////////////////////////////////////////////////////////////
+// LOGS VIEW
+////////////////////////////////////////////////////////////////
+
+.logMsg-device-name, .logMsg-time
+  padding-right: 20px
+  white-space: nowrap

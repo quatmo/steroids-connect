@@ -1,0 +1,176 @@
+/* Typography.css.sass
+ * Details about fonts and font sizes.
+ *
+ * Maintained by Tomi Hiltunen
+ */
+
+/*
+ * Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+@import "color_scheme.css.sass"
+
+////////////////////////////////////////////////////////////////
+// GLOBAL STYLE
+////////////////////////////////////////////////////////////////
+
+/*
+ * This is the basic font for every element.
+ * Overwrites are defined below.
+ */
+
+body, html
+  font-family: "Adelle W01 Regular"
+  color: $color-gray
+  font-size: 18px
+
+////////////////////////////////////////////////////////////////
+// HEADINGS
+////////////////////////////////////////////////////////////////
+
+h1
+  font-family: "Proxima N W01 Smbd"
+  font-size: 36pt
+
+h2
+  font-family: "Adelle W01 Light"
+  font-size: 21pt
+  // Overwrite Bootstrap .lead style
+  &.lead
+    font-size: 24pt
+
+// Overwrite Bootstrap .lead style
+.lead
+  h2
+    font-size: 24pt
+
+h3
+  font-family: "Proxima N W01 Bold"
+  font-size: 14pt
+  text-transform: uppercase
+
+////////////////////////////////////////////////////////////////
+// BASIC TYPOGRAPHICAL ELEMENTS
+////////////////////////////////////////////////////////////////
+
+p
+  font-family: "Adelle W01 Regular"
+  // Overwrite Bootstrap .lead style
+  &.lead
+    font-size: 22px
+
+b, strong
+  font-family: "Adelle W01 Bold"
+  font-weight: normal
+
+i
+  font-family: "Adelle W01 Italic"
+  font-style: normal
+
+////////////////////////////////////////////////////////////////
+// CUSTOM FONT-FAMILY OVERWRITES
+// If questions... consult Tomi.
+////////////////////////////////////////////////////////////////
+
+.text-uppercase
+  text-transform: uppercase
+
+.text-smaller
+  font-size: 16px
+
+.inline-block
+  display: inline-block
+
+/*
+ * We use different font families for bold, italic and regular fonts.
+ * For that reason we have nested definitions for each font-family.
+ * Please keep them that way unless you have a better idea (then, of course, edit them).
+ */
+
+.font-proxima
+  font-family: "Proxima N W01 Reg"
+  b, strong
+    font-family: "Proxima N W01 Bold"
+    i
+      font-family: "Proxima N W01 Bold It"
+  i
+    font-family: "Proxima N W01 Reg It"
+    b, strong
+      font-family: "Proxima N W01 Bold It"
+
+.font-proxima-thin
+  font-family: "Proxima N W01 Light"
+
+.font-proxima-semibold
+  font-family: "Proxima N W01 Smbd"
+
+.font-adelle
+  font-family: "Adelle W01 Regular"
+  b, strong
+    font-family: "Adelle W01 Bold"
+    i
+      font-family: "Adelle W01 Bold Italic"
+  i
+    font-family: "Adelle W01 Italic"
+    b, strong
+      font-family: "Adelle W01 Bold Italic"
+
+/*
+ * The nested fonts also apply for different type of elements; like the headings.
+ */
+
+h1
+  &.font-adelle
+    font-family: "Adelle W01 Bold"
+
+h2
+  &.font-proxima
+    font-family: "Proxima N W01 Light"
+
+h3
+  &.font-adelle
+    font-family: "Adelle W01 Bold"
+  &.sideline-heading
+    &::before
+      content: "_"
+      display: block
+      font-size: 60px
+      color: $color-blue
+      line-height: 0px
+      height: 44px
+
+/*
+ * Also, the b/i elements can, too, have font overwritten (not just the containers).
+ */
+
+b, strong
+  &.font-proxima
+    font-family: "Proxima N W01 Bold"
+    i
+      font-family: "Proxima N W01 Bold It"
+
+  &.font-adelle
+    font-family: "Adelle W01 Bold"
+    i
+      font-family: "Adelle W01 Bold Italic"
+
+i
+  &.font-proxima
+    font-family: "Proxima N W01 Reg It"
+    b, strong
+      font-family: "Proxima N W01 Bold It"
+
+  &.font-adelle
+    font-family: "Adelle W01 Italic"
+    b, strong
+      font-family: "Adelle W01 Bold Italic"
+
+
+
+
+
+
+
+
+

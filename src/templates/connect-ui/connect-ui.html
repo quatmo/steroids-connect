@@ -1,7 +1,7 @@
 <div id="view-connect-ui">
 
   <!-- Navbar -->
-  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+  <nav class="navbar navbar-default ag-header text-gray" role="navigation">
     <div class="container-fluid">
 
       <!-- Navbar header -->
@@ -16,7 +16,7 @@
 
       <!-- Navbar links -->
       <ul class="nav navbar-nav navbar-right">
-        <li ng-class="{'active': currentTab() == tab.name}" ng-repeat="tab in tabs"><a ng-click="setTab(tab.name)">{{tab.label}}</a></li>
+        <li ng-repeat="tab in tabs"><a ng-class="{'active': currentTab() == tab.name}" ng-click="setTab(tab.name)">{{tab.label}}</a></li>
       </ul>
 
     </div>

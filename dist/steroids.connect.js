@@ -2139,7 +2139,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "<div id=\"view-connect-ui\">\n" +
     "\n" +
     "  <!-- Navbar -->\n" +
-    "  <nav class=\"navbar navbar-inverse navbar-static-top\" role=\"navigation\">\n" +
+    "  <nav class=\"navbar navbar-default ag-header text-gray\" role=\"navigation\">\n" +
     "    <div class=\"container-fluid\">\n" +
     "\n" +
     "      <!-- Navbar header -->\n" +
@@ -2154,7 +2154,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      <!-- Navbar links -->\n" +
     "      <ul class=\"nav navbar-nav navbar-right\">\n" +
-    "        <li ng-class=\"{'active': currentTab() == tab.name}\" ng-repeat=\"tab in tabs\"><a ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
+    "        <li ng-repeat=\"tab in tabs\"><a ng-class=\"{'active': currentTab() == tab.name}\" ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
     "      </ul>\n" +
     "\n" +
     "    </div>\n" +

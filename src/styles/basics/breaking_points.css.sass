@@ -1,0 +1,32 @@
+/* breaking_points.css.sass
+ *
+ * Maintained by Tomi Hiltunen
+ */
+
+////////////////////////////////////////////////////////////////
+// BREAKING POINTS FOR RESPONSIVE DESIGN
+////////////////////////////////////////////////////////////////
+
+// Breaking points
+$breakpoint-xs: 0px
+$breakpoint-xs-max: 767px
+$breakpoint-sm: 768px
+$breakpoint-sm-max: 991px
+$breakpoint-md: 992px
+$breakpoint-md-max: 1199px
+$breakpoint-lg: 1200px
+
+/* Using breakpoints:
+ *
+ * @media (min-width: $breakpoint-sm) { ... }
+ * @media (min-width: $breakpoint-md) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
+ */
+
+/* Using breakpoints (restrictive):
+ *
+ * @media (max-width: $breakpoint-xs-max) { ... }
+ * @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-sm-max) { ... }
+ * @media (min-width: $breakpoint-md) and (max-width: $breakpoint-md-max) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
+ */
