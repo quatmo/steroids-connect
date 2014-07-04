@@ -5,4 +5,5 @@ module.exports = (grunt) ->
     'copy:build'
     'ngtemplates'
     'browserify'
+    'sass:build'
   ]
