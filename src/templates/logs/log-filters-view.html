@@ -3,24 +3,24 @@
   <form class="form-inline" role="form" id="log-view-filters-form">
 
     <!-- Filter for log msg type -->
-    <div class="form-group">
+    <div class="form-group" style="margin-left: 10px;">
       <div class="btn-group">
         <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.type == availableType.type}" ng-click="LogsFilterAPI.filterByType(availableType.type)" ng-repeat="availableType in LogsFilterAPI.availableTypeFilters">{{availableType.label}}</button>
       </div>
     </div>
 
     <!-- Filter for device name -->
-    <div class="form-group">
+    <div class="form-group" style="margin-left: 10px;">
       <select name="filterByDeviceName" ng-model="LogsFilterAPI.filters.deviceName" ng-options="x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()" class="form-control"></select>
     </div>
 
     <!-- Button for clearing out all filters -->
-    <div class="form-group">
+    <div class="form-group" style="margin-left: 10px;">
       <button name="clearFiltersBtn" type="button" ng-click="LogsFilterAPI.clearFilters()" class="btn btn-default">Clear filters</button>
     </div>
 
     <!-- Button for clearing all of logs -->
-    <div class="form-group" style="margin-left: 20px;">
+    <div class="form-group" style="margin-left: 10px;">
       <button name="clearFiltersBtn" type="button" ng-click="LogsAPI.clear()" class="btn btn-danger">Clear log</button>
     </div>
 

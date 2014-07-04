@@ -404,6 +404,19 @@ ul.devices-list {
 .no-margin {
   margin: 0px; }
 
+.filters-container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px #d6d6d9 solid;
+  background: #30384a; }
+
+.logs-container {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
 .logMsg-device-name, .logMsg-time {
   padding-right: 20px;
   white-space: nowrap; }
+
+.logMsg-time {
+  padding-right: 40px; }

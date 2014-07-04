@@ -1800,7 +1800,7 @@ module.exports = [
             label: "Preview"
           }, {
             name: "navigation",
-            label: "Navigation"
+            label: "Navigation & themes"
           }, {
             name: "backend",
             label: "Backend"
@@ -2170,7 +2170,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Navigation -->\n" +
     "    <div ng-switch-when=\"navigation\">\n" +
-    "      Navigation\n" +
+    "      Navigation &amp; themes\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Backend -->\n" +
@@ -2200,24 +2200,24 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <form class=\"form-inline\" role=\"form\" id=\"log-view-filters-form\">\n" +
     "\n" +
     "    <!-- Filter for log msg type -->\n" +
-    "    <div class=\"form-group\">\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <div class=\"btn-group\">\n" +
     "        <button type=\"button\" class=\"btn btn-default\" ng-class=\"{'active': LogsFilterAPI.filters.type == availableType.type}\" ng-click=\"LogsFilterAPI.filterByType(availableType.type)\" ng-repeat=\"availableType in LogsFilterAPI.availableTypeFilters\">{{availableType.label}}</button>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Filter for device name -->\n" +
-    "    <div class=\"form-group\">\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\" class=\"form-control\"></select>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Button for clearing out all filters -->\n" +
-    "    <div class=\"form-group\">\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsFilterAPI.clearFilters()\" class=\"btn btn-default\">Clear filters</button>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Button for clearing all of logs -->\n" +
-    "    <div class=\"form-group\" style=\"margin-left: 20px;\">\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsAPI.clear()\" class=\"btn btn-danger\">Clear log</button>\n" +
     "    </div>\n" +
     "\n" +
@@ -2231,23 +2231,20 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "<div id=\"view-log-view\">\n" +
     "\n" +
     "  <!-- Filter options -->\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row filters-container\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <h2 class=\"no-margin pull-left\">Device logs</h2>\n" +
-    "      <log-filters-view class=\"pull-left\" style=\"margin-left: 20px;\"></log-filters-view>\n" +
+    "      <log-filters-view class=\"pull-right\" style=\"margin-left: 20px;\"></log-filters-view>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <br><br>\n" +
-    "\n" +
     "  <!-- Table containing the log entries -->\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row bg-white logs-container\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <table>\n" +
     "        <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "          <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
     "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}</abbr></td>\n" +
-    "          <td class=\"logMsg-content\">{{logMsg.message}}</td>\n" +
+    "          <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
     "        </tr>\n" +
     "      </table>\n" +
     "    </div>\n" +
