@@ -2234,37 +2234,37 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <!-- Individual cards -->\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        asdsad\n" +
+    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +

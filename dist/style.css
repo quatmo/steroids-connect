@@ -431,4 +431,12 @@ i.font-adelle {
     min-height: 150px;
     margin-bottom: 30px;
     background: #30384a;
-    color: white; }
+    color: white;
+    position: relative; }
+    #view-generators .generator-card .generator-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 8px 10px;
+      text-shadow: 2px 2px 3px black; }
