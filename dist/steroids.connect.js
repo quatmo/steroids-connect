@@ -2284,10 +2284,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          </p>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
-    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
+    "          <a href=\"https://itunes.apple.com/fi/app/appgyver-scanner/id575076515\" target=\"_blank\" title=\"AppGyver Scanner on App Store\">\n" +
+    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
+    "          </a>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
-    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
+    "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.android\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
+    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
+    "          </a>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
