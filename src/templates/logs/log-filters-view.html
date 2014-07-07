@@ -3,7 +3,7 @@
   <form class="form-inline" role="form" id="log-view-filters-form">
 
     <!-- Filter for log msg type -->
-    <div class="form-group" style="margin-left: 10px;">
+    <div class="form-group">
       <div class="btn-group">
         <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.type == availableType.type}" ng-click="LogsFilterAPI.filterByType(availableType.type)" ng-repeat="availableType in LogsFilterAPI.availableTypeFilters">{{availableType.label}}</button>
       </div>

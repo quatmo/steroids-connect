@@ -2200,7 +2200,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <form class=\"form-inline\" role=\"form\" id=\"log-view-filters-form\">\n" +
     "\n" +
     "    <!-- Filter for log msg type -->\n" +
-    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
+    "    <div class=\"form-group\">\n" +
     "      <div class=\"btn-group\">\n" +
     "        <button type=\"button\" class=\"btn btn-default\" ng-class=\"{'active': LogsFilterAPI.filters.type == availableType.type}\" ng-click=\"LogsFilterAPI.filterByType(availableType.type)\" ng-repeat=\"availableType in LogsFilterAPI.availableTypeFilters\">{{availableType.label}}</button>\n" +
     "      </div>\n" +
