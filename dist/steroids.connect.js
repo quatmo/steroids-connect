@@ -2233,7 +2233,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <!-- Filter options -->\n" +
     "  <div class=\"row filters-container\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <log-filters-view class=\"pull-right\" style=\"margin-left: 20px;\"></log-filters-view>\n" +
+    "      <log-filters-view></log-filters-view>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
