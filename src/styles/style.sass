@@ -95,29 +95,34 @@
 // PREVIEW VIEW
 ////////////////////////////////////////////////////////////////
 
-ul.devices-list
-  list-style: none
+#view-preview-view
 
-  > li
-    position: relative
-    margin-bottom: 20px
+  padding-top: 40px
+  padding-bottom: 40px
 
-    .status-indicator
-      width: 12px
-      height: 12px
-      border-radius: 100%
-      -moz-border-radius: 100%
-      -webkit-border-radius: 100%
-      background: red
-      position: absolute
-      left: -26px
-      top: 16px
+  ul.devices-list
+    list-style: none
 
-      &.yellow
-        background: orange
+    > li
+      position: relative
+      margin-bottom: 20px
 
-      &.green
-        background: green
+      .status-indicator
+        width: 12px
+        height: 12px
+        border-radius: 100%
+        -moz-border-radius: 100%
+        -webkit-border-radius: 100%
+        background: red
+        position: absolute
+        left: -26px
+        top: 16px
+
+        &.yellow
+          background: orange
+
+        &.green
+          background: green
 
 .no-margin
   margin: 0px

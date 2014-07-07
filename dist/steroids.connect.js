@@ -1838,7 +1838,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":17,"./connect-ui":4,"./logs":8,"./preview":15}],6:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":18,"./connect-ui":4,"./logs":8,"./preview":16}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1952,10 +1952,10 @@ module.exports = [
 
 },{}],8:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":15,"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logViewDirective":12}],9:[function(_dereq_,module,exports){
+},{"./../preview":16,"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logTimeMillisecondsFormatFilter":12,"./logViewDirective":13}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1999,7 +1999,7 @@ module.exports = [
 module.exports = [
   function() {
     return function(input) {
-      var hh, inputDateTime, mm, ms, ss;
+      var hh, inputDateTime, mm, ss;
       inputDateTime = new Date(input);
       hh = inputDateTime.getHours();
       if (hh < 10) {
@@ -2013,19 +2013,32 @@ module.exports = [
       if (ss < 10) {
         ss = "0" + ss;
       }
-      ms = inputDateTime.getMilliseconds();
-      if (ms < 10) {
-        "00" + ms;
-      } else if (ms < 100) {
-        "0" + ms;
-      }
-      return "" + hh + ":" + mm + ":" + ss + "." + ms;
+      return "" + hh + ":" + mm + ":" + ss;
     };
   }
 ];
 
 
 },{}],12:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return function(input) {
+      var inputDateTime, ms;
+      inputDateTime = new Date(input);
+      ms = inputDateTime.getMilliseconds();
+      if (ms < 10) {
+        "00" + ms;
+      } else if (ms < 100) {
+        "0" + ms;
+      }
+      return "" + ms;
+    };
+  }
+];
+
+
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2042,7 +2055,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2080,7 +2093,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2093,12 +2106,12 @@ _dereq_("../../../bower_components/angular-qrcode/qrcode.js");
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],15:[function(_dereq_,module,exports){
+},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
+},{"./DevicesAPI":14,"./angular-qrcode":15,"./previewViewDirective":17}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2131,7 +2144,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2243,7 +2256,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <table>\n" +
     "        <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "          <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
-    "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}</abbr></td>\n" +
+    "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}<span style=\"color: #aaa;\">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>\n" +
     "          <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
     "        </tr>\n" +
     "      </table>\n" +
@@ -2259,7 +2272,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- QR code -->\n" +
-    "    <div class=\"col-xs-12 col-md-4\">\n" +
+    "    <div class=\"col-xs-12 col-md-5\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"360\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
@@ -2282,7 +2295,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "\n" +
     "    <!-- Connected devices -->\n" +
-    "    <div class=\"col-xs-12 col-md-7 col-md-offset-1\">\n" +
+    "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
     "      <br><br>\n" +
     "      <ul class=\"devices-list\">\n" +

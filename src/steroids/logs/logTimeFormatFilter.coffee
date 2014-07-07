@@ -16,10 +16,6 @@ module.exports =
         # Get seconds
         ss = inputDateTime.getSeconds()
         ss = "0" + ss if ss < 10
-        # Get milliseconds
-        ms = inputDateTime.getMilliseconds()
-        if ms < 10 then "00" + ms
-        else if ms < 100 then "0" + ms
         # Return the formatted string
-        "#{hh}:#{mm}:#{ss}.#{ms}"
+        "#{hh}:#{mm}:#{ss}"
   ]
