@@ -1,0 +1,51 @@
+<div id="view-generators" class="container">
+  <div class="row">
+
+    <!-- QR code -->
+    <div class="col-xs-12 col-md-5">
+      <div class="row">
+        <div class="col-xs-12">
+          <qrcode version="3" error-correction-level="M" size="100%" data="{{qrCode}}" class="img-responsive"></qrcode>
+          <br><br>
+        </div>
+        <div class="col-xs-12">
+          <h3>AppGyver Scanner</h3>
+          <p>
+            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.
+            Download scanner from App Store or Google Play.
+          </p>
+        </div>
+        <div class="col-xs-6">
+          <a href="https://itunes.apple.com/fi/app/appgyver-scanner/id575076515" target="_blank" title="AppGyver Scanner on App Store">
+            <img src="//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png" alt="Download Scanner from App Store" class="img-responsive">
+          </a>
+        </div>
+        <div class="col-xs-6">
+          <a href="https://play.google.com/store/apps/details?id=com.appgyver.android" target="_blank" title="AppGyver Scanner on Google Play">
+            <img src="//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png" alt="Download Scanner from Google Play" class="img-responsive">
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connected devices -->
+    <div class="col-xs-12 col-md-6 col-md-offset-1">
+      <h2 class="no-margin">Connected devices:</h2>
+      <br><br>
+      <ul class="devices-list">
+
+        <li ng-repeat="device in DevicesAPI.devices">
+          <!-- Status indicator -->
+          <div class="status-indicator" ng-class="{'yellow': !device.connected && device.error != null, 'green': device.connected}"></div>
+          <!-- Device name -->
+          <h2 class="no-margin">{{device.name}}</h2>
+          <!-- Connection status -->
+          <span ng-if="device.connected">Connected: </span>
+          <span ng-if="!device.connected">Not connected: </span>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</div>

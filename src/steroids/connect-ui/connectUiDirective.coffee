@@ -16,8 +16,8 @@ module.exports =
 
           scope.tabs = [
             { name: "qr", label: "Preview" }
-            { name: "navigation", label: "Navigation & themes" }
-            { name: "backend", label: "Backend" }
+            # { name: "navigation", label: "Navigation & themes" }
+            # { name: "backend", label: "Backend" }
             { name: "logs", label: "Logs & Errors" }
             { name: "generators", label: "Generators" }
           ]

@@ -1654,12 +1654,6 @@ module.exports = [
             name: "qr",
             label: "Preview"
           }, {
-            name: "navigation",
-            label: "Navigation & themes"
-          }, {
-            name: "backend",
-            label: "Backend"
-          }, {
             name: "logs",
             label: "Logs & Errors"
           }, {
@@ -1688,12 +1682,31 @@ module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("con
 },{"./connectUiDirective":2}],4:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./connect-ui").name]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./generators").name, _dereq_("./connect-ui").name]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":17,"./connect-ui":3,"./logs":7,"./preview":15}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":19,"./connect-ui":3,"./generators":6,"./logs":9,"./preview":17}],5:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/generators/generators-view.html",
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],6:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective"));
+
+
+},{"./generatorsViewDirective":5}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1733,7 +1746,7 @@ module.exports = [
 ];
 
 
-},{}],6:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "DevicesAPI", function(DevicesAPI) {
@@ -1805,12 +1818,12 @@ module.exports = [
 ];
 
 
-},{}],7:[function(_dereq_,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":15,"./LogsAPI":5,"./LogsFilterAPI":6,"./logDateFormatFilter":8,"./logFiltersViewDirective":9,"./logTimeFormatFilter":10,"./logTimeMillisecondsFormatFilter":11,"./logViewDirective":12}],8:[function(_dereq_,module,exports){
+},{"./../preview":17,"./LogsAPI":7,"./LogsFilterAPI":8,"./logDateFormatFilter":10,"./logFiltersViewDirective":11,"./logTimeFormatFilter":12,"./logTimeMillisecondsFormatFilter":13,"./logViewDirective":14}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1832,7 +1845,7 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1849,7 +1862,7 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1874,7 +1887,7 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1893,7 +1906,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1910,7 +1923,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1948,7 +1961,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2104,12 +2117,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],15:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
+},{"./DevicesAPI":15,"./angular-qrcode":16,"./previewViewDirective":18}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2142,7 +2155,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2196,11 +2209,66 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Generators -->\n" +
     "    <div ng-switch-when=\"generators\">\n" +
-    "      Generators\n" +
+    "      <generators-view></generators-view>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
     "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/generators/generators-view.html',
+    "<div id=\"view-generators\" class=\"container\">\n" +
+    "  <div class=\"row\">\n" +
+    "\n" +
+    "    <!-- QR code -->\n" +
+    "    <div class=\"col-xs-12 col-md-5\">\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
+    "          <br><br>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "          <h3>AppGyver Scanner</h3>\n" +
+    "          <p>\n" +
+    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.\n" +
+    "            Download scanner from App Store or Google Play.\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-6\">\n" +
+    "          <a href=\"https://itunes.apple.com/fi/app/appgyver-scanner/id575076515\" target=\"_blank\" title=\"AppGyver Scanner on App Store\">\n" +
+    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
+    "          </a>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-6\">\n" +
+    "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.android\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
+    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
+    "          </a>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- Connected devices -->\n" +
+    "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
+    "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
+    "      <br><br>\n" +
+    "      <ul class=\"devices-list\">\n" +
+    "\n" +
+    "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
+    "          <!-- Status indicator -->\n" +
+    "          <div class=\"status-indicator\" ng-class=\"{'yellow': !device.connected && device.error != null, 'green': device.connected}\"></div>\n" +
+    "          <!-- Device name -->\n" +
+    "          <h2 class=\"no-margin\">{{device.name}}</h2>\n" +
+    "          <!-- Connection status -->\n" +
+    "          <span ng-if=\"device.connected\">Connected: </span>\n" +
+    "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +
+    "        </li>\n" +
+    "\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
     "</div>"
   );
 
