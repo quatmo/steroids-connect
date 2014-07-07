@@ -2041,8 +2041,7 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
             isMonitoring = true;
             return $(window).resize(function() {
               setSize(attrs.size);
-              render();
-              return console.log("RESIZE", size);
+              return render();
             });
           }
         };
@@ -2220,55 +2219,57 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
   $templateCache.put('/steroids-connect/generators/generators-view.html',
     "<div id=\"view-generators\" class=\"container\">\n" +
+    "\n" +
+    "  <!-- View header -->\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "      <h2>Generators:</h2>\n" +
+    "      <br><br>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <!-- List of available generators -->\n" +
     "  <div class=\"row\">\n" +
     "\n" +
-    "    <!-- QR code -->\n" +
-    "    <div class=\"col-xs-12 col-md-5\">\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
-    "          <br><br>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "          <h3>AppGyver Scanner</h3>\n" +
-    "          <p>\n" +
-    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.\n" +
-    "            Download scanner from App Store or Google Play.\n" +
-    "          </p>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-6\">\n" +
-    "          <a href=\"https://itunes.apple.com/fi/app/appgyver-scanner/id575076515\" target=\"_blank\" title=\"AppGyver Scanner on App Store\">\n" +
-    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
-    "          </a>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-6\">\n" +
-    "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.android\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
-    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
-    "          </a>\n" +
-    "        </div>\n" +
+    "    <!-- Individual cards -->\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        asdsad\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <!-- Connected devices -->\n" +
-    "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
-    "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
-    "      <br><br>\n" +
-    "      <ul class=\"devices-list\">\n" +
-    "\n" +
-    "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
-    "          <!-- Status indicator -->\n" +
-    "          <div class=\"status-indicator\" ng-class=\"{'yellow': !device.connected && device.error != null, 'green': device.connected}\"></div>\n" +
-    "          <!-- Device name -->\n" +
-    "          <h2 class=\"no-margin\">{{device.name}}</h2>\n" +
-    "          <!-- Connection status -->\n" +
-    "          <span ng-if=\"device.connected\">Connected: </span>\n" +
-    "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +
-    "        </li>\n" +
-    "\n" +
-    "      </ul>\n" +
-    "    </div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
     "</div>"
   );
 
