@@ -80,7 +80,6 @@ angular.module("monospaced.qrcode", []).directive "qrcode", [
             $(window).resize ->
               setSize attrs.size
               render()
-              console.log "RESIZE", size
 
         setSize = (value) ->
           if String(value).indexOf("%") > -1
