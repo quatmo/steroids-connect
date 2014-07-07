@@ -1,149 +1,4 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),(o.steroids||(o.steroids={})).connect=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-/*
- * angular-qrcode v3.1.0
- * (c) 2013 Monospaced http://monospaced.com
- * License: MIT
- */
-
-angular.module('monospaced.qrcode', [])
-  .directive('qrcode', ['$window', function($window) {
-
-    var canvas2D = !!$window.CanvasRenderingContext2D,
-        levels = {
-          'L': 'Low',
-          'M': 'Medium',
-          'Q': 'Quartile',
-          'H': 'High'
-        },
-        draw = function(context, qr, modules, tile) {
-          for (var row = 0; row < modules; row++) {
-            for (var col = 0; col < modules; col++) {
-              var w = (Math.ceil((col + 1) * tile) - Math.floor(col * tile)),
-                  h = (Math.ceil((row + 1) * tile) - Math.floor(row * tile));
-
-              context.fillStyle = qr.isDark(row, col) ? '#000' : '#fff';
-              context.fillRect(Math.round(col * tile),
-                               Math.round(row * tile), w, h);
-            }
-          }
-        };
-
-    return {
-      restrict: 'E',
-      template: '<canvas></canvas>',
-      link: function(scope, element, attrs) {
-        var domElement = element[0],
-            canvas = element.find('canvas')[0],
-            context = canvas2D ? canvas.getContext('2d') : null,
-            trim = /^\s+|\s+$/g,
-            error,
-            version,
-            errorCorrectionLevel,
-            data,
-            size,
-            modules,
-            tile,
-            qr,
-            setVersion = function(value) {
-              version = Math.max(1, Math.min(parseInt(value, 10), 10)) || 4;
-            },
-            setErrorCorrectionLevel = function(value) {
-              errorCorrectionLevel = value in levels ? value : 'M';
-            },
-            setData = function(value) {
-              if (!value) {
-                return;
-              }
-
-              data = value.replace(trim, '');
-              qr = qrcode(version, errorCorrectionLevel);
-              qr.addData(data);
-
-              try {
-                qr.make();
-              } catch(e) {
-                error = e.message;
-                return;
-              }
-
-              error = false;
-              modules = qr.getModuleCount();
-            },
-            setSize = function(value) {
-              size = parseInt(value, 10) || modules * 2;
-              tile = size / modules;
-              canvas.width = canvas.height = size;
-            },
-            render = function() {
-              if (!qr) {
-                return;
-              }
-
-              if (error) {
-                if (!canvas2D) {
-                  domElement.innerHTML = '<img src width="' + size + '"' +
-                                         'height="' + size + '">';
-                }
-                scope.$emit('qrcode:error', error);
-                return;
-              }
-
-              if (canvas2D) {
-                draw(context, qr, modules, tile);
-              } else {
-                domElement.innerHTML = qr.createImgTag(tile, 0);
-              }
-            };
-
-        setVersion(attrs.version);
-        setErrorCorrectionLevel(attrs.errorCorrectionLevel);
-        setSize(attrs.size);
-
-        attrs.$observe('version', function(value) {
-          if (!value) {
-            return;
-          }
-
-          setVersion(value);
-          setData(data);
-          setSize(size);
-          render();
-        });
-
-        attrs.$observe('errorCorrectionLevel', function(value) {
-          if (!value) {
-            return;
-          }
-
-          setErrorCorrectionLevel(value);
-          setData(data);
-          setSize(size);
-          render();
-        });
-
-        attrs.$observe('data', function(value) {
-          if (!value) {
-            return;
-          }
-
-          setData(value);
-          setSize(size);
-          render();
-        });
-
-        attrs.$observe('size', function(value) {
-          if (!value) {
-            return;
-          }
-
-          setSize(value);
-          render();
-        });
-      }
-    };
-  }]);
-
-},{}],2:[function(_dereq_,module,exports){
 //---------------------------------------------------------------------
 //
 // QR Code Generator for JavaScript
@@ -1780,7 +1635,7 @@ var qrcode = function() {
 
 module.exports = qrcode;
 
-},{}],3:[function(_dereq_,module,exports){
+},{}],2:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1825,12 +1680,12 @@ module.exports = [
 ];
 
 
-},{}],4:[function(_dereq_,module,exports){
+},{}],3:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("connectUi", _dereq_("./connectUiDirective"));
 
 
-},{"./connectUiDirective":3}],5:[function(_dereq_,module,exports){
+},{"./connectUiDirective":2}],4:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
 steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./connect-ui").name]);
@@ -1838,7 +1693,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":18,"./connect-ui":4,"./logs":8,"./preview":16}],6:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":17,"./connect-ui":3,"./logs":7,"./preview":15}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1878,7 +1733,7 @@ module.exports = [
 ];
 
 
-},{}],7:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "DevicesAPI", function(DevicesAPI) {
@@ -1950,12 +1805,12 @@ module.exports = [
 ];
 
 
-},{}],8:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":16,"./LogsAPI":6,"./LogsFilterAPI":7,"./logDateFormatFilter":9,"./logFiltersViewDirective":10,"./logTimeFormatFilter":11,"./logTimeMillisecondsFormatFilter":12,"./logViewDirective":13}],9:[function(_dereq_,module,exports){
+},{"./../preview":15,"./LogsAPI":5,"./LogsFilterAPI":6,"./logDateFormatFilter":8,"./logFiltersViewDirective":9,"./logTimeFormatFilter":10,"./logTimeMillisecondsFormatFilter":11,"./logViewDirective":12}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1977,7 +1832,7 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1994,7 +1849,7 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2019,7 +1874,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2038,7 +1893,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2055,7 +1910,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2093,7 +1948,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2101,17 +1956,160 @@ qrcode = _dereq_("../../../bower_components/qrcode-generator/js/qrcode.js");
 
 window.qrcode = qrcode;
 
-_dereq_("../../../bower_components/angular-qrcode/qrcode.js");
+angular.module("monospaced.qrcode", []).directive("qrcode", [
+  "$window", function($window) {
+    var canvas2D, draw, levels;
+    canvas2D = !!$window.CanvasRenderingContext2D;
+    levels = {
+      L: "Low",
+      M: "Medium",
+      Q: "Quartile",
+      H: "High"
+    };
+    draw = function(context, qr, modules, tile) {
+      var col, h, row, w;
+      row = 0;
+      while (row < modules) {
+        col = 0;
+        while (col < modules) {
+          w = Math.ceil((col + 1) * tile) - Math.floor(col * tile);
+          h = Math.ceil((row + 1) * tile) - Math.floor(row * tile);
+          context.fillStyle = (qr.isDark(row, col) ? "#000" : "#fff");
+          context.fillRect(Math.round(col * tile), Math.round(row * tile), w, h);
+          col++;
+        }
+        row++;
+      }
+    };
+    return {
+      restrict: "E",
+      template: "<canvas></canvas>",
+      link: function(scope, element, attrs) {
+        var canvas, context, data, domElement, error, errorCorrectionLevel, isMonitoring, modules, monitorParentSize, qr, render, setData, setErrorCorrectionLevel, setSize, setVersion, size, tile, trim, version;
+        domElement = element[0];
+        canvas = element.find("canvas")[0];
+        context = (canvas2D ? canvas.getContext("2d") : null);
+        trim = /^\s+|\s+$/g;
+        error = void 0;
+        version = void 0;
+        errorCorrectionLevel = void 0;
+        data = void 0;
+        size = void 0;
+        modules = void 0;
+        tile = void 0;
+        qr = void 0;
+        setVersion = function(value) {
+          version = Math.max(1, Math.min(parseInt(value, 10), 10)) || 4;
+        };
+        setErrorCorrectionLevel = function(value) {
+          errorCorrectionLevel = (value in levels ? value : "M");
+        };
+        setData = function(value) {
+          var e;
+          if (!value) {
+            return;
+          }
+          data = value.replace(trim, "");
+          qr = qrcode(version, errorCorrectionLevel);
+          qr.addData(data);
+          try {
+            qr.make();
+          } catch (_error) {
+            e = _error;
+            error = e.message;
+            return;
+          }
+          error = false;
+          modules = qr.getModuleCount();
+        };
+        isMonitoring = false;
+        monitorParentSize = function() {
+          if (!isMonitoring) {
+            isMonitoring = true;
+            return $(window).resize(function() {
+              setSize(attrs.size);
+              render();
+              return console.log("RESIZE", size);
+            });
+          }
+        };
+        setSize = function(value) {
+          if (String(value).indexOf("%") > -1) {
+            size = element.width();
+            monitorParentSize();
+          } else {
+            size = parseInt(value, 10) || modules * 2;
+          }
+          tile = size / modules;
+          canvas.width = canvas.height = size;
+        };
+        render = function() {
+          if (!qr) {
+            return;
+          }
+          if (error) {
+            if (!canvas2D) {
+              domElement.innerHTML = "<img src width=\"" + size + "\"" + "height=\"" + size + "\">";
+            }
+            scope.$emit("qrcode:error", error);
+            return;
+          }
+          if (canvas2D) {
+            draw(context, qr, modules, tile);
+          } else {
+            domElement.innerHTML = qr.createImgTag(tile, 0);
+          }
+        };
+        setVersion(attrs.version);
+        setErrorCorrectionLevel(attrs.errorCorrectionLevel);
+        setSize(attrs.size);
+        attrs.$observe("version", function(value) {
+          if (!value) {
+            return;
+          }
+          setVersion(value);
+          setData(data);
+          setSize(size);
+          render();
+        });
+        attrs.$observe("errorCorrectionLevel", function(value) {
+          if (!value) {
+            return;
+          }
+          setErrorCorrectionLevel(value);
+          setData(data);
+          setSize(size);
+          render();
+        });
+        attrs.$observe("data", function(value) {
+          if (!value) {
+            return;
+          }
+          setData(value);
+          setSize(size);
+          render();
+        });
+        attrs.$observe("size", function(value) {
+          if (!value) {
+            return;
+          }
+          setSize(value);
+          render();
+        });
+      }
+    };
+  }
+]);
 
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/angular-qrcode/qrcode.js":1,"../../../bower_components/qrcode-generator/js/qrcode.js":2}],16:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":14,"./angular-qrcode":15,"./previewViewDirective":17}],17:[function(_dereq_,module,exports){
+},{"./DevicesAPI":13,"./angular-qrcode":14,"./previewViewDirective":16}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2144,7 +2142,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2275,7 +2273,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-xs-12 col-md-5\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
-    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"360\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
+    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
     "          <br><br>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\">\n" +
@@ -2319,6 +2317,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 }]);
 
-},{}]},{},[5])
-(5)
+},{}]},{},[4])
+(4)
 });
