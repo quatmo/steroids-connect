@@ -311,6 +311,10 @@ i.font-adelle {
 .bg-white {
   background-color: white; }
 
+* {
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; }
+
 /* Keep things nice and scoped!
  */
 .ag-header {
@@ -454,7 +458,13 @@ i.font-adelle {
     color: white;
     position: relative;
     background-position: 50% 50%;
-    background-size: contain; }
+    background-size: contain;
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out; }
+    #view-generators .generator-card:hover {
+      -webkit-transform: scale(1.1) translateZ(0);
+      transform: scale(1.1) translateZ(0); }
     #view-generators .generator-card .generator-name {
       position: absolute;
       bottom: 0;
@@ -462,4 +472,4 @@ i.font-adelle {
       width: 100%;
       padding: 8px 10px;
       text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
-      background: rgba(0, 0, 0, 0.1); }
+      background: rgba(0, 0, 0, 0.2); }
