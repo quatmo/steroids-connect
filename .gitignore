@@ -1,6 +1,9 @@
 # Exclude temp
 temp
 
+# Exclude sass-cache
+.sass-cache
+
 # Logs
 *.log
 
