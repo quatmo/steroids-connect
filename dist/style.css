@@ -328,7 +328,27 @@ i.font-adelle {
   .ag-header .navbar-brand {
     padding-top: 0px;
     padding-bottom: 0px;
-    height: 40px; }
+    height: 50px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: default; }
+    .ag-header .navbar-brand img {
+      height: 50px; }
+    .ag-header .navbar-brand .brand-text {
+      height: 50px;
+      display: inline-block;
+      vertical-align: top;
+      padding-top: 8px;
+      padding-left: 4px; }
+      .ag-header .navbar-brand .brand-text .brand-text-main {
+        display: block;
+        color: black;
+        line-height: 100%;
+        margin: 0px; }
+      .ag-header .navbar-brand .brand-text small {
+        line-height: 100%;
+        margin: 0px;
+        color: #999c9c; }
   .ag-header .navbar-toggle {
     margin-top: 3px;
     margin-bottom: 0px; }
@@ -379,8 +399,8 @@ i.font-adelle {
 
 @media (min-width: 768px) {
   .ag-header {
-    padding-top: 32px;
-    padding-bottom: 32px; } }
+    padding-top: 27px;
+    padding-bottom: 27px; } }
 #view-preview-view {
   padding-top: 40px;
   padding-bottom: 40px; }
