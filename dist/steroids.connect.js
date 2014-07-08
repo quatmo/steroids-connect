@@ -2351,6 +2351,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.\n" +
     "            Download scanner from App Store or Google Play.\n" +
     "          </p>\n" +
+    "          <br>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
     "          <a href=\"https://itunes.apple.com/fi/app/appgyver-scanner/id575076515\" target=\"_blank\" title=\"AppGyver Scanner on App Store\">\n" +
