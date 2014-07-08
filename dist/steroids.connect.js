@@ -1973,7 +1973,8 @@ module.exports = [
           connected: false,
           error: {
             code: 1,
-            message: "Old version of AppGyver Scanner"
+            message: "Old version of AppGyver Scanner",
+            url: "See AppStore, faget"
           },
           lastAppLoad: 1404217782263
         }, {
