@@ -1978,7 +1978,7 @@ module.exports = [
           lastAppLoad: 1404217782263
         }, {
           name: "Simulator",
-          type: "ios-simulator",
+          type: "simulator",
           connected: false,
           error: null,
           lastAppLoad: 0
@@ -2384,6 +2384,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <!-- Connection status -->\n" +
     "          <span ng-if=\"device.connected\">Connected: </span>\n" +
     "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +
+    "          <!-- Connection status explained -->\n" +
+    "          <span ng-if=\"device.connected\">x min ago</span>\n" +
+    "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
+    "          <span ng-if=\"!device.connected && !device.error && device.type=='simulator'\"><a href=\"\">Launch simulator &raquo;</a></span>\n" +
     "        </li>\n" +
     "\n" +
     "      </ul>\n" +

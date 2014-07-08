@@ -30,7 +30,7 @@ module.exports =
           }
           {
             name: "Simulator"
-            type: "ios-simulator"
+            type: "simulator"
             connected: false
             error: null
             lastAppLoad: 0
