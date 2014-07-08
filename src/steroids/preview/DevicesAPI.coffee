@@ -11,10 +11,6 @@ module.exports =
         ###
 
         # Devices cache
-        #   * message - Text/object representation of the message
-        #   * timestamp - UNIX timestamp for the logged event (in milliseconds! This is IMPORTANT for log accuracy)
-        #   * type - type of the message for filtering and highlighting [error, log]
-        #   * deviceName - Name of the device that originated the log entry
         devices: [
           {
             name: "Tomi's iPhone"

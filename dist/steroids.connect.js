@@ -1687,15 +1687,27 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":19,"./connect-ui":3,"./generators":6,"./logs":9,"./preview":17}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":20,"./connect-ui":3,"./generators":7,"./logs":10,"./preview":18}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
     return {
-      restrict: "EA",
-      replace: true,
-      templateUrl: "/steroids-connect/generators/generators-view.html",
-      link: function(scope, element, attrs) {}
+
+      /*
+      EXPOSED GENERATORS API DEFINITION
+       */
+      generators: [
+        {
+          name: "AngularJS SPA Scaffold",
+          image_url: ""
+        }, {
+          name: "MPA Scaffold",
+          image_url: ""
+        }, {
+          name: "Camera Example",
+          image_url: ""
+        }
+      ]
     };
   }
 ];
@@ -1703,10 +1715,26 @@ module.exports = [
 
 },{}],6:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective"));
+module.exports = [
+  "GeneratorsAPI", function(GeneratorsAPI) {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/generators/generators-view.html",
+      link: function(scope, element, attrs) {
+        return scope.GeneratorsAPI = GeneratorsAPI;
+      }
+    };
+  }
+];
 
 
-},{"./generatorsViewDirective":5}],7:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective")).factory("GeneratorsAPI", _dereq_("./GeneratorsAPI"));
+
+
+},{"./GeneratorsAPI":5,"./generatorsViewDirective":6}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1746,7 +1774,7 @@ module.exports = [
 ];
 
 
-},{}],8:[function(_dereq_,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "DevicesAPI", function(DevicesAPI) {
@@ -1818,12 +1846,12 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":17,"./LogsAPI":7,"./LogsFilterAPI":8,"./logDateFormatFilter":10,"./logFiltersViewDirective":11,"./logTimeFormatFilter":12,"./logTimeMillisecondsFormatFilter":13,"./logViewDirective":14}],10:[function(_dereq_,module,exports){
+},{"./../preview":18,"./LogsAPI":8,"./LogsFilterAPI":9,"./logDateFormatFilter":11,"./logFiltersViewDirective":12,"./logTimeFormatFilter":13,"./logTimeMillisecondsFormatFilter":14,"./logViewDirective":15}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1845,7 +1873,7 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1862,7 +1890,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1887,7 +1915,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1906,7 +1934,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1923,7 +1951,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1989,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2116,12 +2144,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],17:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":15,"./angular-qrcode":16,"./previewViewDirective":18}],18:[function(_dereq_,module,exports){
+},{"./DevicesAPI":16,"./angular-qrcode":17,"./previewViewDirective":19}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2154,7 +2182,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2172,7 +2200,13 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span class=\"icon-bar\"></span>\n" +
     "          <span class=\"icon-bar\"></span>\n" +
     "        </button>\n" +
-    "        <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/steroids-logo.png\" alt=\"Steroids Connect\" class=\"navbar-brand\">\n" +
+    "        <div class=\"navbar-brand\">\n" +
+    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/steroids-logo.png\" alt=\"Steroids Connect\">\n" +
+    "          <div class=\"brand-text\">\n" +
+    "            <span class=\"brand-text-main\">Steroids</span>\n" +
+    "            <small><b><i>Connect</i></b></small>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Navbar links -->\n" +
@@ -2232,39 +2266,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- Individual cards -->\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in GeneratorsAPI.generators\">\n" +
     "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\"><b>asdsad</b></div>\n" +
+    "        <div class=\"generator-name font-proxima\"><b>{{generator.name}}</b></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
