@@ -39,7 +39,7 @@
           <!-- Status indicator -->
           <div class="status-indicator" ng-class="{'yellow': !device.connected && device.error != null, 'green': device.connected}"></div>
           <!-- Device name -->
-          <h2 class="no-margin">{{device.name}}</h2>
+          <h2 class="no-margin"><b>{{device.name}}</b></h2>
           <!-- Connection status -->
           <span ng-if="device.connected">Connected: </span>
           <span ng-if="!device.connected">Not connected: </span>

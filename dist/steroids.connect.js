@@ -2282,7 +2282,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/logs/log-filters-view.html',
     "<div id=\"view-log-filters\">\n" +
     "\n" +
-    "  <form class=\"form-inline\" role=\"form\" id=\"log-view-filters-form\">\n" +
+    "  <form class=\"form-inline font-proxima\" role=\"form\" id=\"log-view-filters-form\">\n" +
     "\n" +
     "    <!-- Filter for log msg type -->\n" +
     "    <div class=\"form-group\">\n" +
@@ -2381,7 +2381,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <!-- Status indicator -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': !device.connected && device.error != null, 'green': device.connected}\"></div>\n" +
     "          <!-- Device name -->\n" +
-    "          <h2 class=\"no-margin\">{{device.name}}</h2>\n" +
+    "          <h2 class=\"no-margin\"><b>{{device.name}}</b></h2>\n" +
     "          <!-- Connection status -->\n" +
     "          <span ng-if=\"device.connected\">Connected: </span>\n" +
     "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +

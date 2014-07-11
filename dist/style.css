@@ -431,21 +431,26 @@ i.font-adelle {
 .no-margin {
   margin: 0px; }
 
-.filters-container {
+#view-log-view #view-log-filters .btn.btn-danger {
+  background: #fa5252; }
+#view-log-view #view-log-filters .btn.btn-default {
+  background: #ebebed; }
+  #view-log-view #view-log-filters .btn.btn-default.active {
+    background: #d6d6db; }
+#view-log-view #view-log-filters select {
+  background: #ebebed; }
+#view-log-view .filters-container {
   padding-top: 10px;
   padding-bottom: 10px;
   border-bottom: 2px #d6d6d9 solid;
   background: #30384a; }
-
-.logs-container {
+#view-log-view .logs-container {
   padding-top: 20px;
   padding-bottom: 20px; }
-
-.logMsg-device-name, .logMsg-time {
+#view-log-view .logMsg-device-name, #view-log-view .logMsg-time {
   padding-right: 20px;
   white-space: nowrap; }
-
-.logMsg-time {
+#view-log-view .logMsg-time {
   padding-right: 40px; }
 
 #view-generators {

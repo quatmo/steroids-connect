@@ -163,22 +163,39 @@
 // LOGS VIEW
 ////////////////////////////////////////////////////////////////
 
-.filters-container
-  padding-top: 10px
-  padding-bottom: 10px
-  border-bottom: 2px $color-gray-2 solid
-  background: $color-blue-dark
+#view-log-view
 
-.logs-container
-  padding-top: 20px
-  padding-bottom: 20px
+  #view-log-filters
 
-.logMsg-device-name, .logMsg-time
-  padding-right: 20px
-  white-space: nowrap
+    .btn
 
-.logMsg-time
-  padding-right: 40px
+      &.btn-danger
+        background: $color-red
+
+      &.btn-default
+        background: $color-blue-dark-1
+        &.active
+          background: $color-blue-dark-2
+
+    select
+      background: $color-blue-dark-1
+
+  .filters-container
+    padding-top: 10px
+    padding-bottom: 10px
+    border-bottom: 2px $color-gray-2 solid
+    background: $color-blue-dark
+
+  .logs-container
+    padding-top: 20px
+    padding-bottom: 20px
+
+  .logMsg-device-name, .logMsg-time
+    padding-right: 20px
+    white-space: nowrap
+
+  .logMsg-time
+    padding-right: 40px
 
 ////////////////////////////////////////////////////////////////
 // GENERATORS VIEW
