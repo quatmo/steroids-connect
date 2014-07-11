@@ -18,7 +18,7 @@
   <div class="row">
 
     <!-- Individual cards -->
-    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in GeneratorsAPI.generators | filter:generatorNameFilter">
+    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in GeneratorsAPI.generators | filter:{'name': generatorNameFilter}">
       <div class="generator-card" style="background-image: url('{{generator.image_url}}');">
         <div class="generator-name font-proxima"><b>{{generator.name}}</b></div>
       </div>

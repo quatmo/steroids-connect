@@ -24,6 +24,14 @@ module.exports =
             name: "Camera Example"
             image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
           }
+          {
+            name: "Mankeli"
+            image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
+          }
+          {
+            name: "Hilavitkutin"
+            image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
+          }
         ]
 
       }

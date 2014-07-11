@@ -1706,6 +1706,12 @@ module.exports = [
         }, {
           name: "Camera Example",
           image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
+        }, {
+          name: "Mankeli",
+          image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
+        }, {
+          name: "Hilavitkutin",
+          image_url: "//localhost:3000/assets/new/views/steroids-overview/grid-native-performance.png"
         }
       ]
     };
@@ -2273,7 +2279,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- Individual cards -->\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in GeneratorsAPI.generators | filter:generatorNameFilter\">\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in GeneratorsAPI.generators | filter:{'name': generatorNameFilter}\">\n" +
     "      <div class=\"generator-card\" style=\"background-image: url('{{generator.image_url}}');\">\n" +
     "        <div class=\"generator-name font-proxima\"><b>{{generator.name}}</b></div>\n" +
     "      </div>\n" +
