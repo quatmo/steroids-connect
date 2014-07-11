@@ -2263,6 +2263,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <h2 style=\"margin: 0px;\">Generators:</h2>\n" +
     "    </div>\n" +
     "    <div class=\"col-xs-12 col-sm-4\">\n" +
+    "      <br class=\"visible-xs\">\n" +
     "      <div class=\"form-group\">\n" +
     "        <input type=\"text\" ng-model=\"generatorNameFilter\" class=\"form-control\" placeholder=\"Search...\">\n" +
     "      </div>\n" +
@@ -2390,6 +2391,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Connected devices -->\n" +
     "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
+    "      <br class=\"visible-xs\"><br class=\"visible-xs\">\n" +
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
     "      <br><br>\n" +
     "      <ul class=\"devices-list\">\n" +
