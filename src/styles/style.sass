@@ -182,6 +182,7 @@
           background: $color-blue-dark-6
           border-color: $color-blue-dark-5
           color: white
+          font-family: "Proxima N W01 Bold"
 
     select
       background: $color-blue-dark-7
@@ -198,12 +199,27 @@
     padding-top: 20px
     padding-bottom: 20px
 
-  .logMsg-device-name, .logMsg-time
-    padding-right: 20px
-    white-space: nowrap
+    table
+      width: 100%
 
-  .logMsg-time
-    padding-right: 40px
+      thead
+        th
+          padding-bottom: 10px
+
+      tbody
+
+        td
+          padding-bottom: 2px
+
+        .logMsg-device-name, .logMsg-time
+          padding-right: 20px
+          white-space: nowrap
+
+        .logMsg-time
+          padding-right: 40px
+
+        .logMsg-content
+          width: 100%
 
 ////////////////////////////////////////////////////////////////
 // GENERATORS VIEW

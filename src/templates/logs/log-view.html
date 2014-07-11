@@ -11,11 +11,20 @@
   <div class="row bg-white logs-container">
     <div class="col-xs-12">
       <table>
-        <tr ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
-          <td class="text-muted logMsg-device-name"><span class="glyphicon glyphicon-phone"></span> <a ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</a></td>
-          <td class="text-muted logMsg-time"><span class="glyphicon glyphicon-time"></span> <abbr title="{{logMsg.timestamp | logDateFormat}}">{{logMsg.timestamp | logTimeFormat}}<span style="color: #aaa;">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>
-          <td class="logMsg-content font-proxima"><b>{{logMsg.message}}</b></td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Time</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
+            <td class="text-muted logMsg-device-name"><span class="glyphicon glyphicon-phone"></span> <a ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</a></td>
+            <td class="text-muted logMsg-time"><span class="glyphicon glyphicon-time"></span> <abbr title="{{logMsg.timestamp | logDateFormat}}">{{logMsg.timestamp | logTimeFormat}}<span style="color: #aaa;">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>
+            <td class="logMsg-content font-proxima"><b>{{logMsg.message}}</b></td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

@@ -2326,11 +2326,20 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row bg-white logs-container\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <table>\n" +
-    "        <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
-    "          <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
-    "          <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}<span style=\"color: #aaa;\">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>\n" +
-    "          <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
-    "        </tr>\n" +
+    "        <thead>\n" +
+    "          <tr>\n" +
+    "            <th>Device</th>\n" +
+    "            <th>Time</th>\n" +
+    "            <th>Message</th>\n" +
+    "          </tr>\n" +
+    "        </thead>\n" +
+    "        <tbody>\n" +
+    "          <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
+    "            <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
+    "            <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}<span style=\"color: #aaa;\">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>\n" +
+    "            <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
+    "          </tr>\n" +
+    "        </tbody>\n" +
     "      </table>\n" +
     "    </div>\n" +
     "  </div>\n" +

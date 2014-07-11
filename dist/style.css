@@ -442,7 +442,8 @@ i.font-adelle {
   #view-log-view #view-log-filters .btn.btn-default.active {
     background: #6e7380;
     border-color: #828791;
-    color: white; }
+    color: white;
+    font-family: "Proxima N W01 Bold"; }
 #view-log-view #view-log-filters select {
   background: #59616e;
   border-color: #6e7380;
@@ -455,11 +456,19 @@ i.font-adelle {
 #view-log-view .logs-container {
   padding-top: 20px;
   padding-bottom: 20px; }
-#view-log-view .logMsg-device-name, #view-log-view .logMsg-time {
-  padding-right: 20px;
-  white-space: nowrap; }
-#view-log-view .logMsg-time {
-  padding-right: 40px; }
+  #view-log-view .logs-container table {
+    width: 100%; }
+    #view-log-view .logs-container table thead th {
+      padding-bottom: 10px; }
+    #view-log-view .logs-container table tbody td {
+      padding-bottom: 2px; }
+    #view-log-view .logs-container table tbody .logMsg-device-name, #view-log-view .logs-container table tbody .logMsg-time {
+      padding-right: 20px;
+      white-space: nowrap; }
+    #view-log-view .logs-container table tbody .logMsg-time {
+      padding-right: 40px; }
+    #view-log-view .logs-container table tbody .logMsg-content {
+      width: 100%; }
 
 #view-generators {
   padding-top: 40px;
