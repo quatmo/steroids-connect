@@ -2,17 +2,23 @@
 
   <!-- View header -->
   <div class="row">
-    <div class="col-xs-12">
-      <h2>Generators:</h2>
-      <br><br>
+    <div class="col-xs-12 col-sm-8">
+      <h2 style="margin: 0px;">Generators:</h2>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <div class="form-group">
+        <input type="text" ng-model="generatorNameFilter" class="form-control" placeholder="Search...">
+      </div>
     </div>
   </div>
+
+  <br><br>
 
   <!-- List of available generators -->
   <div class="row">
 
     <!-- Individual cards -->
-    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in GeneratorsAPI.generators">
+    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in GeneratorsAPI.generators | filter:generatorNameFilter">
       <div class="generator-card" style="background-image: url('{{generator.image_url}}');">
         <div class="generator-name font-proxima"><b>{{generator.name}}</b></div>
       </div>
