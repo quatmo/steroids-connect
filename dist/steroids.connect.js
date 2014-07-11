@@ -2209,10 +2209,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </button>\n" +
     "        <div class=\"navbar-brand\">\n" +
     "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/steroids-logo.png\" alt=\"Steroids Connect\">\n" +
-    "          <div class=\"brand-text\">\n" +
-    "            <span class=\"brand-text-main\">Steroids</span>\n" +
-    "            <small><b><i>Connect</i></b></small>\n" +
-    "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
