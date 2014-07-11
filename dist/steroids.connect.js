@@ -2276,10 +2276,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- Individual cards -->\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in GeneratorsAPI.generators | filter:{'name': generatorNameFilter}\">\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in filteredGenerators = (GeneratorsAPI.generators | filter:{'name': generatorNameFilter})\">\n" +
     "      <div class=\"generator-card\" style=\"background-image: url('{{generator.image_url}}');\">\n" +
     "        <div class=\"generator-name font-proxima\"><b>{{generator.name}}</b></div>\n" +
     "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- No generators matching search -->\n" +
+    "    <div ng-if=\"filteredGenerators.length == 0\" class=\"text-center\">\n" +
+    "      <h2>No generators matching \"{{generatorNameFilter}}\"</h2>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
