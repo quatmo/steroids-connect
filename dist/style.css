@@ -419,14 +419,14 @@ i.font-adelle {
         border-radius: 100%;
         -moz-border-radius: 100%;
         -webkit-border-radius: 100%;
-        background: red;
+        background: #fa5252;
         position: absolute;
         left: -26px;
         top: 16px; }
         #view-preview-view ul.devices-list > li .status-indicator.yellow {
-          background: orange; }
+          background: #f57326; }
         #view-preview-view ul.devices-list > li .status-indicator.green {
-          background: green; }
+          background: #14bda6; }
 
 .no-margin {
   margin: 0px; }
