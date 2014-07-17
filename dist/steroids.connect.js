@@ -1753,6 +1753,7 @@ module.exports = [
         {
           message: "Error msg",
           blob: "Error on line 34: Cannot find module 'TestiModuuli'",
+          code: 0,
           timestamp: 1404217782263,
           type: "error",
           deviceName: "Tomi's iPhone",
@@ -1760,6 +1761,7 @@ module.exports = [
         }, {
           message: "Log msg",
           blob: "",
+          code: 0,
           timestamp: 1304217782283,
           type: "log",
           deviceName: "Tomi's iPhone",
@@ -1767,6 +1769,7 @@ module.exports = [
         }, {
           message: "Log msg",
           blob: "",
+          code: 0,
           timestamp: 1304217782282,
           type: "log",
           deviceName: "Bogs' iPhone",
