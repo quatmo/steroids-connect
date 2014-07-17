@@ -458,6 +458,8 @@ i.font-adelle {
   padding-bottom: 20px; }
   #view-log-view .logs-container table {
     width: 100%; }
+    #view-log-view .logs-container table th, #view-log-view .logs-container table td {
+      vertical-align: top; }
     #view-log-view .logs-container table thead th {
       padding-bottom: 10px; }
     #view-log-view .logs-container table .logMsg-device-name, #view-log-view .logs-container table .logMsg-view-name, #view-log-view .logs-container table .logMsg-time {
@@ -467,6 +469,8 @@ i.font-adelle {
       padding-right: 40px; }
     #view-log-view .logs-container table .logMsg-content {
       width: 100%; }
+      #view-log-view .logs-container table .logMsg-content .has-more-details {
+        cursor: pointer; }
     #view-log-view .logs-container table .logMsg {
       padding-bottom: 2px; }
       #view-log-view .logs-container table .logMsg.type-error .logMsg-content {
@@ -474,6 +478,8 @@ i.font-adelle {
       #view-log-view .logs-container table .logMsg .glyphicon {
         color: #eeeeee;
         display: none; }
+      #view-log-view .logs-container table .logMsg .caret {
+        cursor: pointer; }
 
 #view-generators {
   padding-top: 40px;

@@ -5,6 +5,7 @@ module.exports = angular.module "SteroidsConnect.logs", [
     require("./../preview").name
     require("./filterUnique").name
   ]
+  .directive "logMessage", require("./logMessageDirective")
   .directive "logView", require("./logViewDirective")
   .directive "logFiltersView", require("./logFiltersViewDirective")
   .filter "logTimeFormat", require("./logTimeFormatFilter")

@@ -1687,7 +1687,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":21,"./connect-ui":3,"./generators":7,"./logs":11,"./preview":19}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":22,"./connect-ui":3,"./generators":7,"./logs":11,"./preview":20}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1752,18 +1752,21 @@ module.exports = [
       logs: [
         {
           message: "Error msg",
+          blob: "Error on line 34: Cannot find module 'TestiModuuli'",
           timestamp: 1404217782263,
           type: "error",
           deviceName: "Tomi's iPhone",
           view: "index.html"
         }, {
           message: "Log msg",
+          blob: "",
           timestamp: 1304217782283,
           type: "log",
           deviceName: "Tomi's iPhone",
           view: "$native"
         }, {
           message: "Log msg",
+          blob: "",
           timestamp: 1304217782282,
           type: "log",
           deviceName: "Bogs' iPhone",
@@ -1936,10 +1939,10 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 
 },{}],11:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":19,"./LogsAPI":8,"./LogsFilterAPI":9,"./filterUnique":10,"./logDateFormatFilter":12,"./logFiltersViewDirective":13,"./logTimeFormatFilter":14,"./logTimeMillisecondsFormatFilter":15,"./logViewDirective":16}],12:[function(_dereq_,module,exports){
+},{"./../preview":20,"./LogsAPI":8,"./LogsFilterAPI":9,"./filterUnique":10,"./logDateFormatFilter":12,"./logFiltersViewDirective":13,"./logMessageDirective":14,"./logTimeFormatFilter":15,"./logTimeMillisecondsFormatFilter":16,"./logViewDirective":17}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1981,6 +1984,36 @@ module.exports = [
 },{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  "LogsFilterAPI", function(LogsFilterAPI) {
+    return {
+      restrict: "A",
+      replace: true,
+      scope: {
+        logMessage: "=logMessage"
+      },
+      templateUrl: "/steroids-connect/logs/log-message.html",
+      link: function(scope, element, attrs) {
+        scope.LogsFilterAPI = LogsFilterAPI;
+        scope.isOpen = false;
+        scope.toggleAdditionalDetails = function() {
+          return scope.isOpen = !scope.isOpen;
+        };
+        return scope.hasAdditionalDetails = function() {
+          if (scope.logMessage.blob && scope.logMessage.blob.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        };
+      }
+    };
+  }
+];
+
+
+},{}],15:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   function() {
     return function(input) {
       var hh, inputDateTime, mm, ss;
@@ -2003,7 +2036,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2022,7 +2055,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2039,7 +2072,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2078,7 +2111,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2233,12 +2266,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],19:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],20:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":17,"./angular-qrcode":18,"./previewViewDirective":20}],20:[function(_dereq_,module,exports){
+},{"./DevicesAPI":18,"./angular-qrcode":19,"./previewViewDirective":21}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2271,7 +2304,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2413,6 +2446,33 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
+  $templateCache.put('/steroids-connect/logs/log-message.html',
+    "<tr class=\"logMsg\" ng-class=\"{'type-error': logMessage.type == 'error'}\">\n" +
+    "  <td class=\"text-muted logMsg-device-name\">\n" +
+    "    <span class=\"glyphicon glyphicon-phone\"></span>\n" +
+    "    <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMessage.deviceName)\">{{logMessage.deviceName}}</a>\n" +
+    "  </td>\n" +
+    "  <td class=\"text-muted logMsg-view-name\">\n" +
+    "    <span class=\"glyphicon glyphicon-list-alt\"></span>\n" +
+    "    <a ng-click=\"LogsFilterAPI.filterByViewName(logMessage.view)\">{{logMessage.view}}</a>\n" +
+    "  </td>\n" +
+    "  <td class=\"text-muted logMsg-time\">\n" +
+    "    <span class=\"glyphicon glyphicon-time\"></span>\n" +
+    "    <abbr title=\"{{logMessage.timestamp | logDateFormat}}\">{{logMessage.timestamp | logTimeFormat}}.{{logMessage.timestamp | logTimeMillisecondsFormat}}</abbr>\n" +
+    "  </td>\n" +
+    "  <td class=\"logMsg-content font-proxima\">\n" +
+    "    <div ng-click=\"toggleAdditionalDetails()\" ng-class=\"{'has-more-details': hasAdditionalDetails()}\">\n" +
+    "      <b>{{logMessage.message}}</b>\n" +
+    "      <span ng-if=\"hasAdditionalDetails()\" class=\"caret\"></span>\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"hasAdditionalDetails()\" ng-show=\"isOpen\">\n" +
+    "      <pre>{{logMessage.blob}}</pre>\n" +
+    "    </div>\n" +
+    "  </td>\n" +
+    "</tr>"
+  );
+
+
   $templateCache.put('/steroids-connect/logs/log-view.html',
     "<div id=\"view-log-view\">\n" +
     "\n" +
@@ -2436,12 +2496,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
-    "          <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
-    "            <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
-    "            <td class=\"text-muted logMsg-view-name\"><span class=\"glyphicon glyphicon-list-alt\"></span> <a ng-click=\"LogsFilterAPI.filterByViewName(logMsg.view)\">{{logMsg.view}}</a></td>\n" +
-    "            <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}<span style=\"color: #aaa;\">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>\n" +
-    "            <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
-    "          </tr>\n" +
+    "          <tr log-message=\"logMsg\" ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\"></tr>\n" +
     "        </tbody>\n" +
     "      </table>\n" +
     "    </div>\n" +
