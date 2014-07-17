@@ -3,8 +3,10 @@
 # API for handling and serving log view filters
 module.exports =
   [
+    "$filter"
     "DevicesAPI"
-    (DevicesAPI) ->
+    "LogsAPI"
+    ($filter, DevicesAPI, LogsAPI) ->
       {
 
         ###
@@ -15,6 +17,7 @@ module.exports =
         # Empty strings = do not filter
         filters: {
           deviceName: "" # Name of the device originating the log entry
+          view: ""       # Name of the view originating the log entry
           type: ""       # Type of the log entry (eg. "error" or "log")
         }
 
@@ -22,6 +25,7 @@ module.exports =
         clearFilters: () ->
           @filters = {
             deviceName: ""
+            view: ""
             type: ""
           }
 
@@ -36,12 +40,32 @@ module.exports =
           # If option "All" should be included:
           if includeAll is true then availableForFiltering.push
             label: "All devices"
-            deviceName: ""
+            filterBy: ""
           # Include available devices
           for device in DevicesAPI.devices
             availableForFiltering.push
               label: device.name
-              deviceName: device.name
+              filterBy: device.name
+          # Return the composed list of filterable devices
+          availableForFiltering
+
+        # Method for settings the filter on view name
+        filterByViewName: (viewName) ->
+          if viewName? then @filters['view'] = viewName else @filters['view'] = ""
+
+        # Returns a list of available views to filter on
+        availableViewNameFilters: (includeAll=true) ->
+          # Set the base for the filter
+          availableForFiltering = []
+          # If option "All" should be included:
+          if includeAll is true then availableForFiltering.push
+            label: "All views"
+            filterBy: ""
+          # Include available devices
+          for logMsg in $filter("unique")(LogsAPI.logs, "view")
+            availableForFiltering.push
+              label: logMsg.view
+              filterBy: logMsg.view
           # Return the composed list of filterable devices
           availableForFiltering
 

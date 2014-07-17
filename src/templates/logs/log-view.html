@@ -13,14 +13,16 @@
       <table>
         <thead>
           <tr>
-            <th>Device</th>
-            <th>Time</th>
-            <th>Message</th>
+            <th class="logMsg-device-name">Device</th>
+            <th class="logMsg-view-name">View</th>
+            <th class="logMsg-time">Time</th>
+            <th class="logMsg-content">Message</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters" class="logMsg" ng-class="{'type-error': logMsg.type == 'error'}">
             <td class="text-muted logMsg-device-name"><span class="glyphicon glyphicon-phone"></span> <a ng-click="LogsFilterAPI.filterByDeviceName(logMsg.deviceName)">{{logMsg.deviceName}}</a></td>
+            <td class="text-muted logMsg-view-name"><span class="glyphicon glyphicon-list-alt"></span> <a ng-click="LogsFilterAPI.filterByViewName(logMsg.view)">{{logMsg.view}}</a></td>
             <td class="text-muted logMsg-time"><span class="glyphicon glyphicon-time"></span> <abbr title="{{logMsg.timestamp | logDateFormat}}">{{logMsg.timestamp | logTimeFormat}}<span style="color: #aaa;">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>
             <td class="logMsg-content font-proxima"><b>{{logMsg.message}}</b></td>
           </tr>

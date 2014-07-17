@@ -1687,7 +1687,7 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 _dereq_("../templates/SteroidsConnectTemplates");
 
 
-},{"../templates/SteroidsConnectTemplates":20,"./connect-ui":3,"./generators":7,"./logs":10,"./preview":18}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":21,"./connect-ui":3,"./generators":7,"./logs":11,"./preview":19}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1754,17 +1754,20 @@ module.exports = [
           message: "Error msg",
           timestamp: 1404217782263,
           type: "error",
-          deviceName: "Tomi's iPhone"
+          deviceName: "Tomi's iPhone",
+          view: "index.html"
         }, {
           message: "Log msg",
           timestamp: 1304217782283,
           type: "log",
-          deviceName: "Tomi's iPhone"
+          deviceName: "Tomi's iPhone",
+          view: "$native"
         }, {
           message: "Log msg",
           timestamp: 1304217782282,
           type: "log",
-          deviceName: "Bogs' iPhone"
+          deviceName: "Bogs' iPhone",
+          view: "index.html"
         }
       ],
       add: function(newLogMsg) {
@@ -1783,7 +1786,7 @@ module.exports = [
 },{}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "DevicesAPI", function(DevicesAPI) {
+  "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
     return {
 
       /*
@@ -1791,11 +1794,13 @@ module.exports = [
        */
       filters: {
         deviceName: "",
+        view: "",
         type: ""
       },
       clearFilters: function() {
         return this.filters = {
           deviceName: "",
+          view: "",
           type: ""
         };
       },
@@ -1815,7 +1820,7 @@ module.exports = [
         if (includeAll === true) {
           availableForFiltering.push({
             label: "All devices",
-            deviceName: ""
+            filterBy: ""
           });
         }
         _ref = DevicesAPI.devices;
@@ -1823,7 +1828,36 @@ module.exports = [
           device = _ref[_i];
           availableForFiltering.push({
             label: device.name,
-            deviceName: device.name
+            filterBy: device.name
+          });
+        }
+        return availableForFiltering;
+      },
+      filterByViewName: function(viewName) {
+        if (viewName != null) {
+          return this.filters['view'] = viewName;
+        } else {
+          return this.filters['view'] = "";
+        }
+      },
+      availableViewNameFilters: function(includeAll) {
+        var availableForFiltering, logMsg, _i, _len, _ref;
+        if (includeAll == null) {
+          includeAll = true;
+        }
+        availableForFiltering = [];
+        if (includeAll === true) {
+          availableForFiltering.push({
+            label: "All views",
+            filterBy: ""
+          });
+        }
+        _ref = $filter("unique")(LogsAPI.logs, "view");
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          logMsg = _ref[_i];
+          availableForFiltering.push({
+            label: logMsg.view,
+            filterBy: logMsg.view
           });
         }
         return availableForFiltering;
@@ -1853,11 +1887,59 @@ module.exports = [
 
 
 },{}],10:[function(_dereq_,module,exports){
+
+/*
+Filters out all duplicate items from an array by checking the specified key
+@param [key] {string} the name of the attribute of each object to compare for uniqueness
+if the key is empty, the entire object will be compared
+if the key === false then no filtering will be performed
+@return {array}
+ */
+module.exports = angular.module("ui.filters", []).filter("unique", function() {
+  return function(items, filterOn) {
+    var extractValueToCompare, hashCheck, newItems;
+    if (filterOn === false) {
+      return items;
+    }
+    if ((filterOn || angular.isUndefined(filterOn)) && angular.isArray(items)) {
+      hashCheck = {};
+      newItems = [];
+      extractValueToCompare = function(item) {
+        if (angular.isObject(item) && angular.isString(filterOn)) {
+          return item[filterOn];
+        } else {
+          return item;
+        }
+      };
+      angular.forEach(items, function(item) {
+        var i, isDuplicate, valueToCheck;
+        valueToCheck = void 0;
+        isDuplicate = false;
+        i = 0;
+        while (i < newItems.length) {
+          if (angular.equals(extractValueToCompare(newItems[i]), extractValueToCompare(item))) {
+            isDuplicate = true;
+            break;
+          }
+          i++;
+        }
+        if (!isDuplicate) {
+          newItems.push(item);
+        }
+      });
+      items = newItems;
+    }
+    return items;
+  };
+});
+
+
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
 
 
-},{"./../preview":18,"./LogsAPI":8,"./LogsFilterAPI":9,"./logDateFormatFilter":11,"./logFiltersViewDirective":12,"./logTimeFormatFilter":13,"./logTimeMillisecondsFormatFilter":14,"./logViewDirective":15}],11:[function(_dereq_,module,exports){
+},{"./../preview":19,"./LogsAPI":8,"./LogsFilterAPI":9,"./filterUnique":10,"./logDateFormatFilter":12,"./logFiltersViewDirective":13,"./logTimeFormatFilter":14,"./logTimeMillisecondsFormatFilter":15,"./logViewDirective":16}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1879,7 +1961,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1896,7 +1978,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1921,7 +2003,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1940,7 +2022,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1957,7 +2039,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1996,7 +2078,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2151,12 +2233,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],18:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":16,"./angular-qrcode":17,"./previewViewDirective":19}],19:[function(_dereq_,module,exports){
+},{"./DevicesAPI":17,"./angular-qrcode":18,"./previewViewDirective":20}],20:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2189,7 +2271,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2307,7 +2389,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Filter for device name -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
-    "      <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.deviceName as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\" class=\"form-control\"></select>\n" +
+    "      <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\" class=\"form-control\"></select>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- Filter for view name -->\n" +
+    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
+    "      <select name=\"filterByViewName\" ng-model=\"LogsFilterAPI.filters.view\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableViewNameFilters()\" class=\"form-control\"></select>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Button for clearing out all filters -->\n" +
@@ -2342,14 +2429,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <table>\n" +
     "        <thead>\n" +
     "          <tr>\n" +
-    "            <th>Device</th>\n" +
-    "            <th>Time</th>\n" +
-    "            <th>Message</th>\n" +
+    "            <th class=\"logMsg-device-name\">Device</th>\n" +
+    "            <th class=\"logMsg-view-name\">View</th>\n" +
+    "            <th class=\"logMsg-time\">Time</th>\n" +
+    "            <th class=\"logMsg-content\">Message</th>\n" +
     "          </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
     "          <tr ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\" class=\"logMsg\" ng-class=\"{'type-error': logMsg.type == 'error'}\">\n" +
     "            <td class=\"text-muted logMsg-device-name\"><span class=\"glyphicon glyphicon-phone\"></span> <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMsg.deviceName)\">{{logMsg.deviceName}}</a></td>\n" +
+    "            <td class=\"text-muted logMsg-view-name\"><span class=\"glyphicon glyphicon-list-alt\"></span> <a ng-click=\"LogsFilterAPI.filterByViewName(logMsg.view)\">{{logMsg.view}}</a></td>\n" +
     "            <td class=\"text-muted logMsg-time\"><span class=\"glyphicon glyphicon-time\"></span> <abbr title=\"{{logMsg.timestamp | logDateFormat}}\">{{logMsg.timestamp | logTimeFormat}}<span style=\"color: #aaa;\">.{{logMsg.timestamp | logTimeMillisecondsFormat}}</span></abbr></td>\n" +
     "            <td class=\"logMsg-content font-proxima\"><b>{{logMsg.message}}</b></td>\n" +
     "          </tr>\n" +

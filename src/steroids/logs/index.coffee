@@ -3,6 +3,7 @@
 # Definition for the logs and log view module
 module.exports = angular.module "SteroidsConnect.logs", [
     require("./../preview").name
+    require("./filterUnique").name
   ]
   .directive "logView", require("./logViewDirective")
   .directive "logFiltersView", require("./logFiltersViewDirective")
