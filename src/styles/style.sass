@@ -202,6 +202,10 @@
     table
       width: 100%
 
+      thead
+        th
+          padding-bottom: 10px
+
       .logMsg-device-name, .logMsg-view-name, .logMsg-time
         padding-right: 20px
         white-space: nowrap
@@ -212,13 +216,16 @@
       .logMsg-content
         width: 100%
 
-      thead
-        th
-          padding-bottom: 10px
+      .logMsg
+        padding-bottom: 2px
 
-      tbody
-        td
-          padding-bottom: 2px
+        &.type-error
+          .logMsg-content
+            color: $color-red
+
+        .glyphicon
+          color: #eee
+          display: none
 
 
 

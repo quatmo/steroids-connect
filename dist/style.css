@@ -458,6 +458,8 @@ i.font-adelle {
   padding-bottom: 20px; }
   #view-log-view .logs-container table {
     width: 100%; }
+    #view-log-view .logs-container table thead th {
+      padding-bottom: 10px; }
     #view-log-view .logs-container table .logMsg-device-name, #view-log-view .logs-container table .logMsg-view-name, #view-log-view .logs-container table .logMsg-time {
       padding-right: 20px;
       white-space: nowrap; }
@@ -465,10 +467,13 @@ i.font-adelle {
       padding-right: 40px; }
     #view-log-view .logs-container table .logMsg-content {
       width: 100%; }
-    #view-log-view .logs-container table thead th {
-      padding-bottom: 10px; }
-    #view-log-view .logs-container table tbody td {
+    #view-log-view .logs-container table .logMsg {
       padding-bottom: 2px; }
+      #view-log-view .logs-container table .logMsg.type-error .logMsg-content {
+        color: #fa5252; }
+      #view-log-view .logs-container table .logMsg .glyphicon {
+        color: #eeeeee;
+        display: none; }
 
 #view-generators {
   padding-top: 40px;
