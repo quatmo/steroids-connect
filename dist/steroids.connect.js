@@ -1691,7 +1691,8 @@ _dereq_("../templates/SteroidsConnectTemplates");
 
 steroidsConnectModules.run([
   "LogCloudConnector", function(LogCloudConnector) {
-    return LogCloudConnector.setEndpoint("./test_log.json");
+    LogCloudConnector.setEndpoint("./test_log.json");
+    return LogCloudConnector.connect();
   }
 ]);
 
