@@ -315,6 +315,9 @@ i.font-adelle {
   -webkit-backface-visibility: hidden;
   -webkit-transform-style: preserve-3d; }
 
+.text-capitalize {
+  text-transform: capitalize; }
+
 /* Keep things nice and scoped!
  */
 .ag-header {
@@ -495,6 +498,12 @@ i.font-adelle {
 
   100% {
     background-color: transparent; } }
+#steroids-connect_navigation-and-themes-view {
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  #steroids-connect_navigation-and-themes-view .configurator-section h2 {
+    margin: 0px; }
+
 #view-generators {
   padding-top: 40px;
   padding-bottom: 10px; }

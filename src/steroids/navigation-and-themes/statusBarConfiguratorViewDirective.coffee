@@ -7,13 +7,10 @@ module.exports =
       {
         restrict: "EA"
         replace: true
-        templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html"
+        templateUrl: "/steroids-connect/navigation-and-themes/status-bar-configurator.html"
         scope:
           steroidsSettings: "="
         link: (scope, element, attrs) ->
-
-          #scope.LogsAPI = LogsAPI
-          #scope.LogsFilterAPI = LogsFilterAPI
 
       }
   ]

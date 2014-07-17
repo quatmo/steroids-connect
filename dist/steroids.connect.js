@@ -1696,7 +1696,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":25,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":19,"./preview":23}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":30,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":21,"./preview":28}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":23,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":28,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2093,17 +2093,33 @@ module.exports = [
 
 },{}],19:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective"));
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/drawer-configurator.html",
+      scope: {
+        position: "@drawerPosition",
+        steroidsSettings: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
 
 
-},{"./navigationAndThemesViewDirective":20}],20:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
     return {
       restrict: "EA",
       replace: true,
-      templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html",
+      templateUrl: "/steroids-connect/navigation-and-themes/general-settings-configurator.html",
+      scope: {
+        steroidsSettings: "="
+      },
       link: function(scope, element, attrs) {}
     };
   }
@@ -2111,6 +2127,79 @@ module.exports = [
 
 
 },{}],21:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective"));
+
+
+},{"./drawerConfiguratorViewDirective":19,"./generalSettingsConfiguratorViewDirective":20,"./navigationAndThemesViewDirective":22,"./navigationBarConfiguratorViewDirective":23,"./statusBarConfiguratorViewDirective":24,"./tabsConfiguratorViewDirective":25}],22:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html",
+      scope: {
+        steroidsSettings: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],23:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/navigation-bar-configurator.html",
+      scope: {
+        steroidsSettings: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],24:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/status-bar-configurator.html",
+      scope: {
+        steroidsSettings: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],25:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/tabs-configurator.html",
+      scope: {
+        steroidsSettings: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2149,7 +2238,7 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2304,12 +2393,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],23:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":21,"./angular-qrcode":22,"./previewViewDirective":24}],24:[function(_dereq_,module,exports){
+},{"./DevicesAPI":26,"./angular-qrcode":27,"./previewViewDirective":29}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2342,7 +2431,7 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2544,10 +2633,111 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
-  $templateCache.put('/steroids-connect/navigation-and-themes/navigation-and-themes-view.html',
-    "<div id=\"steroids-connect-navigation-and-themes-view\">\n" +
+  $templateCache.put('/steroids-connect/navigation-and-themes/drawer-configurator.html',
+    "<div class=\"row configurator-section\">\n" +
     "\n" +
-    "  VITTU\n" +
+    "  <div class=\"hidden-xs col-sm-4\">\n" +
+    "    <img ng-src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/navtheme-{{position}}-drawer.png\" class=\"img-responsive\" style=\"width: 100%;\" alt=\"\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "    <h2><span class=\"text-capitalize\">{{position}}</span> drawer menu</h2>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/general-settings-configurator.html',
+    "<div class=\"row configurator-section\">\n" +
+    "\n" +
+    "  <div class=\"hidden-xs col-sm-4\">\n" +
+    "    <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/navtheme-general.png\" class=\"img-responsive\" style=\"width: 100%;\" alt=\"\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "    <h2>General layout settings</h2>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/navigation-and-themes-view.html',
+    "<div id=\"steroids-connect_navigation-and-themes-view\" class=\"container\">\n" +
+    "\n" +
+    "  <!-- General layout settings -->\n" +
+    "  <general-settings-configurator-view></general-settings-configurator-view>\n" +
+    "\n" +
+    "  <br><br><hr><br><br>\n" +
+    "\n" +
+    "  <!-- Navigation bar -->\n" +
+    "  <navigation-bar-configurator-view></navigation-bar-configurator-view>\n" +
+    "\n" +
+    "  <br><br><hr><br><br>\n" +
+    "\n" +
+    "  <!-- Status bar -->\n" +
+    "  <status-bar-configurator-view></status-bar-configurator-view>\n" +
+    "\n" +
+    "  <br><br><hr><br><br>\n" +
+    "\n" +
+    "  <!-- Tabs -->\n" +
+    "  <tabs-configurator-view></tabs-configurator-view>\n" +
+    "\n" +
+    "  <br><br><hr><br><br>\n" +
+    "\n" +
+    "  <!-- Left drawer menu -->\n" +
+    "  <drawer-configurator-view drawer-position=\"left\"></drawer-configurator-view>\n" +
+    "\n" +
+    "  <br><br><hr><br><br>\n" +
+    "\n" +
+    "  <!-- Right drawer menu -->\n" +
+    "  <drawer-configurator-view drawer-position=\"right\"></drawer-configurator-view>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/navigation-bar-configurator.html',
+    "<div class=\"row configurator-section\">\n" +
+    "\n" +
+    "  <div class=\"hidden-xs col-sm-4\">\n" +
+    "    <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/navtheme-navbar.png\" class=\"img-responsive\" style=\"width: 100%;\" alt=\"\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "    <h2>Navigation bar</h2>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/status-bar-configurator.html',
+    "<div class=\"row configurator-section\">\n" +
+    "\n" +
+    "  <div class=\"hidden-xs col-sm-4\">\n" +
+    "    <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/navtheme-statusbar.png\" class=\"img-responsive\" style=\"width: 100%;\" alt=\"\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "    <h2>Status bar</h2>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/tabs-configurator.html',
+    "<div class=\"row configurator-section\">\n" +
+    "\n" +
+    "  <div class=\"hidden-xs col-sm-4\">\n" +
+    "    <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/navtheme-tabs.png\" class=\"img-responsive\" style=\"width: 100%;\" alt=\"\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "    <h2>Tabs</h2>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>"
   );

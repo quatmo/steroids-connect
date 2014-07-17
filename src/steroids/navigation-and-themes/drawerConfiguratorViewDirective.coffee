@@ -7,13 +7,11 @@ module.exports =
       {
         restrict: "EA"
         replace: true
-        templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html"
+        templateUrl: "/steroids-connect/navigation-and-themes/drawer-configurator.html"
         scope:
+          position: "@drawerPosition"
           steroidsSettings: "="
         link: (scope, element, attrs) ->
-
-          #scope.LogsAPI = LogsAPI
-          #scope.LogsFilterAPI = LogsFilterAPI
 
       }
   ]

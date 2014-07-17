@@ -3,8 +3,6 @@ module.exports =
     options:
       livereload: true
     files: [
-      '<%= dir.src %>/**/*.sass'
-      '<%= dir.templates %>/**/*.html'
-      '<%= dir.src %>/**/*.coffee'
+      '<%= dir.src %>/**/*'
     ]
     tasks: 'build'
