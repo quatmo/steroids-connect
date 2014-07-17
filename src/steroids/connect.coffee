@@ -6,3 +6,12 @@ steroidsConnectModules = angular.module "SteroidsConnect", [
   ]
 
 require "../templates/SteroidsConnectTemplates"
+
+steroidsConnectModules.run [
+  "LogCloudConnector"
+  (LogCloudConnector) ->
+
+    # Configure and run log cloud connector
+    LogCloudConnector.setEndpoint("./test_log.json")
+    LogCloudConnector.connect()
+]

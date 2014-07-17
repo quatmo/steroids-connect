@@ -1686,8 +1686,15 @@ steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").na
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
+steroidsConnectModules.run([
+  "LogCloudConnector", function(LogCloudConnector) {
+    LogCloudConnector.setEndpoint("./test_log.json");
+    return LogCloudConnector.connect();
+  }
+]);
 
-},{"../templates/SteroidsConnectTemplates":22,"./connect-ui":3,"./generators":7,"./logs":11,"./preview":20}],5:[function(_dereq_,module,exports){
+
+},{"../templates/SteroidsConnectTemplates":23,"./connect-ui":3,"./generators":7,"./logs":12,"./preview":21}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1743,42 +1750,49 @@ module.exports = angular.module("SteroidsConnect.generators", []).directive("gen
 },{"./GeneratorsAPI":5,"./generatorsViewDirective":6}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  "$timeout", "$http", "LogsAPI", function($timeout, $http, LogsAPI) {
+    var connection, endpoint, requestLogs;
+    endpoint = void 0;
+    connection = void 0;
+    requestLogs = function() {
+      return connection = $timeout(function() {
+        return $http.get(endpoint).success(function(data) {
+          LogsAPI.add(data.slice(0, Math.floor(Math.random() * (data.length + 1))));
+          return requestLogs();
+        });
+      }, (Math.random() * 5000) + 500);
+    };
+    this.setEndpoint = function(endpointUrl) {
+      return endpoint = endpointUrl;
+    };
+    this.connect = function() {
+      if (!endpoint) {
+        throw new Error("Endpoint is not set for LogConnector.");
+      }
+      return requestLogs();
+    };
+    return this;
+  }
+];
+
+
+},{}],9:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   function() {
     return {
 
       /*
       EXPOSED LOGS API DEFINITION
        */
-      logs: [
-        {
-          message: "Error msg",
-          blob: "Error on line 34: Cannot find module 'TestiModuuli'",
-          code: 0,
-          timestamp: 1404217782263,
-          type: "error",
-          deviceName: "Tomi's iPhone",
-          view: "index.html"
-        }, {
-          message: "Log msg",
-          blob: "",
-          code: 0,
-          timestamp: 1304217782283,
-          type: "log",
-          deviceName: "Tomi's iPhone",
-          view: "$native"
-        }, {
-          message: "Log msg",
-          blob: "",
-          code: 0,
-          timestamp: 1304217782282,
-          type: "log",
-          deviceName: "Bogs' iPhone",
-          view: "index.html"
-        }
-      ],
+      logs: [],
       add: function(newLogMsg) {
-        if (newLogMsg != null) {
-          return this.logs.push(newLogMsg);
+        if ($.isArray(newLogMsg)) {
+          return this.logs = newLogMsg.concat(this.logs);
+        } else {
+          if (newLogMsg != null) {
+            return this.logs.push(newLogMsg);
+          }
         }
       },
       clear: function() {
@@ -1789,7 +1803,7 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
@@ -1892,7 +1906,7 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 
 /*
 Filters out all duplicate items from an array by checking the specified key
@@ -1940,12 +1954,12 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 });
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":20,"./LogsAPI":8,"./LogsFilterAPI":9,"./filterUnique":10,"./logDateFormatFilter":12,"./logFiltersViewDirective":13,"./logMessageDirective":14,"./logTimeFormatFilter":15,"./logTimeMillisecondsFormatFilter":16,"./logViewDirective":17}],12:[function(_dereq_,module,exports){
+},{"./../preview":21,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1967,7 +1981,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1984,7 +1998,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsFilterAPI", function(LogsFilterAPI) {
@@ -2014,7 +2028,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2039,7 +2053,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2058,7 +2072,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2075,7 +2089,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2114,7 +2128,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2269,12 +2283,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],20:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":18,"./angular-qrcode":19,"./previewViewDirective":21}],21:[function(_dereq_,module,exports){
+},{"./DevicesAPI":19,"./angular-qrcode":20,"./previewViewDirective":22}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2307,7 +2321,7 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 

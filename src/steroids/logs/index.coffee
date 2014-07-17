@@ -13,3 +13,4 @@ module.exports = angular.module "SteroidsConnect.logs", [
   .filter "logDateFormat", require("./logDateFormatFilter")
   .factory "LogsAPI", require("./LogsAPI")
   .factory "LogsFilterAPI", require("./LogsFilterAPI")
+  .service "LogCloudConnector", require("./LogCloudConnectorService")

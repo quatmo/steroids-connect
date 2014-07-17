@@ -472,7 +472,9 @@ i.font-adelle {
       #view-log-view .logs-container table .logMsg-content .has-more-details {
         cursor: pointer; }
     #view-log-view .logs-container table .logMsg {
-      padding-bottom: 2px; }
+      padding-bottom: 2px;
+      -webkit-animation: bg-fade 0.5s 1;
+      -moz-animation: bg-fade 0.5s 1; }
       #view-log-view .logs-container table .logMsg.type-error .logMsg-content {
         color: #fa5252; }
       #view-log-view .logs-container table .logMsg .glyphicon {
@@ -481,6 +483,18 @@ i.font-adelle {
       #view-log-view .logs-container table .logMsg .caret {
         cursor: pointer; }
 
+@-webkit-keyframes bg-fade {
+  0% {
+    background-color: #e5f7ff; }
+
+  100% {
+    background-color: transparent; } }
+@-moz-keyframes bg-fade {
+  0% {
+    background-color: #e5f7ff; }
+
+  100% {
+    background-color: transparent; } }
 #view-generators {
   padding-top: 40px;
   padding-bottom: 10px; }

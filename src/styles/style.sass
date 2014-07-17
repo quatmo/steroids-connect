@@ -224,6 +224,8 @@
 
       .logMsg
         padding-bottom: 2px
+        -webkit-animation: bg-fade 0.5s 1
+        -moz-animation: bg-fade 0.5s 1
 
         &.type-error
           .logMsg-content
@@ -236,6 +238,17 @@
         .caret
           cursor: pointer
 
+@-webkit-keyframes bg-fade
+  0%
+    background-color: $color-blue-1
+  100%
+    background-color: transparent
+
+@-moz-keyframes bg-fade
+  0%
+    background-color: $color-blue-1
+  100%
+    background-color: transparent
 
 
 ////////////////////////////////////////////////////////////////
