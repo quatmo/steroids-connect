@@ -1696,7 +1696,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":24,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":19,"./preview":22}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":25,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":19,"./preview":23}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":22,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":23,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2093,10 +2093,24 @@ module.exports = [
 
 },{}],19:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", []);
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective"));
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{"./navigationAndThemesViewDirective":20}],20:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html",
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2135,7 +2149,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2290,12 +2304,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],22:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":20,"./angular-qrcode":21,"./previewViewDirective":23}],23:[function(_dereq_,module,exports){
+},{"./DevicesAPI":21,"./angular-qrcode":22,"./previewViewDirective":24}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2328,7 +2342,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2369,7 +2383,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Navigation -->\n" +
     "    <div ng-switch-when=\"navigation\">\n" +
-    "      Navigation &amp; themes\n" +
+    "      <navigation-and-themes-view></navigation-and-themes-view>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Backend -->\n" +
@@ -2525,6 +2539,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      </table>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/navigation-and-themes-view.html',
+    "<div id=\"steroids-connect-navigation-and-themes-view\">\n" +
+    "\n" +
+    "  VITTU\n" +
     "\n" +
     "</div>"
   );

@@ -3,7 +3,7 @@
 # Definition for the logs and log view module
 module.exports = angular.module "SteroidsConnect.navigation-and-themes", []
   #.directive "logMessage", require("./logMessageDirective")
-  #.directive "logView", require("./logViewDirective")
+  .directive "navigationAndThemesView", require("./navigationAndThemesViewDirective")
   #.directive "logFiltersView", require("./logFiltersViewDirective")
   #.filter "logTimeFormat", require("./logTimeFormatFilter")
   #.filter "logTimeMillisecondsFormat", require("./logTimeMillisecondsFormatFilter")
