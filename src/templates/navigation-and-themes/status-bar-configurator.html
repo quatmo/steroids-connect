@@ -5,7 +5,27 @@
   </div>
 
   <div class="col-xs-12 col-sm-8 col-md-7 col-md-offset-1">
-    <h2>Status bar</h2>
+
+    <div class="clearfix">
+      <h2 class="pull-left">Status bar</h2>
+      <div class="btn-group pull-right">
+        <button type="button" class="btn btn-default" ng-click="enable()" ng-class="{'active': isEnabled()}">On</button>
+        <button type="button" class="btn btn-default" ng-click="disable()" ng-class="{'active': !isEnabled()}">Off</button>
+      </div>
+    </div>
+
+    <div ng-show="isEnabled()">
+      <br><br><br>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-4 control-label">Style</label>
+          <div class="col-sm-8">
+            <select class="form-control" ng-model="steroidsSettings.configuration.status_bar_style" ng-options="style for style in statusBarStyles"></select>
+          </div>
+        </div>
+      </form>
+    </div>
+
   </div>
 
 </div>

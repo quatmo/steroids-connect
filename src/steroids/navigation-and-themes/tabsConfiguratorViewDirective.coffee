@@ -18,11 +18,11 @@ module.exports =
             if scope.steroidsSettings.tabBar then true else false
 
           scope.enable = () ->
-            #if scope.isEnabled() then return
+            if scope.isEnabled() then return
             scope.steroidsSettings.enabled = true
 
           scope.disable = () ->
-            #if !scope.isEnabled() then return
+            if !scope.isEnabled() then return
             scope.steroidsSettings.enabled = false
 
       }

@@ -1,18 +1,60 @@
 {
-
-
-  "appearance": {
-    "nav_bar_border_size": "2",
-    "nav_bar_border_color": "#FFCC00"
+  "configuration": {
+    "status_bar_style": "Light",
+    "status_bar_enabled": true
   },
-
-
   "initialView": {
     "id": "login",
     "location": "http://localhost/views/initview/index.html"
   },
-
-
+  "appearance": {
+    "nav_bar_border_size": "2",
+    "nav_bar_border_color": "#FFCC00",
+    "nav_bar_portrait_background_image": "",
+    "nav_bar_landscape_background_image": "",
+    "nav_bar_tint_color": "#ffae9f",
+    "nav_bar_title_text_color": "#373c3d",
+    "nav_bar_title_shadow_color": "",
+    "nav_bar_button_tint_color": "#373c3d",
+    "nav_bar_button_title_text_color": "#444444",
+    "nav_bar_button_title_shadow_color": "",
+    "tab_bar_background_image": "",
+    "tab_bar_tint_color": "ffbbac",
+    "tab_bar_button_title_text_color": "76635f",
+    "tab_bar_button_title_shadow_color": "",
+    "tab_bar_selected_icon_tint_color": "ffffff",
+    "tab_bar_selected_indicator_background_image": "",
+    "loading_screen_color": "#262626"
+  },
+  "preloads": [
+    {
+      "id": "leftDrawer",
+      "location": "http://localhost/views/views/index.html?view_id=7064"
+    }
+  ],
+  "drawers": {
+    "left": {
+      "id": "leftDrawer",
+      "location": "http://localhost/views/views/index.html?view_id=7064",
+      "showOnAppLoad": false,
+      "widthOfDrawerInPixels": 210
+    },
+    "options": {
+      "centerViewInteractionMode": "Full",
+      "closeGestures": [
+        "PanNavBar",
+        "PanCenterView",
+        "TapCenterView"
+      ],
+      "openGestures": [
+        "PanNavBar",
+        "PanCenterView"
+      ],
+      "openShadow": true,
+      "stretchDrawer": true,
+      "widthOfLayerInPixels": 0
+    }
+  },
   "tabBar": {
     "enabled": true,
     "tabs": [
@@ -40,6 +82,4 @@
       "backgroundImage": ""
     }
   }
-
-
 }

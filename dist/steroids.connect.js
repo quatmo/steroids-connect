@@ -2229,7 +2229,52 @@ module.exports = [
       scope: {
         steroidsSettings: "="
       },
-      link: function(scope, element, attrs) {}
+      link: function(scope, element, attrs) {
+        scope.statusBarStyles = ["Dark", "Light"];
+        scope.isEnabled = function() {
+          var _ref;
+          if ((_ref = scope.steroidsSettings.configuration) != null ? _ref.status_bar_enabled : void 0) {
+            return true;
+          } else {
+            return false;
+          }
+        };
+        scope.enable = function() {
+          var _ref;
+          if (scope.isEnabled()) {
+            return;
+          }
+          if (!scope.steroidsSettings.configuration) {
+            return scope.steroidsSettings.configuration = {
+              status_bar_enabled: true,
+              status_bar_style: "Light"
+            };
+          } else {
+            return (_ref = scope.steroidsSettings.configuration) != null ? _ref.status_bar_enabled = true : void 0;
+          }
+        };
+        return scope.disable = function() {
+          var _ref;
+          if (!scope.isEnabled()) {
+            return;
+          }
+          if (!scope.steroidsSettings.configuration) {
+            return scope.steroidsSettings.configuration = {
+              status_bar_enabled: false,
+              status_bar_style: "Light"
+            };
+          } else {
+            return (_ref = scope.steroidsSettings.configuration) != null ? _ref.status_bar_enabled = false : void 0;
+          }
+        };
+
+        /*
+        "configuration": {
+          "status_bar_style": "Light",
+          "status_bar_enabled": true
+        }
+         */
+      }
     };
   }
 ];
@@ -2299,9 +2344,15 @@ module.exports = [
           }
         };
         scope.enable = function() {
+          if (scope.isEnabled()) {
+            return;
+          }
           return scope.steroidsSettings.enabled = true;
         };
         return scope.disable = function() {
+          if (!scope.isEnabled()) {
+            return;
+          }
           return scope.steroidsSettings.enabled = false;
         };
       }
@@ -2851,7 +2902,27 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
-    "    <h2>Status bar</h2>\n" +
+    "\n" +
+    "    <div class=\"clearfix\">\n" +
+    "      <h2 class=\"pull-left\">Status bar</h2>\n" +
+    "      <div class=\"btn-group pull-right\">\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"enable()\" ng-class=\"{'active': isEnabled()}\">On</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"disable()\" ng-class=\"{'active': !isEnabled()}\">Off</button>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"isEnabled()\">\n" +
+    "      <br><br><br>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"inputEmail3\" class=\"col-sm-4 control-label\">Style</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <select class=\"form-control\" ng-model=\"steroidsSettings.configuration.status_bar_style\" ng-options=\"style for style in statusBarStyles\"></select>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</div>"
@@ -2869,8 +2940,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"clearfix\">\n" +
     "      <h2 class=\"pull-left\">Tabs</h2>\n" +
     "      <div class=\"btn-group pull-right\">\n" +
-    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"enable()\" ng-class=\"{'active': isEnabled()}\" ng-disabled=\"isSaving\">On</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"disable()\" ng-class=\"{'active': !isEnabled()}\" ng-disabled=\"isSaving\">Off</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"enable()\" ng-class=\"{'active': isEnabled()}\">On</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"disable()\" ng-class=\"{'active': !isEnabled()}\">Off</button>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
