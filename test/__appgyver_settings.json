@@ -1,10 +1,45 @@
 {
+
+
   "appearance": {
     "nav_bar_border_size": "2",
     "nav_bar_border_color": "#FFCC00"
   },
+
+
   "initialView": {
     "id": "login",
     "location": "http://localhost/views/initview/index.html"
+  },
+
+
+  "tabBar": {
+    "enabled": true,
+    "tabs": [
+      {
+        "title": "Contacts",
+        "icon": "icons/tabbar_contacts@2x.png",
+        "location": "http://localhost/views/layouts/tach.html#/show"
+      },
+      {
+        "title": "Tach",
+        "icon": "icons/tabbar_tach@2x.png",
+        "location": "http://localhost/views/layouts/tach.html"
+      },
+      {
+        "title": "Profile",
+        "icon": "icons/tabbar_tach@2x.png",
+        "location": "http://localhost/views/layouts/tach.html#/myProfile"
+      }
+    ],
+    "appearance": {
+      "tintColor": "#ffffff",
+      "tabTitleColor": "#00aeef",
+      "selectedTabTintColor": "#94daa8",
+      "selectedTabBackgroundImage": "icons/pill@2x.png",
+      "backgroundImage": ""
+    }
   }
+
+
 }

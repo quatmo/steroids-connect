@@ -14,5 +14,5 @@ steroidsConnectModules.run [
 
     # Configure and run log cloud connector
     LogCloudConnector.setEndpoint("./test_log.json")
-    LogCloudConnector.connect()
+    #LogCloudConnector.connect()
 ]

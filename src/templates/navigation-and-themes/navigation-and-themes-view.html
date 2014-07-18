@@ -1,31 +1,50 @@
 <div id="steroids-connect_navigation-and-themes-view" class="container">
 
-  <!-- General layout settings -->
-  <general-settings-configurator-view></general-settings-configurator-view>
+  <!-- When settings are laoded successfully -->
+  <div ng-if="!loadingSettings && steroidsSettings" class="row">
 
-  <br><br><hr><br><br>
+    <div class="col-sm-10">
 
-  <!-- Navigation bar -->
-  <navigation-bar-configurator-view></navigation-bar-configurator-view>
+      <!-- General layout settings -->
+      <general-settings-configurator-view steroids-settings="steroidsSettings"></general-settings-configurator-view>
 
-  <br><br><hr><br><br>
+      <br><br><hr><br><br>
 
-  <!-- Status bar -->
-  <status-bar-configurator-view></status-bar-configurator-view>
+      <!-- Navigation bar -->
+      <navigation-bar-configurator-view steroids-settings="steroidsSettings"></navigation-bar-configurator-view>
 
-  <br><br><hr><br><br>
+      <br><br><hr><br><br>
 
-  <!-- Tabs -->
-  <tabs-configurator-view></tabs-configurator-view>
+      <!-- Status bar -->
+      <status-bar-configurator-view steroids-settings="steroidsSettings"></status-bar-configurator-view>
 
-  <br><br><hr><br><br>
+      <br><br><hr><br><br>
 
-  <!-- Left drawer menu -->
-  <drawer-configurator-view drawer-position="left"></drawer-configurator-view>
+      <!-- Tabs -->
+      <tabs-configurator-view steroids-settings="steroidsSettings"></tabs-configurator-view>
 
-  <br><br><hr><br><br>
+      <br><br><hr><br><br>
 
-  <!-- Right drawer menu -->
-  <drawer-configurator-view drawer-position="right"></drawer-configurator-view>
+      <!-- Left drawer menu -->
+      <drawer-configurator-view steroids-settings="steroidsSettings" drawer-position="left"></drawer-configurator-view>
+
+      <br><br><hr><br><br>
+
+      <!-- Right drawer menu -->
+      <drawer-configurator-view steroids-settings="steroidsSettings" drawer-position="right"></drawer-configurator-view>
+
+    </div>
+
+    <div class="col-sm-2">
+      <div class="ui-configurer-saveform" sticky-scroll offset="109">
+        <div class="ui-configurer-saveform-unsaved font-proxima">
+          <span ng-hide="unsavedChanges">No changes</span>
+          <span ng-show="unsavedChanges">Unsaved changes</span>
+        </div>
+        <button class="btn btn-primary btn-block font-proxima" ng-click="save()" ng-disabled="!unsavedChanges || savingSettings"><span ng-hide="savingSettings">Save settings</span><span ng-show="savingSettings">Saving...</span></button>
+      </div>
+    </div>
+
+  </div>
 
 </div>

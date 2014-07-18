@@ -1691,13 +1691,12 @@ _dereq_("../templates/SteroidsConnectTemplates");
 
 steroidsConnectModules.run([
   "LogCloudConnector", function(LogCloudConnector) {
-    LogCloudConnector.setEndpoint("./test_log.json");
-    return LogCloudConnector.connect();
+    return LogCloudConnector.setEndpoint("./test_log.json");
   }
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":30,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":21,"./preview":28}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":32,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":22,"./preview":30}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1962,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":28,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":30,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2095,6 +2094,28 @@ module.exports = [
 },{}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  "$http", function($http) {
+    return {
+
+      /*
+      EXPOSED SETTINGS API DEFINITION
+       */
+      settings: void 0,
+      load: function() {
+        this.settings = $http.get("__appgyver_settings.json");
+        return this.settings;
+      },
+      save: function() {
+        return console.log("Saving Steroids settings...");
+      }
+    };
+  }
+];
+
+
+},{}],20:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   function() {
     return {
       restrict: "EA",
@@ -2110,7 +2131,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2127,29 +2148,60 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective"));
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI"));
 
 
-},{"./drawerConfiguratorViewDirective":19,"./generalSettingsConfiguratorViewDirective":20,"./navigationAndThemesViewDirective":22,"./navigationBarConfiguratorViewDirective":23,"./statusBarConfiguratorViewDirective":24,"./tabsConfiguratorViewDirective":25}],22:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":19,"./drawerConfiguratorViewDirective":20,"./generalSettingsConfiguratorViewDirective":21,"./navigationAndThemesViewDirective":23,"./navigationBarConfiguratorViewDirective":24,"./statusBarConfiguratorViewDirective":25,"./stickyScrollDirective":26,"./tabsConfiguratorViewDirective":27}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/navigation-and-themes/navigation-and-themes-view.html",
-      scope: {
-        steroidsSettings: "="
-      },
-      link: function(scope, element, attrs) {}
+      link: function(scope, element, attrs) {
+
+        /*
+        SETTINGS
+         */
+        scope.savingSettings = false;
+        scope.unsavedChanges = false;
+        scope.loadingSettings = true;
+        scope.steroidsSettings = void 0;
+        scope.loadSettings = function() {
+          scope.loadingSettings = true;
+          return SteroidsSettingsAPI.load().success(function(data) {
+            scope.steroidsSettings = data;
+            return console.log("settings", data);
+          })["finally"](function() {
+            return scope.loadingSettings = false;
+          });
+        };
+        scope.loadSettings();
+        scope.save = function() {
+          if (!scope.unsavedChanges) {
+            return;
+          }
+          scope.savingSettings = true;
+          return $timeout(function() {
+            scope.savingSettings = false;
+            return scope.unsavedChanges = false;
+          }, 1000);
+        };
+        return scope.$watch("steroidsSettings", function(newVal, oldVal) {
+          if (oldVal !== void 0) {
+            return scope.unsavedChanges = true;
+          }
+        }, true);
+      }
     };
   }
 ];
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2166,7 +2218,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2183,10 +2235,54 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "$window", function($window) {
+    return {
+      restrict: "A",
+      scope: {
+        offset: "@"
+      },
+      link: function(scope, element, attrs) {
+        var $element, $windowElem, handleScroll, isOverOffset;
+        $element = angular.element(element);
+        $windowElem = angular.element($window);
+        console.log($windowElem, $window);
+        if (!scope.offset) {
+          scope.offset = 0;
+        }
+        scope.distance = $element.offset().top - scope.offset;
+        isOverOffset = function() {
+          return $windowElem[0].pageYOffset > scope.offset;
+        };
+        handleScroll = function() {
+          console.log("current", $windowElem[0].pageYOffset, isOverOffset());
+          if (isOverOffset()) {
+            if (!$element.hasClass("sticky-scroll")) {
+              $element.addClass("sticky-scroll");
+              $element.width($element.parent().width());
+              return $element.css("top", scope.distance + "px");
+            }
+          } else {
+            return $element.removeClass("sticky-scroll");
+          }
+        };
+        $element.width($element.parent().width());
+        handleScroll();
+        return $windowElem.bind("scroll", function() {
+          return handleScroll();
+        });
+      }
+    };
+  }
+];
+
+
+},{}],27:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$timeout", function($timeout) {
     return {
       restrict: "EA",
       replace: true,
@@ -2194,13 +2290,27 @@ module.exports = [
       scope: {
         steroidsSettings: "="
       },
-      link: function(scope, element, attrs) {}
+      link: function(scope, element, attrs) {
+        scope.isEnabled = function() {
+          if (scope.steroidsSettings.tabBar) {
+            return true;
+          } else {
+            return false;
+          }
+        };
+        scope.enable = function() {
+          return scope.steroidsSettings.enabled = true;
+        };
+        return scope.disable = function() {
+          return scope.steroidsSettings.enabled = false;
+        };
+      }
     };
   }
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2239,7 +2349,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2394,12 +2504,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],28:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":26,"./angular-qrcode":27,"./previewViewDirective":29}],29:[function(_dereq_,module,exports){
+},{"./DevicesAPI":28,"./angular-qrcode":29,"./previewViewDirective":31}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2432,7 +2542,7 @@ module.exports = [
 ];
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2667,33 +2777,52 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/navigation-and-themes/navigation-and-themes-view.html',
     "<div id=\"steroids-connect_navigation-and-themes-view\" class=\"container\">\n" +
     "\n" +
-    "  <!-- General layout settings -->\n" +
-    "  <general-settings-configurator-view></general-settings-configurator-view>\n" +
+    "  <!-- When settings are laoded successfully -->\n" +
+    "  <div ng-if=\"!loadingSettings && steroidsSettings\" class=\"row\">\n" +
     "\n" +
-    "  <br><br><hr><br><br>\n" +
+    "    <div class=\"col-sm-10\">\n" +
     "\n" +
-    "  <!-- Navigation bar -->\n" +
-    "  <navigation-bar-configurator-view></navigation-bar-configurator-view>\n" +
+    "      <!-- General layout settings -->\n" +
+    "      <general-settings-configurator-view steroids-settings=\"steroidsSettings\"></general-settings-configurator-view>\n" +
     "\n" +
-    "  <br><br><hr><br><br>\n" +
+    "      <br><br><hr><br><br>\n" +
     "\n" +
-    "  <!-- Status bar -->\n" +
-    "  <status-bar-configurator-view></status-bar-configurator-view>\n" +
+    "      <!-- Navigation bar -->\n" +
+    "      <navigation-bar-configurator-view steroids-settings=\"steroidsSettings\"></navigation-bar-configurator-view>\n" +
     "\n" +
-    "  <br><br><hr><br><br>\n" +
+    "      <br><br><hr><br><br>\n" +
     "\n" +
-    "  <!-- Tabs -->\n" +
-    "  <tabs-configurator-view></tabs-configurator-view>\n" +
+    "      <!-- Status bar -->\n" +
+    "      <status-bar-configurator-view steroids-settings=\"steroidsSettings\"></status-bar-configurator-view>\n" +
     "\n" +
-    "  <br><br><hr><br><br>\n" +
+    "      <br><br><hr><br><br>\n" +
     "\n" +
-    "  <!-- Left drawer menu -->\n" +
-    "  <drawer-configurator-view drawer-position=\"left\"></drawer-configurator-view>\n" +
+    "      <!-- Tabs -->\n" +
+    "      <tabs-configurator-view steroids-settings=\"steroidsSettings\"></tabs-configurator-view>\n" +
     "\n" +
-    "  <br><br><hr><br><br>\n" +
+    "      <br><br><hr><br><br>\n" +
     "\n" +
-    "  <!-- Right drawer menu -->\n" +
-    "  <drawer-configurator-view drawer-position=\"right\"></drawer-configurator-view>\n" +
+    "      <!-- Left drawer menu -->\n" +
+    "      <drawer-configurator-view steroids-settings=\"steroidsSettings\" drawer-position=\"left\"></drawer-configurator-view>\n" +
+    "\n" +
+    "      <br><br><hr><br><br>\n" +
+    "\n" +
+    "      <!-- Right drawer menu -->\n" +
+    "      <drawer-configurator-view steroids-settings=\"steroidsSettings\" drawer-position=\"right\"></drawer-configurator-view>\n" +
+    "\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"col-sm-2\">\n" +
+    "      <div class=\"ui-configurer-saveform\" sticky-scroll offset=\"109\">\n" +
+    "        <div class=\"ui-configurer-saveform-unsaved font-proxima\">\n" +
+    "          <span ng-hide=\"unsavedChanges\">No changes</span>\n" +
+    "          <span ng-show=\"unsavedChanges\">Unsaved changes</span>\n" +
+    "        </div>\n" +
+    "        <button class=\"btn btn-primary btn-block font-proxima\" ng-click=\"save()\" ng-disabled=\"!unsavedChanges || savingSettings\"><span ng-hide=\"savingSettings\">Save settings</span><span ng-show=\"savingSettings\">Saving...</span></button>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
     "\n" +
     "</div>"
   );
@@ -2737,7 +2866,13 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
-    "    <h2>Tabs</h2>\n" +
+    "    <div class=\"clearfix\">\n" +
+    "      <h2 class=\"pull-left\">Tabs</h2>\n" +
+    "      <div class=\"btn-group pull-right\">\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"enable()\" ng-class=\"{'active': isEnabled()}\" ng-disabled=\"isSaving\">On</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"disable()\" ng-class=\"{'active': !isEnabled()}\" ng-disabled=\"isSaving\">Off</button>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "\n" +
     "</div>"
