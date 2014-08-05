@@ -8,6 +8,8 @@
     "location": "http://localhost/views/initview/index.html"
   },
   "appearance": {
+    "app_background_color": "#ababab",
+    "page_background_color": "#dadada",
     "nav_bar_border_size": "2",
     "nav_bar_border_color": "#FFCC00",
     "nav_bar_portrait_background_image": "",
@@ -19,10 +21,10 @@
     "nav_bar_button_title_text_color": "#444444",
     "nav_bar_button_title_shadow_color": "",
     "tab_bar_background_image": "",
-    "tab_bar_tint_color": "ffbbac",
-    "tab_bar_button_title_text_color": "76635f",
+    "tab_bar_tint_color": "#ffbbac",
+    "tab_bar_button_title_text_color": "#76635f",
     "tab_bar_button_title_shadow_color": "",
-    "tab_bar_selected_icon_tint_color": "ffffff",
+    "tab_bar_selected_icon_tint_color": "#ffffff",
     "tab_bar_selected_indicator_background_image": "",
     "loading_screen_color": "#262626"
   },

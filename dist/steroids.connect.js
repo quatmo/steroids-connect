@@ -2787,7 +2787,7 @@ module.exports = [
       },
       link: function(scope, element, attrs) {
         scope.isEnabled = function() {
-          if (scope.steroidsSettings.tabBar) {
+          if (scope.steroidsSettings.tabBar.enabled) {
             return true;
           } else {
             return false;
@@ -2797,13 +2797,13 @@ module.exports = [
           if (scope.isEnabled()) {
             return;
           }
-          return scope.steroidsSettings.enabled = true;
+          return scope.steroidsSettings.tabBar.enabled = true;
         };
         return scope.disable = function() {
           if (!scope.isEnabled()) {
             return;
           }
-          return scope.steroidsSettings.enabled = false;
+          return scope.steroidsSettings.tabBar.enabled = false;
         };
       }
     };
@@ -3247,11 +3247,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
   $templateCache.put('/steroids-connect/navigation-and-themes/color-input.html',
     "<div class=\"input-group ag-color-input\">\n" +
-    "\n" +
     "  <span class=\"input-group-addon\" ng-style=\"{ 'background-color': color }\"><span style=\"visibility: hidden;\">@</span></span>\n" +
-    "\n" +
     "  <input type=\"text\" colorpicker class=\"form-control\" ng-model=\"color\">\n" +
-    "\n" +
     "</div>"
   );
 
@@ -3279,7 +3276,34 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
-    "    <h2>General layout settings</h2>\n" +
+    "\n" +
+    "    <div class=\"clearfix\">\n" +
+    "      <h2 class=\"pull-left\">General layout settings</h2>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div>\n" +
+    "      <br><br><br>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">App background color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.app_background_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Page background color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.page_background_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</div>"
@@ -3356,18 +3380,30 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div>\n" +
     "      <br><br><br>\n" +
     "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "\n" +
+    "\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label for=\"navbarTitleColor\" class=\"col-sm-4 control-label\">Title color</label>\n" +
+    "          <label class=\"col-sm-4 control-label\">Title color</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
     "            <color-input color=\"steroidsSettings.appearance.nav_bar_title_text_color\"></color-input>\n" +
     "          </div>\n" +
     "        </div>\n" +
+    "\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label for=\"navbarTitleColor\" class=\"col-sm-4 control-label\">Title color</label>\n" +
+    "          <label class=\"col-sm-4 control-label\">Background color</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
-    "            <input type=\"color\" class=\"form-control\" id=\"navbarTitleColor\" ng-model=\"steroidsSettings.appearance.nav_bar_title_text_color\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.nav_bar_tint_color\"></color-input>\n" +
     "          </div>\n" +
     "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Button title color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.nav_bar_button_title_text_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "\n" +
     "      </form>\n" +
     "    </div>\n" +
     "\n" +
@@ -3420,6 +3456,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
+    "\n" +
     "    <div class=\"clearfix\">\n" +
     "      <h2 class=\"pull-left\">Tabs</h2>\n" +
     "      <div class=\"btn-group pull-right\">\n" +
@@ -3427,6 +3464,37 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"disable()\" ng-class=\"{'active': !isEnabled()}\">Off</button>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"isEnabled()\">\n" +
+    "      <br><br><br>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Background color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.tab_bar_tint_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Tab title color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.tab_bar_button_title_text_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Active tab title color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.tab_bar_selected_icon_tint_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</div>"

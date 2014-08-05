@@ -5,6 +5,7 @@
   </div>
 
   <div class="col-xs-12 col-sm-8 col-md-7 col-md-offset-1">
+
     <div class="clearfix">
       <h2 class="pull-left">Tabs</h2>
       <div class="btn-group pull-right">
@@ -12,6 +13,37 @@
         <button type="button" class="btn btn-default" ng-click="disable()" ng-class="{'active': !isEnabled()}">Off</button>
       </div>
     </div>
+
+    <div ng-show="isEnabled()">
+      <br><br><br>
+      <form class="form-horizontal" role="form">
+
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Background color</label>
+          <div class="col-sm-8">
+            <color-input color="steroidsSettings.appearance.tab_bar_tint_color"></color-input>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Tab title color</label>
+          <div class="col-sm-8">
+            <color-input color="steroidsSettings.appearance.tab_bar_button_title_text_color"></color-input>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Active tab title color</label>
+          <div class="col-sm-8">
+            <color-input color="steroidsSettings.appearance.tab_bar_selected_icon_tint_color"></color-input>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+
   </div>
 
 </div>

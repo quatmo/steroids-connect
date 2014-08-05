@@ -15,15 +15,15 @@ module.exports =
 
           # Check whether the feature is enabled or not
           scope.isEnabled = () ->
-            if scope.steroidsSettings.tabBar then true else false
+            if scope.steroidsSettings.tabBar.enabled then true else false
 
           scope.enable = () ->
             if scope.isEnabled() then return
-            scope.steroidsSettings.enabled = true
+            scope.steroidsSettings.tabBar.enabled = true
 
           scope.disable = () ->
             if !scope.isEnabled() then return
-            scope.steroidsSettings.enabled = false
+            scope.steroidsSettings.tabBar.enabled = false
 
       }
   ]
