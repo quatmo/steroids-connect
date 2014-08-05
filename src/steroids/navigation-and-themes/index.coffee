@@ -1,11 +1,14 @@
 "use strict"
 
 # Definition for the logs and log view module
-module.exports = angular.module "SteroidsConnect.navigation-and-themes", []
+module.exports = angular.module "SteroidsConnect.navigation-and-themes", [
+    require("./colorpicker").name
+  ]
 
   # Directives
 
   .directive "stickyScroll", require("./stickyScrollDirective")
+  .directive "colorInput", require("./colorInputDirective")
   .directive "generalSettingsConfiguratorView", require("./generalSettingsConfiguratorViewDirective")
   .directive "navigationBarConfiguratorView", require("./navigationBarConfiguratorViewDirective")
   .directive "statusBarConfiguratorView", require("./statusBarConfiguratorViewDirective")

@@ -1696,7 +1696,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":32,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":22,"./preview":30}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":34,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":24,"./preview":32}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":30,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":32,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2118,6 +2118,463 @@ module.exports = [
 module.exports = [
   function() {
     return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/color-input.html",
+      scope: {
+        color: "="
+      },
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],21:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
+  return {
+    closestSlider: function(elem) {
+      var matchesSelector;
+      matchesSelector = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector;
+      if (matchesSelector.bind(elem)("I")) {
+        return elem.parentNode;
+      }
+      return elem;
+    },
+    getOffset: function(elem, fixedPosition) {
+      var scrollX, scrollY, x, y;
+      x = 0;
+      y = 0;
+      scrollX = 0;
+      scrollY = 0;
+      while (elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
+        x += elem.offsetLeft;
+        y += elem.offsetTop;
+        if (!fixedPosition && elem.tagName === "BODY") {
+          scrollX += document.documentElement.scrollLeft || elem.scrollLeft;
+          scrollY += document.documentElement.scrollTop || elem.scrollTop;
+        } else {
+          scrollX += elem.scrollLeft;
+          scrollY += elem.scrollTop;
+        }
+        elem = elem.offsetParent;
+      }
+      return {
+        top: y,
+        left: x,
+        scrollX: scrollX,
+        scrollY: scrollY
+      };
+    },
+    stringParsers: [
+      {
+        re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parse: function(execResult) {
+          return [execResult[1], execResult[2], execResult[3], execResult[4]];
+        }
+      }, {
+        re: /rgba?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
+        parse: function(execResult) {
+          return [2.55 * execResult[1], 2.55 * execResult[2], 2.55 * execResult[3], execResult[4]];
+        }
+      }, {
+        re: /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/,
+        parse: function(execResult) {
+          return [parseInt(execResult[1], 16), parseInt(execResult[2], 16), parseInt(execResult[3], 16)];
+        }
+      }, {
+        re: /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/,
+        parse: function(execResult) {
+          return [parseInt(execResult[1] + execResult[1], 16), parseInt(execResult[2] + execResult[2], 16), parseInt(execResult[3] + execResult[3], 16)];
+        }
+      }
+    ]
+  };
+}).factory("Color", [
+  "Helper", function(Helper) {
+    return {
+      value: {
+        h: 1,
+        s: 1,
+        b: 1,
+        a: 1
+      },
+      rgb: function() {
+        var rgb;
+        rgb = this.toRGB();
+        return "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+      },
+      rgba: function() {
+        var rgb;
+        rgb = this.toRGB();
+        return "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + rgb.a + ")";
+      },
+      hex: function() {
+        return this.toHex();
+      },
+      RGBtoHSB: function(r, g, b, a) {
+        var C, H, S, V;
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        H = void 0;
+        S = void 0;
+        V = void 0;
+        C = void 0;
+        V = Math.max(r, g, b);
+        C = V - Math.min(r, g, b);
+        H = (C === 0 ? null : (V === r ? (g - b) / C : (V === g ? (b - r) / C + 2 : (r - g) / C + 4)));
+        H = ((H + 360) % 6) * 60 / 360;
+        S = (C === 0 ? 0 : C / V);
+        return {
+          h: H || 1,
+          s: S,
+          b: V,
+          a: a || 1
+        };
+      },
+      setColor: function(val) {
+        var key, match, parser, values;
+        val = val.toLowerCase();
+        for (key in Helper.stringParsers) {
+          if (Helper.stringParsers.hasOwnProperty(key)) {
+            parser = Helper.stringParsers[key];
+            match = parser.re.exec(val);
+            values = match && parser.parse(match);
+            if (values) {
+              this.value = this.RGBtoHSB.apply(null, values);
+              return false;
+            }
+          }
+        }
+      },
+      setHue: function(h) {
+        this.value.h = 1 - h;
+      },
+      setSaturation: function(s) {
+        this.value.s = s;
+      },
+      setLightness: function(b) {
+        this.value.b = 1 - b;
+      },
+      setAlpha: function(a) {
+        this.value.a = parseInt((1 - a) * 100, 10) / 100;
+      },
+      toRGB: function(h, s, b, a) {
+        var B, C, G, R, X;
+        if (!h) {
+          h = this.value.h;
+          s = this.value.s;
+          b = this.value.b;
+        }
+        h *= 360;
+        R = void 0;
+        G = void 0;
+        B = void 0;
+        X = void 0;
+        C = void 0;
+        h = (h % 360) / 60;
+        C = b * s;
+        X = C * (1 - Math.abs(h % 2 - 1));
+        R = G = B = b - C;
+        h = ~~h;
+        R += [C, X, 0, 0, X, C][h];
+        G += [X, C, C, X, 0, 0][h];
+        B += [0, 0, X, C, C, X][h];
+        return {
+          r: Math.round(R * 255),
+          g: Math.round(G * 255),
+          b: Math.round(B * 255),
+          a: a || this.value.a
+        };
+      },
+      toHex: function(h, s, b, a) {
+        var rgb;
+        rgb = this.toRGB(h, s, b, a);
+        return "#" + ((1 << 24) | (parseInt(rgb.r, 10) << 16) | (parseInt(rgb.g, 10) << 8) | parseInt(rgb.b, 10)).toString(16).substr(1);
+      }
+    };
+  }
+]).factory("Slider", [
+  "Helper", function(Helper) {
+    var pointer, slider;
+    slider = {
+      maxLeft: 0,
+      maxTop: 0,
+      callLeft: null,
+      callTop: null,
+      knob: {
+        top: 0,
+        left: 0
+      }
+    };
+    pointer = {};
+    return {
+      getSlider: function() {
+        return slider;
+      },
+      getLeftPosition: function(event) {
+        return Math.max(0, Math.min(slider.maxLeft, slider.left + ((event.pageX || pointer.left) - pointer.left)));
+      },
+      getTopPosition: function(event) {
+        return Math.max(0, Math.min(slider.maxTop, slider.top + ((event.pageY || pointer.top) - pointer.top)));
+      },
+      setSlider: function(event, fixedPosition) {
+        var target, targetOffset;
+        target = Helper.closestSlider(event.target);
+        targetOffset = Helper.getOffset(target, fixedPosition);
+        slider.knob = target.children[0].style;
+        slider.left = event.pageX - targetOffset.left - window.pageXOffset + targetOffset.scrollX;
+        slider.top = event.pageY - targetOffset.top - window.pageYOffset + targetOffset.scrollY;
+        pointer = {
+          left: event.pageX,
+          top: event.pageY
+        };
+      },
+      setSaturation: function(event, fixedPosition) {
+        slider = {
+          maxLeft: 100,
+          maxTop: 100,
+          callLeft: "setSaturation",
+          callTop: "setLightness"
+        };
+        this.setSlider(event, fixedPosition);
+      },
+      setHue: function(event, fixedPosition) {
+        slider = {
+          maxLeft: 0,
+          maxTop: 100,
+          callLeft: false,
+          callTop: "setHue"
+        };
+        this.setSlider(event, fixedPosition);
+      },
+      setAlpha: function(event, fixedPosition) {
+        slider = {
+          maxLeft: 0,
+          maxTop: 100,
+          callLeft: false,
+          callTop: "setAlpha"
+        };
+        this.setSlider(event, fixedPosition);
+      },
+      setKnob: function(top, left) {
+        slider.knob.top = top + "px";
+        slider.knob.left = left + "px";
+      }
+    };
+  }
+]).directive("colorpicker", [
+  "$document", "$compile", "Color", "Slider", "Helper", function($document, $compile, Color, Slider, Helper) {
+    return {
+      require: "?ngModel",
+      restrict: "A",
+      link: function($scope, elem, attrs, ngModel) {
+        var bindMouseEvents, colorpickerPreview, colorpickerTemplate, documentMousedownHandler, emitEvent, fixedPosition, getColorpickerTemplatePosition, hideColorpickerTemplate, inputTemplate, mousemove, mouseup, pickerColor, pickerColorInput, pickerColorPointers, position, previewColor, sliderAlpha, sliderHue, sliderSaturation, target, template, thisFormat, update, withInput;
+        thisFormat = (attrs.colorpicker ? attrs.colorpicker : "hex");
+        position = (angular.isDefined(attrs.colorpickerPosition) ? attrs.colorpickerPosition : "bottom");
+        fixedPosition = (angular.isDefined(attrs.colorpickerFixedPosition) ? attrs.colorpickerFixedPosition : false);
+        target = (angular.isDefined(attrs.colorpickerParent) ? elem.parent() : angular.element(document.body));
+        withInput = (angular.isDefined(attrs.colorpickerWithInput) ? attrs.colorpickerWithInput : false);
+        inputTemplate = (withInput ? "<input type=\"text\" name=\"colorpicker-input\">" : "");
+        template = "<div class=\"colorpicker dropdown\">" + "<div class=\"dropdown-menu\">" + "<colorpicker-saturation><i></i></colorpicker-saturation>" + "<colorpicker-hue><i></i></colorpicker-hue>" + "<colorpicker-alpha><i></i></colorpicker-alpha>" + "<colorpicker-preview></colorpicker-preview>" + inputTemplate + "<button class=\"close close-colorpicker\">&times;</button>" + "</div>" + "</div>";
+        colorpickerTemplate = angular.element(template);
+        pickerColor = Color;
+        sliderAlpha = void 0;
+        sliderHue = colorpickerTemplate.find("colorpicker-hue");
+        sliderSaturation = colorpickerTemplate.find("colorpicker-saturation");
+        colorpickerPreview = colorpickerTemplate.find("colorpicker-preview");
+        pickerColorPointers = colorpickerTemplate.find("i");
+        $compile(colorpickerTemplate)($scope);
+        if (withInput) {
+          pickerColorInput = colorpickerTemplate.find("input");
+          pickerColorInput.on("mousedown", function(event) {
+            event.stopPropagation();
+          }).on("keyup", function(event) {
+            var newColor;
+            newColor = this.value;
+            elem.val(newColor);
+            if (ngModel) {
+              $scope.$apply(ngModel.$setViewValue(newColor));
+            }
+            event.stopPropagation();
+            event.preventDefault();
+          });
+          elem.on("keyup", function() {
+            pickerColorInput.val(elem.val());
+          });
+        }
+        bindMouseEvents = function() {
+          $document.on("mousemove", mousemove);
+          $document.on("mouseup", mouseup);
+        };
+        if (thisFormat === "rgba") {
+          colorpickerTemplate.addClass("alpha");
+          sliderAlpha = colorpickerTemplate.find("colorpicker-alpha");
+          sliderAlpha.on("click", function(event) {
+            Slider.setAlpha(event, fixedPosition);
+            mousemove(event);
+          }).on("mousedown", function(event) {
+            Slider.setAlpha(event, fixedPosition);
+            bindMouseEvents();
+          });
+        }
+        sliderHue.on("click", function(event) {
+          Slider.setHue(event, fixedPosition);
+          mousemove(event);
+        }).on("mousedown", function(event) {
+          Slider.setHue(event, fixedPosition);
+          bindMouseEvents();
+        });
+        sliderSaturation.on("click", function(event) {
+          Slider.setSaturation(event, fixedPosition);
+          mousemove(event);
+        }).on("mousedown", function(event) {
+          Slider.setSaturation(event, fixedPosition);
+          bindMouseEvents();
+        });
+        if (fixedPosition) {
+          colorpickerTemplate.addClass("colorpicker-fixed-position");
+        }
+        colorpickerTemplate.addClass("colorpicker-position-" + position);
+        target.append(colorpickerTemplate);
+        if (ngModel) {
+          ngModel.$render = function() {
+            elem.val(ngModel.$viewValue);
+          };
+          $scope.$watch(attrs.ngModel, function() {
+            update();
+          });
+        }
+        elem.on("$destroy", function() {
+          colorpickerTemplate.remove();
+        });
+        previewColor = function() {
+          var e;
+          try {
+            colorpickerPreview.css("backgroundColor", pickerColor[thisFormat]());
+          } catch (_error) {
+            e = _error;
+            colorpickerPreview.css("backgroundColor", pickerColor.toHex());
+          }
+          sliderSaturation.css("backgroundColor", pickerColor.toHex(pickerColor.value.h, 1, 1, 1));
+          if (thisFormat === "rgba") {
+            sliderAlpha.css.backgroundColor = pickerColor.toHex();
+          }
+        };
+        mousemove = function(event) {
+          var left, newColor, slider, top;
+          left = Slider.getLeftPosition(event);
+          top = Slider.getTopPosition(event);
+          slider = Slider.getSlider();
+          Slider.setKnob(top, left);
+          if (slider.callLeft) {
+            pickerColor[slider.callLeft].call(pickerColor, left / 100);
+          }
+          if (slider.callTop) {
+            pickerColor[slider.callTop].call(pickerColor, top / 100);
+          }
+          previewColor();
+          newColor = pickerColor[thisFormat]();
+          elem.val(newColor);
+          if (ngModel) {
+            $scope.$apply(ngModel.$setViewValue(newColor));
+          }
+          if (withInput) {
+            pickerColorInput.val(newColor);
+          }
+          return false;
+        };
+        mouseup = function() {
+          $document.off("mousemove", mousemove);
+          $document.off("mouseup", mouseup);
+        };
+        update = function() {
+          pickerColor.setColor(elem.val());
+          pickerColorPointers.eq(0).css({
+            left: pickerColor.value.s * 100 + "px",
+            top: 100 - pickerColor.value.b * 100 + "px"
+          });
+          pickerColorPointers.eq(1).css("top", 100 * (1 - pickerColor.value.h) + "px");
+          pickerColorPointers.eq(2).css("top", 100 * (1 - pickerColor.value.a) + "px");
+          previewColor();
+        };
+        getColorpickerTemplatePosition = function() {
+          var positionOffset, positionValue;
+          positionValue = void 0;
+          positionOffset = Helper.getOffset(elem[0]);
+          if (angular.isDefined(attrs.colorpickerParent)) {
+            positionOffset.left = 0;
+            positionOffset.top = 0;
+          }
+          if (position === "top") {
+            positionValue = {
+              top: positionOffset.top - 147,
+              left: positionOffset.left
+            };
+          } else if (position === "right") {
+            positionValue = {
+              top: positionOffset.top,
+              left: positionOffset.left + 126
+            };
+          } else if (position === "bottom") {
+            positionValue = {
+              top: positionOffset.top + elem[0].offsetHeight + 2,
+              left: positionOffset.left
+            };
+          } else if (position === "left") {
+            positionValue = {
+              top: positionOffset.top,
+              left: positionOffset.left - 150
+            };
+          }
+          return {
+            top: positionValue.top + "px",
+            left: positionValue.left + "px"
+          };
+        };
+        documentMousedownHandler = function() {
+          hideColorpickerTemplate();
+        };
+        elem.on("click", function() {
+          update();
+          colorpickerTemplate.addClass("colorpicker-visible").css(getColorpickerTemplatePosition());
+          $document.on("mousedown", documentMousedownHandler);
+        });
+        colorpickerTemplate.on("mousedown", function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+        });
+        emitEvent = function(name) {
+          if (ngModel) {
+            $scope.$emit(name, {
+              name: attrs.ngModel,
+              value: ngModel.$modelValue
+            });
+          }
+        };
+        hideColorpickerTemplate = function() {
+          if (colorpickerTemplate.hasClass("colorpicker-visible")) {
+            colorpickerTemplate.removeClass("colorpicker-visible");
+            emitEvent("colorpicker-closed");
+            $document.off("mousedown", documentMousedownHandler);
+          }
+        };
+        colorpickerTemplate.find("button").on("click", function() {
+          hideColorpickerTemplate();
+        });
+      }
+    };
+  }
+]);
+
+
+},{}],22:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/navigation-and-themes/drawer-configurator.html",
@@ -2131,7 +2588,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2148,12 +2605,12 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", []).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI"));
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI"));
 
 
-},{"./SteroidsSettingsAPI":19,"./drawerConfiguratorViewDirective":20,"./generalSettingsConfiguratorViewDirective":21,"./navigationAndThemesViewDirective":23,"./navigationBarConfiguratorViewDirective":24,"./statusBarConfiguratorViewDirective":25,"./stickyScrollDirective":26,"./tabsConfiguratorViewDirective":27}],23:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":19,"./colorInputDirective":20,"./colorpicker":21,"./drawerConfiguratorViewDirective":22,"./generalSettingsConfiguratorViewDirective":23,"./navigationAndThemesViewDirective":25,"./navigationBarConfiguratorViewDirective":26,"./statusBarConfiguratorViewDirective":27,"./stickyScrollDirective":28,"./tabsConfiguratorViewDirective":29}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2201,7 +2658,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2218,7 +2675,7 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2267,20 +2724,13 @@ module.exports = [
             return (_ref = scope.steroidsSettings.configuration) != null ? _ref.status_bar_enabled = false : void 0;
           }
         };
-
-        /*
-        "configuration": {
-          "status_bar_style": "Light",
-          "status_bar_enabled": true
-        }
-         */
       }
     };
   }
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -2324,7 +2774,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -2361,7 +2811,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2400,7 +2850,7 @@ module.exports = [
 ];
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -2555,12 +3005,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],30:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],32:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":28,"./angular-qrcode":29,"./previewViewDirective":31}],31:[function(_dereq_,module,exports){
+},{"./DevicesAPI":30,"./angular-qrcode":31,"./previewViewDirective":33}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -2593,7 +3043,7 @@ module.exports = [
 ];
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -2795,6 +3245,17 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
+  $templateCache.put('/steroids-connect/navigation-and-themes/color-input.html',
+    "<div class=\"input-group ag-color-input\">\n" +
+    "\n" +
+    "  <span class=\"input-group-addon\" ng-style=\"{ 'background-color': color }\"><span style=\"visibility: hidden;\">@</span></span>\n" +
+    "\n" +
+    "  <input type=\"text\" colorpicker class=\"form-control\" ng-model=\"color\">\n" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('/steroids-connect/navigation-and-themes/drawer-configurator.html',
     "<div class=\"row configurator-section\">\n" +
     "\n" +
@@ -2887,7 +3348,29 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"col-xs-12 col-sm-8 col-md-7 col-md-offset-1\">\n" +
-    "    <h2>Navigation bar</h2>\n" +
+    "\n" +
+    "    <div class=\"clearfix\">\n" +
+    "      <h2 class=\"pull-left\">Navigation bar</h2>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div>\n" +
+    "      <br><br><br>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"navbarTitleColor\" class=\"col-sm-4 control-label\">Title color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <color-input color=\"steroidsSettings.appearance.nav_bar_title_text_color\"></color-input>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"navbarTitleColor\" class=\"col-sm-4 control-label\">Title color</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <input type=\"color\" class=\"form-control\" id=\"navbarTitleColor\" ng-model=\"steroidsSettings.appearance.nav_bar_title_text_color\">\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</div>"
@@ -2915,9 +3398,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <br><br><br>\n" +
     "      <form class=\"form-horizontal\" role=\"form\">\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label for=\"inputEmail3\" class=\"col-sm-4 control-label\">Style</label>\n" +
+    "          <label for=\"statusbarStyle\" class=\"col-sm-4 control-label\">Style</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
-    "            <select class=\"form-control\" ng-model=\"steroidsSettings.configuration.status_bar_style\" ng-options=\"style for style in statusBarStyles\"></select>\n" +
+    "            <select class=\"form-control\" id=\"statusbarStyle\" ng-model=\"steroidsSettings.configuration.status_bar_style\" ng-options=\"style for style in statusBarStyles\"></select>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </form>\n" +

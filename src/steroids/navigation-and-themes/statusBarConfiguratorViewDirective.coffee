@@ -38,12 +38,5 @@ module.exports =
             else
               scope.steroidsSettings.configuration?.status_bar_enabled = false
 
-          ###
-          "configuration": {
-            "status_bar_style": "Light",
-            "status_bar_enabled": true
-          }
-          ###
-
       }
   ]
