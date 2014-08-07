@@ -1696,7 +1696,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":34,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":24,"./preview":32}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":37,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":25,"./preview":35}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":32,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":35,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2107,6 +2107,15 @@ module.exports = [
       },
       save: function() {
         return console.log("Saving Steroids settings...");
+      },
+
+      /*
+      ASSETS
+       */
+      assets: void 0,
+      loadAssets: function() {
+        this.assets = $http.get("__app_assets.json");
+        return this.assets;
       }
     };
   }
@@ -2114,6 +2123,42 @@ module.exports = [
 
 
 },{}],20:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
+    $scope.icons = icons;
+    $scope.views = views;
+    $scope.isNewTab = tabIndex === -1;
+    tabs = angular.copy(tabs);
+    if (tabIndex >= 0) {
+      $scope.tab = tabs[tabIndex];
+    } else {
+      $scope.tab = {
+        title: "",
+        location: "",
+        icon: ""
+      };
+    }
+    $scope.ok = function() {
+      if (tabIndex >= 0) {
+        tabs[tabIndex] = $scope.tab;
+      } else {
+        tabs.push($scope.tab);
+      }
+      return $modalInstance.close(tabs);
+    };
+    $scope.remove = function() {
+      tabs.splice(tabIndex, 1);
+      return $modalInstance.close(tabs);
+    };
+    return $scope.cancel = function() {
+      return $modalInstance.dismiss("cancel");
+    };
+  }
+];
+
+
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2130,7 +2175,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -2570,7 +2615,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2588,7 +2633,7 @@ module.exports = [
 ];
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2597,7 +2642,8 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/navigation-and-themes/general-settings-configurator.html",
       scope: {
-        steroidsSettings: "="
+        steroidsSettings: "=",
+        assets: "="
       },
       link: function(scope, element, attrs) {}
     };
@@ -2605,12 +2651,12 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI"));
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":19,"./colorInputDirective":20,"./colorpicker":21,"./drawerConfiguratorViewDirective":22,"./generalSettingsConfiguratorViewDirective":23,"./navigationAndThemesViewDirective":25,"./navigationBarConfiguratorViewDirective":26,"./statusBarConfiguratorViewDirective":27,"./stickyScrollDirective":28,"./tabsConfiguratorViewDirective":29}],25:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":19,"./TabModalCtrl":20,"./colorInputDirective":21,"./colorpicker":22,"./drawerConfiguratorViewDirective":23,"./generalSettingsConfiguratorViewDirective":24,"./navigationAndThemesViewDirective":26,"./navigationBarConfiguratorViewDirective":27,"./statusBarConfiguratorViewDirective":28,"./stickyScrollDirective":29,"./tabEditorDirective":30,"./tabsConfiguratorViewDirective":31,"./viewSelectorDirective":32}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2627,11 +2673,11 @@ module.exports = [
         scope.unsavedChanges = false;
         scope.loadingSettings = true;
         scope.steroidsSettings = void 0;
+        scope.appAssets = void 0;
         scope.loadSettings = function() {
           scope.loadingSettings = true;
           return SteroidsSettingsAPI.load().success(function(data) {
-            scope.steroidsSettings = data;
-            return console.log("settings", data);
+            return scope.steroidsSettings = data;
           })["finally"](function() {
             return scope.loadingSettings = false;
           });
@@ -2647,18 +2693,24 @@ module.exports = [
             return scope.unsavedChanges = false;
           }, 1000);
         };
-        return scope.$watch("steroidsSettings", function(newVal, oldVal) {
+        scope.$watch("steroidsSettings", function(newVal, oldVal) {
           if (oldVal !== void 0) {
             return scope.unsavedChanges = true;
           }
         }, true);
+        scope.loadAssets = function() {
+          return SteroidsSettingsAPI.loadAssets().success(function(data) {
+            return scope.appAssets = data;
+          });
+        };
+        return scope.loadAssets();
       }
     };
   }
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2675,7 +2727,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2730,7 +2782,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -2743,7 +2795,6 @@ module.exports = [
         var $element, $windowElem, handleScroll, isOverOffset;
         $element = angular.element(element);
         $windowElem = angular.element($window);
-        console.log($windowElem, $window);
         if (!scope.offset) {
           scope.offset = 0;
         }
@@ -2752,7 +2803,6 @@ module.exports = [
           return $windowElem[0].pageYOffset > scope.offset;
         };
         handleScroll = function() {
-          console.log("current", $windowElem[0].pageYOffset, isOverOffset());
           if (isOverOffset()) {
             if (!$element.hasClass("sticky-scroll")) {
               $element.addClass("sticky-scroll");
@@ -2774,7 +2824,52 @@ module.exports = [
 ];
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$modal", function($modal) {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/tab-editor.html",
+      scope: {
+        tabs: "=",
+        icons: "=",
+        views: "="
+      },
+      link: function(scope, element, attrs) {
+        return scope.openEditModal = function(tabIndex) {
+          var editModal;
+          editModal = $modal.open({
+            templateUrl: "/steroids-connect/navigation-and-themes/tab-modal.html",
+            controller: "TabModalCtrl",
+            size: "lg",
+            resolve: {
+              tabIndex: function() {
+                return tabIndex;
+              },
+              tabs: function() {
+                return scope.tabs;
+              },
+              icons: function() {
+                return scope.icons;
+              },
+              views: function() {
+                return scope.views;
+              }
+            }
+          });
+          return editModal.result.then(function(newTabs) {
+            return scope.tabs = newTabs;
+          });
+        };
+      }
+    };
+  }
+];
+
+
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -2783,7 +2878,8 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/navigation-and-themes/tabs-configurator.html",
       scope: {
-        steroidsSettings: "="
+        steroidsSettings: "=",
+        assets: "="
       },
       link: function(scope, element, attrs) {
         scope.isEnabled = function() {
@@ -2811,7 +2907,42 @@ module.exports = [
 ];
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "/steroids-connect/navigation-and-themes/view-selector.html",
+      scope: {
+        view: "=",
+        views: "="
+      },
+      link: function(scope, element, attrs) {
+        scope.selectedId = scope.view.id;
+        scope.$watch("view", function() {
+          return scope.selectedId = scope.view.id;
+        }, true);
+        return scope.setViewById = function(id) {
+          var view, _i, _len, _ref;
+          _ref = scope.views;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            view = _ref[_i];
+            if (!(view.id === id)) {
+              continue;
+            }
+            scope.view = view;
+            return;
+          }
+        };
+      }
+    };
+  }
+];
+
+
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2850,7 +2981,7 @@ module.exports = [
 ];
 
 
-},{}],31:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3005,12 +3136,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],32:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":30,"./angular-qrcode":31,"./previewViewDirective":33}],33:[function(_dereq_,module,exports){
+},{"./DevicesAPI":33,"./angular-qrcode":34,"./previewViewDirective":36}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -3043,7 +3174,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -3287,6 +3418,13 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "\n" +
     "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">App start view</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <view-selector view=\"steroidsSettings.initialView\" views=\"assets.views\"></view-selector>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
     "          <label class=\"col-sm-4 control-label\">App background color</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
     "            <color-input color=\"steroidsSettings.appearance.app_background_color\"></color-input>\n" +
@@ -3319,7 +3457,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-sm-10\">\n" +
     "\n" +
     "      <!-- General layout settings -->\n" +
-    "      <general-settings-configurator-view steroids-settings=\"steroidsSettings\"></general-settings-configurator-view>\n" +
+    "      <general-settings-configurator-view steroids-settings=\"steroidsSettings\" assets=\"appAssets\"></general-settings-configurator-view>\n" +
     "\n" +
     "      <br><br><hr><br><br>\n" +
     "\n" +
@@ -3334,7 +3472,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <br><br><hr><br><br>\n" +
     "\n" +
     "      <!-- Tabs -->\n" +
-    "      <tabs-configurator-view steroids-settings=\"steroidsSettings\"></tabs-configurator-view>\n" +
+    "      <tabs-configurator-view steroids-settings=\"steroidsSettings\" assets=\"appAssets\"></tabs-configurator-view>\n" +
     "\n" +
     "      <br><br><hr><br><br>\n" +
     "\n" +
@@ -3448,6 +3586,84 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
+  $templateCache.put('/steroids-connect/navigation-and-themes/tab-editor.html',
+    "<div class=\"tab-editor well\">\n" +
+    "  <div class=\"container-fluid\">\n" +
+    "    <div class=\"row\">\n" +
+    "\n" +
+    "      <!-- Existing tabs -->\n" +
+    "\n" +
+    "      <div class=\"tab col-xs-2\" ng-repeat=\"tab in tabs\">\n" +
+    "        <div class=\"tab-container\" ng-click=\"openEditModal($index)\">\n" +
+    "          <div class=\"tab-icon\"><img ng-src=\"{{tab.icon}}\" alt=\"\"></div>\n" +
+    "          <span class=\"tab-title\">{{tab.title}}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <!-- Create new tab -->\n" +
+    "\n" +
+    "      <div class=\"tab tab-adder col-xs-2\">\n" +
+    "        <div class=\"tab-adder-container\" ng-click=\"openEditModal(-1)\">\n" +
+    "          <div class=\"tab-icon\"><span class=\"glyphicon glyphicon-plus-sign\"></span></div>\n" +
+    "          <span class=\"tab-title\">New tab</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/tab-modal.html',
+    "<div class=\"modal-header\">\n" +
+    "  <h3 class=\"modal-title\" ng-show=\"isNewTab\" style=\"text-transform: none;\">New tab</h3>\n" +
+    "  <h3 class=\"modal-title\" ng-hide=\"isNewTab\" style=\"text-transform: none;\">Edit tab</h3>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-body\">\n" +
+    "\n" +
+    "  <form class=\"form-horizontal\" role=\"form\">\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label class=\"col-sm-2 control-label\">Title</label>\n" +
+    "      <div class=\"col-sm-10\">\n" +
+    "        <input type=\"text\" class=\"form-control\" ng-model=\"tab.title\">\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label class=\"col-sm-2 control-label\">View</label>\n" +
+    "      <div class=\"col-sm-10\">\n" +
+    "        <select class=\"form-control\" ng-model=\"tab.location\" ng-options=\"view.location as view.id for view in views\"></select>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </form>\n" +
+    "\n" +
+    "  <hr>\n" +
+    "\n" +
+    "  <div class=\"container-fluid\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-xs-2 text-center ag-icon-container\" ng-class=\"{'active': icon.path == tab.icon}\" ng-repeat=\"icon in icons\">\n" +
+    "        <div ng-click=\"tab.icon=icon.path\">\n" +
+    "          <img ng-src=\"{{icon.url}}\" class=\"ag-tab-icon big\" alt=\"\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-footer\">\n" +
+    "  <button class=\"btn btn-danger\" ng-click=\"remove()\" ng-hide=\"isNewTab\">Remove tab</button>\n" +
+    "\n" +
+    "  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n" +
+    "  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('/steroids-connect/navigation-and-themes/tabs-configurator.html',
     "<div class=\"row configurator-section\">\n" +
     "\n" +
@@ -3495,9 +3711,19 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      </form>\n" +
     "    </div>\n" +
     "\n" +
+    "    <div ng-show=\"isEnabled()\">\n" +
+    "      <hr>\n" +
+    "      <tab-editor tabs=\"steroidsSettings.tabBar.tabs\" icons=\"assets.icons\" views=\"assets.views\"></tab-editor>\n" +
+    "    </div>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/navigation-and-themes/view-selector.html',
+    "<select class=\"form-control\" ng-model=\"selectedId\" ng-change=\"setViewById(selectedId)\" ng-options=\"x.id as x.id for x in views\"></select>"
   );
 
 

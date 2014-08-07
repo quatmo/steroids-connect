@@ -4,8 +4,8 @@
     "status_bar_enabled": true
   },
   "initialView": {
-    "id": "login",
-    "location": "http://localhost/views/initview/index.html"
+    "id": "eka",
+    "location": "http://localhost/views/eka/index.html"
   },
   "appearance": {
     "app_background_color": "#ababab",
@@ -62,26 +62,19 @@
     "tabs": [
       {
         "title": "Contacts",
-        "icon": "icons/tabbar_contacts@2x.png",
-        "location": "http://localhost/views/layouts/tach.html#/show"
+        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/debug-6089c23af5a0e778e4f12fe8842a79b6.png",
+        "location": "http://localhost/views/eka/index.html"
       },
       {
         "title": "Tach",
-        "icon": "icons/tabbar_tach@2x.png",
-        "location": "http://localhost/views/layouts/tach.html"
+        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/share-d009bc402d7dab19ae2f04bc3fc873c9.png",
+        "location": "http://localhost/views/toka/index.html"
       },
       {
         "title": "Profile",
-        "icon": "icons/tabbar_tach@2x.png",
-        "location": "http://localhost/views/layouts/tach.html#/myProfile"
+        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/generate-1ce4dc999aba22012b166e4779a3ad9e.png",
+        "location": "http://localhost/views/kolmas/index.html"
       }
-    ],
-    "appearance": {
-      "tintColor": "#ffffff",
-      "tabTitleColor": "#00aeef",
-      "selectedTabTintColor": "#94daa8",
-      "selectedTabBackgroundImage": "icons/pill@2x.png",
-      "backgroundImage": ""
-    }
+    ]
   }
 }

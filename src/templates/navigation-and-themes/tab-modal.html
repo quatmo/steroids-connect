@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h3 class="modal-title" ng-show="isNewTab" style="text-transform: none;">New tab</h3>
+  <h3 class="modal-title" ng-hide="isNewTab" style="text-transform: none;">Edit tab</h3>
+</div>
+
+<div class="modal-body">
+
+  <form class="form-horizontal" role="form">
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Title</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="tab.title">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">View</label>
+      <div class="col-sm-10">
+        <select class="form-control" ng-model="tab.location" ng-options="view.location as view.id for view in views"></select>
+      </div>
+    </div>
+
+  </form>
+
+  <hr>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-2 text-center ag-icon-container" ng-class="{'active': icon.path == tab.icon}" ng-repeat="icon in icons">
+        <div ng-click="tab.icon=icon.path">
+          <img ng-src="{{icon.url}}" class="ag-tab-icon big" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-danger" ng-click="remove()" ng-hide="isNewTab">Remove tab</button>
+
+  <button class="btn btn-primary" ng-click="ok()">Save</button>
+  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

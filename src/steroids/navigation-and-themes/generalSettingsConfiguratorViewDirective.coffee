@@ -10,6 +10,7 @@ module.exports =
         templateUrl: "/steroids-connect/navigation-and-themes/general-settings-configurator.html"
         scope:
           steroidsSettings: "="
+          assets: "="
         link: (scope, element, attrs) ->
 
       }

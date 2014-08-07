@@ -15,8 +15,6 @@ module.exports =
           $element = angular.element element
           $windowElem = angular.element $window
 
-          console.log $windowElem, $window
-
           # Ensure there is offset set
           scope.offset = 0 unless scope.offset
           scope.distance = $element.offset().top - scope.offset
@@ -27,7 +25,6 @@ module.exports =
 
           # Function to handle the scroll event
           handleScroll = () ->
-            console.log "current", $windowElem[0].pageYOffset, isOverOffset()
             if isOverOffset()
               # Scroll value below offset -> stop being so sticky
               if not $element.hasClass "sticky-scroll"

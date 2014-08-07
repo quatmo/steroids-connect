@@ -11,6 +11,7 @@ module.exports =
         templateUrl: "/steroids-connect/navigation-and-themes/tabs-configurator.html"
         scope:
           steroidsSettings: "="
+          assets: "="
         link: (scope, element, attrs) ->
 
           # Check whether the feature is enabled or not

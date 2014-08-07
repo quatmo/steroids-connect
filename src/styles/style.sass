@@ -23,6 +23,30 @@
   font-weight: normal
   font-size: 16px
 
+.ag-tab-icon
+  width: 100%
+  max-width: 32px
+  max-height: 32px
+  &.big
+    max-width: 64px
+    max-height: 64px
+
+.ag-icon-container
+  padding-top: 10px
+  padding-bottom: 10px
+  &.active
+    > div, > div:hover
+      border: 2px $color-blue solid
+  > div
+    border: 2px transparent solid
+    width: 68px
+    height: 68px
+    border-radius: 4px
+    cursor: pointer
+    &:hover
+      border: 2px $color-blue-6 solid
+
+
 ////////////////////////////////////////////////////////////////
 // GLOBAL HEADER
 ////////////////////////////////////////////////////////////////
@@ -303,6 +327,40 @@
         -webkit-animation: jump 0.3s 1
         -moz-animation: jump 0.3s 1
         animation: jump 0.3s 1
+
+  .tab-editor
+
+    .tab
+      text-align: center
+      .tab-title
+        font-size: 12px
+        font-family: "Proxima N W01 Reg"
+      .tab-icon
+        height: 32px
+        line-height: 20px
+        img
+          max-height: 32px
+          max-width: 100%
+        .glyphicon
+          font-size: 20px
+          margin-top: 6px
+
+    .tab-container
+      border-radius: 4px
+      &:hover
+        cursor: pointer
+        background-color: rgba(0, 0, 0, 0.05)
+
+    .tab-adder-container
+      border: 1px rgba(0, 0, 0, 0.1) dashed
+      border-radius: 4px
+      &:hover
+        color: $color-blue-dark
+        cursor: pointer
+        border: 1px $color-blue-dark dashed
+
+    .tab-adder
+      text-align: center
 
 @keyframes jump
   0%

@@ -22,5 +22,16 @@ module.exports =
         save: () ->
           console.log "Saving Steroids settings..."
 
+        ###
+        ASSETS
+        ###
+
+        assets: undefined
+
+        # Method loading assets file
+        loadAssets: () ->
+          @assets = $http.get "__app_assets.json" # TODO: Create provider for settings file configurations
+          @assets
+
       }
   ]

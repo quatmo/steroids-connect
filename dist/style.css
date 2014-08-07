@@ -472,6 +472,28 @@ colorpicker-preview {
   font-weight: normal;
   font-size: 16px; }
 
+.ag-tab-icon {
+  width: 100%;
+  max-width: 32px;
+  max-height: 32px; }
+  .ag-tab-icon.big {
+    max-width: 64px;
+    max-height: 64px; }
+
+.ag-icon-container {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+  .ag-icon-container.active > div, .ag-icon-container.active > div:hover {
+    border: 2px #00b5ff solid; }
+  .ag-icon-container > div {
+    border: 2px transparent solid;
+    width: 68px;
+    height: 68px;
+    border-radius: 4px;
+    cursor: pointer; }
+    .ag-icon-container > div:hover {
+      border: 2px #4dccff solid; }
+
 /* Keep things nice and scoped!
  */
 .ag-header {
@@ -679,6 +701,34 @@ colorpicker-preview {
       -webkit-animation: jump 0.3s 1;
       -moz-animation: jump 0.3s 1;
       animation: jump 0.3s 1; }
+  #steroids-connect_navigation-and-themes-view .tab-editor .tab {
+    text-align: center; }
+    #steroids-connect_navigation-and-themes-view .tab-editor .tab .tab-title {
+      font-size: 12px;
+      font-family: "Proxima N W01 Reg"; }
+    #steroids-connect_navigation-and-themes-view .tab-editor .tab .tab-icon {
+      height: 32px;
+      line-height: 20px; }
+      #steroids-connect_navigation-and-themes-view .tab-editor .tab .tab-icon img {
+        max-height: 32px;
+        max-width: 100%; }
+      #steroids-connect_navigation-and-themes-view .tab-editor .tab .tab-icon .glyphicon {
+        font-size: 20px;
+        margin-top: 6px; }
+  #steroids-connect_navigation-and-themes-view .tab-editor .tab-container {
+    border-radius: 4px; }
+    #steroids-connect_navigation-and-themes-view .tab-editor .tab-container:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.05); }
+  #steroids-connect_navigation-and-themes-view .tab-editor .tab-adder-container {
+    border: 1px rgba(0, 0, 0, 0.1) dashed;
+    border-radius: 4px; }
+    #steroids-connect_navigation-and-themes-view .tab-editor .tab-adder-container:hover {
+      color: #30384a;
+      cursor: pointer;
+      border: 1px #30384a dashed; }
+  #steroids-connect_navigation-and-themes-view .tab-editor .tab-adder {
+    text-align: center; }
 
 @keyframes jump {
   0% {

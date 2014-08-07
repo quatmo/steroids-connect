@@ -21,13 +21,13 @@ module.exports =
           scope.unsavedChanges = false
           scope.loadingSettings = true
           scope.steroidsSettings = undefined
+          scope.appAssets = undefined
 
           scope.loadSettings = () ->
             scope.loadingSettings = true
             SteroidsSettingsAPI.load()
               .success (data) ->
                 scope.steroidsSettings = data
-                console.log "settings", data
               .finally () ->
                 scope.loadingSettings = false
           scope.loadSettings()
@@ -45,6 +45,13 @@ module.exports =
           scope.$watch "steroidsSettings", (newVal, oldVal) ->
             scope.unsavedChanges = true unless oldVal is undefined
           , true
+
+          # Load assets
+          scope.loadAssets = () ->
+            SteroidsSettingsAPI.loadAssets()
+              .success (data) ->
+                scope.appAssets = data
+          scope.loadAssets()
 
       }
   ]
