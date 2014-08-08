@@ -3795,7 +3795,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <span class=\"text-muted\"><small>You can re-order tabs by dragging them.</small></span>\n" +
+    "  <small class=\"text-muted\">You can re-order tabs by dragging them.</small>\n" +
     "\n" +
     "</div>"
   );
