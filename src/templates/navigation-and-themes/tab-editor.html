@@ -1,25 +1,43 @@
-<div class="tab-editor well" ng-if="icons">
-  <div class="container-fluid">
-    <div class="row">
+<div>
 
-      <!-- Existing tabs -->
+  <div class="tab-editor well" ng-if="icons">
+    <div class="container-fluid">
+      <div class="row">
 
-      <div class="tab col-xs-2" ng-repeat="tab in tabs">
-        <div class="tab-container" ng-click="openEditModal($index)">
-          <div class="tab-icon"><img ng-src="{{getPreviewForTab(tab.icon)}}" alt=""></div>
-          <span class="tab-title">{{tab.title}}</span>
+        <div ng-class="{'col-xs-10': tabs.length < 5, 'col-xs-12': tabs.length >= 5}">
+          <div class="row" ui-sortable ng-model="tabs">
+
+            <!-- Existing tabs -->
+
+            <div class="tab" ng-class="{'col-xs-3': tabs.length < 5, 'col-xs-2': tabs.length >= 5}" ng-repeat="tab in tabs">
+              <div class="tab-container" ng-click="openEditModal($index)">
+                <div class="tab-icon"><img ng-src="{{getPreviewForTab(tab.icon)}}" alt=""></div>
+                <span class="tab-title">{{tab.title}}</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </div>
 
-      <!-- Create new tab -->
+        <div class="col-xs-2" ng-hide="tabs.length >= 5">
+          <div class="row">
 
-      <div class="tab tab-adder col-xs-2" ng-hide="tabs.length >= 5">
-        <div class="tab-adder-container" ng-click="openEditModal(-1)">
-          <div class="tab-icon"><span class="glyphicon glyphicon-plus-sign"></span></div>
-          <span class="tab-title">New tab</span>
+            <!-- Create new tab -->
+
+            <div class="tab tab-adder col-xs-12">
+              <div class="tab-adder-container" ng-click="openEditModal(-1)">
+                <div class="tab-icon"><span class="glyphicon glyphicon-plus-sign"></span></div>
+                <span class="tab-title">New tab</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
+
+  <span class="text-muted"><small>You can re-order tabs by dragging them.</small></span>
+
 </div>

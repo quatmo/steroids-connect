@@ -1696,7 +1696,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":37,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":25,"./preview":35}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":38,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":25,"./preview":36}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1961,7 +1961,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":35,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":36,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2653,10 +2653,10 @@ module.exports = [
 
 },{}],25:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
+module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":19,"./TabModalCtrl":20,"./colorInputDirective":21,"./colorpicker":22,"./drawerConfiguratorViewDirective":23,"./generalSettingsConfiguratorViewDirective":24,"./navigationAndThemesViewDirective":26,"./navigationBarConfiguratorViewDirective":27,"./statusBarConfiguratorViewDirective":28,"./stickyScrollDirective":29,"./tabEditorDirective":30,"./tabsConfiguratorViewDirective":31,"./viewSelectorDirective":32}],26:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":19,"./TabModalCtrl":20,"./colorInputDirective":21,"./colorpicker":22,"./drawerConfiguratorViewDirective":23,"./generalSettingsConfiguratorViewDirective":24,"./navigationAndThemesViewDirective":26,"./navigationBarConfiguratorViewDirective":27,"./statusBarConfiguratorViewDirective":28,"./stickyScrollDirective":29,"./tabEditorDirective":30,"./tabsConfiguratorViewDirective":31,"./ui-sortable":32,"./viewSelectorDirective":33}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2919,6 +2919,163 @@ module.exports = [
 
 
 },{}],32:[function(_dereq_,module,exports){
+module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
+  "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
+    return {
+      require: "?ngModel",
+      link: function(scope, element, attrs, ngModel) {
+        var callbacks, combineCallbacks, hasSortingHelper, opts, savedNodes, wrappers;
+        combineCallbacks = function(first, second) {
+          if (second && (typeof second === "function")) {
+            return function(e, ui) {
+              first(e, ui);
+              second(e, ui);
+            };
+          }
+          return first;
+        };
+        hasSortingHelper = function(element, ui) {
+          var helperOption;
+          helperOption = element.sortable("option", "helper");
+          return helperOption === "clone" || (typeof helperOption === "function" && ui.item.sortable.isCustomHelperUsed());
+        };
+        savedNodes = void 0;
+        opts = {};
+        callbacks = {
+          receive: null,
+          remove: null,
+          start: null,
+          stop: null,
+          update: null
+        };
+        wrappers = {
+          helper: null
+        };
+        angular.extend(opts, uiSortableConfig, scope.$eval(attrs.uiSortable));
+        if (!angular.element.fn || !angular.element.fn.jquery) {
+          $log.error("ui.sortable: jQuery should be included before AngularJS!");
+          return;
+        }
+        if (ngModel) {
+          scope.$watch(attrs.ngModel + ".length", function() {
+            $timeout(function() {
+              if (!!element.data("ui-sortable")) {
+                element.sortable("refresh");
+              }
+            });
+          });
+          callbacks.start = function(e, ui) {
+            ui.item.sortable = {
+              index: ui.item.index(),
+              cancel: function() {
+                ui.item.sortable._isCanceled = true;
+              },
+              isCanceled: function() {
+                return ui.item.sortable._isCanceled;
+              },
+              isCustomHelperUsed: function() {
+                return !!ui.item.sortable._isCustomHelperUsed;
+              },
+              _isCanceled: false,
+              _isCustomHelperUsed: ui.item.sortable._isCustomHelperUsed
+            };
+          };
+          callbacks.activate = function() {
+            var excludes, phElement, placeholder;
+            savedNodes = element.contents();
+            placeholder = element.sortable("option", "placeholder");
+            if (placeholder && placeholder.element && typeof placeholder.element === "function") {
+              phElement = placeholder.element();
+              phElement = angular.element(phElement);
+              excludes = element.find("[class=\"" + phElement.attr("class") + "\"]");
+              savedNodes = savedNodes.not(excludes);
+            }
+          };
+          callbacks.update = function(e, ui) {
+            if (!ui.item.sortable.received) {
+              ui.item.sortable.dropindex = ui.item.index();
+              ui.item.sortable.droptarget = ui.item.parent();
+              element.sortable("cancel");
+            }
+            if (hasSortingHelper(element, ui) && !ui.item.sortable.received) {
+              savedNodes = savedNodes.not(savedNodes.last());
+            }
+            savedNodes.appendTo(element);
+            if (ui.item.sortable.received && !ui.item.sortable.isCanceled()) {
+              scope.$apply(function() {
+                ngModel.$modelValue.splice(ui.item.sortable.dropindex, 0, ui.item.sortable.moved);
+              });
+            }
+          };
+          callbacks.stop = function(e, ui) {
+            if (!ui.item.sortable.received && ("dropindex" in ui.item.sortable) && !ui.item.sortable.isCanceled()) {
+              scope.$apply(function() {
+                ngModel.$modelValue.splice(ui.item.sortable.dropindex, 0, ngModel.$modelValue.splice(ui.item.sortable.index, 1)[0]);
+              });
+            } else {
+              if ((("dropindex" in ui.item.sortable) || ui.item.sortable.isCanceled()) && !hasSortingHelper(element, ui)) {
+                savedNodes.appendTo(element);
+              }
+            }
+          };
+          callbacks.receive = function(e, ui) {
+            ui.item.sortable.received = true;
+          };
+          callbacks.remove = function(e, ui) {
+            if (!("dropindex" in ui.item.sortable)) {
+              element.sortable("cancel");
+              ui.item.sortable.cancel();
+            }
+            if (!ui.item.sortable.isCanceled()) {
+              scope.$apply(function() {
+                ui.item.sortable.moved = ngModel.$modelValue.splice(ui.item.sortable.index, 1)[0];
+              });
+            }
+          };
+          wrappers.helper = function(inner) {
+            if (inner && typeof inner === "function") {
+              return function(e, item) {
+                var innerResult;
+                innerResult = inner(e, item);
+                item.sortable._isCustomHelperUsed = item !== innerResult;
+                return innerResult;
+              };
+            }
+            return inner;
+          };
+          scope.$watch(attrs.uiSortable, (function(newVal) {
+            if (!!element.data("ui-sortable")) {
+              angular.forEach(newVal, function(value, key) {
+                if (callbacks[key]) {
+                  if (key === "stop") {
+                    value = combineCallbacks(value, function() {
+                      scope.$apply();
+                    });
+                  }
+                  value = combineCallbacks(callbacks[key], value);
+                } else {
+                  if (wrappers[key]) {
+                    value = wrappers[key](value);
+                  }
+                }
+                element.sortable("option", key, value);
+              });
+            }
+          }), true);
+          angular.forEach(callbacks, function(value, key) {
+            opts[key] = combineCallbacks(value, opts[key]);
+          });
+        } else {
+          $log.info("ui.sortable: ngModel not provided!", element);
+        }
+        element.sortable(opts);
+      }
+    };
+  }
+]);
+
+
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2953,7 +3110,7 @@ module.exports = [
 ];
 
 
-},{}],33:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2992,7 +3149,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],35:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3147,12 +3304,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],35:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":33,"./angular-qrcode":34,"./previewViewDirective":36}],36:[function(_dereq_,module,exports){
+},{"./DevicesAPI":34,"./angular-qrcode":35,"./previewViewDirective":37}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -3185,7 +3342,7 @@ module.exports = [
 ];
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -3598,30 +3755,48 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/navigation-and-themes/tab-editor.html',
-    "<div class=\"tab-editor well\" ng-if=\"icons\">\n" +
-    "  <div class=\"container-fluid\">\n" +
-    "    <div class=\"row\">\n" +
+    "<div>\n" +
     "\n" +
-    "      <!-- Existing tabs -->\n" +
+    "  <div class=\"tab-editor well\" ng-if=\"icons\">\n" +
+    "    <div class=\"container-fluid\">\n" +
+    "      <div class=\"row\">\n" +
     "\n" +
-    "      <div class=\"tab col-xs-2\" ng-repeat=\"tab in tabs\">\n" +
-    "        <div class=\"tab-container\" ng-click=\"openEditModal($index)\">\n" +
-    "          <div class=\"tab-icon\"><img ng-src=\"{{getPreviewForTab(tab.icon)}}\" alt=\"\"></div>\n" +
-    "          <span class=\"tab-title\">{{tab.title}}</span>\n" +
+    "        <div ng-class=\"{'col-xs-10': tabs.length < 5, 'col-xs-12': tabs.length >= 5}\">\n" +
+    "          <div class=\"row\" ui-sortable ng-model=\"tabs\">\n" +
+    "\n" +
+    "            <!-- Existing tabs -->\n" +
+    "\n" +
+    "            <div class=\"tab\" ng-class=\"{'col-xs-3': tabs.length < 5, 'col-xs-2': tabs.length >= 5}\" ng-repeat=\"tab in tabs\">\n" +
+    "              <div class=\"tab-container\" ng-click=\"openEditModal($index)\">\n" +
+    "                <div class=\"tab-icon\"><img ng-src=\"{{getPreviewForTab(tab.icon)}}\" alt=\"\"></div>\n" +
+    "                <span class=\"tab-title\">{{tab.title}}</span>\n" +
+    "              </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <!-- Create new tab -->\n" +
+    "        <div class=\"col-xs-2\" ng-hide=\"tabs.length >= 5\">\n" +
+    "          <div class=\"row\">\n" +
     "\n" +
-    "      <div class=\"tab tab-adder col-xs-2\" ng-hide=\"tabs.length >= 5\">\n" +
-    "        <div class=\"tab-adder-container\" ng-click=\"openEditModal(-1)\">\n" +
-    "          <div class=\"tab-icon\"><span class=\"glyphicon glyphicon-plus-sign\"></span></div>\n" +
-    "          <span class=\"tab-title\">New tab</span>\n" +
+    "            <!-- Create new tab -->\n" +
+    "\n" +
+    "            <div class=\"tab tab-adder col-xs-12\">\n" +
+    "              <div class=\"tab-adder-container\" ng-click=\"openEditModal(-1)\">\n" +
+    "                <div class=\"tab-icon\"><span class=\"glyphicon glyphicon-plus-sign\"></span></div>\n" +
+    "                <span class=\"tab-title\">New tab</span>\n" +
+    "              </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "\n" +
+    "  <span class=\"text-muted\"><small>You can re-order tabs by dragging them.</small></span>\n" +
+    "\n" +
     "</div>"
   );
 

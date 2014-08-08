@@ -3,6 +3,7 @@
 # Definition for the logs and log view module
 module.exports = angular.module "SteroidsConnect.navigation-and-themes", [
     require("./colorpicker").name
+    require("./ui-sortable").name
     "ui.bootstrap"
   ]
 
