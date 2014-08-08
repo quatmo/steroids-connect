@@ -62,17 +62,17 @@
     "tabs": [
       {
         "title": "Contacts",
-        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/debug-6089c23af5a0e778e4f12fe8842a79b6.png",
+        "icon": "http://localhost/img/transition-7eac1a3acb7719aaad417eaeae44f8e6.png",
         "location": "http://localhost/views/eka/index.html"
       },
       {
         "title": "Tach",
-        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/share-d009bc402d7dab19ae2f04bc3fc873c9.png",
+        "icon": "http://localhost/img/debug-6089c23af5a0e778e4f12fe8842a79b6.png",
         "location": "http://localhost/views/toka/index.html"
       },
       {
         "title": "Profile",
-        "icon": "http://www.appgyver.com/assets/steroids_032014/icons-workflow/generate-1ce4dc999aba22012b166e4779a3ad9e.png",
+        "icon": "http://localhost/img/share-d009bc402d7dab19ae2f04bc3fc873c9.png",
         "location": "http://localhost/views/kolmas/index.html"
       }
     ]

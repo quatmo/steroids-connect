@@ -1,4 +1,4 @@
-<div class="tab-editor well">
+<div class="tab-editor well" ng-if="icons">
   <div class="container-fluid">
     <div class="row">
 
@@ -6,14 +6,14 @@
 
       <div class="tab col-xs-2" ng-repeat="tab in tabs">
         <div class="tab-container" ng-click="openEditModal($index)">
-          <div class="tab-icon"><img ng-src="{{tab.icon}}" alt=""></div>
+          <div class="tab-icon"><img ng-src="{{getPreviewForTab(tab.icon)}}" alt=""></div>
           <span class="tab-title">{{tab.title}}</span>
         </div>
       </div>
 
       <!-- Create new tab -->
 
-      <div class="tab tab-adder col-xs-2">
+      <div class="tab tab-adder col-xs-2" ng-hide="tabs.length >= 5">
         <div class="tab-adder-container" ng-click="openEditModal(-1)">
           <div class="tab-icon"><span class="glyphicon glyphicon-plus-sign"></span></div>
           <span class="tab-title">New tab</span>

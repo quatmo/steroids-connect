@@ -15,6 +15,10 @@ module.exports =
           views: "="
         link: (scope, element, attrs) ->
 
+          scope.getPreviewForTab = (iconPath) ->
+            return icon.url for icon in scope.icons when icon.path == iconPath
+            iconPath
+
           scope.openEditModal = (tabIndex) ->
             editModal = $modal.open
               templateUrl: "/steroids-connect/navigation-and-themes/tab-modal.html"

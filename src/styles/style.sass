@@ -46,6 +46,10 @@
     &:hover
       border: 2px $color-blue-6 solid
 
+.ag-animation-jump
+  -webkit-animation: jump 0.3s 1
+  -moz-animation: jump 0.3s 1
+  animation: jump 0.3s 1
 
 ////////////////////////////////////////////////////////////////
 // GLOBAL HEADER
@@ -385,6 +389,13 @@
     -moz-transform: scale(1.5)
   100%
     -moz-transform: scale(1)
+
+.ag-tab-adder-modal-footer
+  .btn
+    position: relative
+    z-index: 1
+  .ag-animation-jump
+    z-index: 2
 
 ////////////////////////////////////////////////////////////////
 // GENERATORS VIEW

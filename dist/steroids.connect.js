@@ -2838,6 +2838,17 @@ module.exports = [
         views: "="
       },
       link: function(scope, element, attrs) {
+        scope.getPreviewForTab = function(iconPath) {
+          var icon, _i, _len, _ref;
+          _ref = scope.icons;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            icon = _ref[_i];
+            if (icon.path === iconPath) {
+              return icon.url;
+            }
+          }
+          return iconPath;
+        };
         return scope.openEditModal = function(tabIndex) {
           var editModal;
           editModal = $modal.open({
@@ -3587,7 +3598,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/navigation-and-themes/tab-editor.html',
-    "<div class=\"tab-editor well\">\n" +
+    "<div class=\"tab-editor well\" ng-if=\"icons\">\n" +
     "  <div class=\"container-fluid\">\n" +
     "    <div class=\"row\">\n" +
     "\n" +
@@ -3595,14 +3606,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      <div class=\"tab col-xs-2\" ng-repeat=\"tab in tabs\">\n" +
     "        <div class=\"tab-container\" ng-click=\"openEditModal($index)\">\n" +
-    "          <div class=\"tab-icon\"><img ng-src=\"{{tab.icon}}\" alt=\"\"></div>\n" +
+    "          <div class=\"tab-icon\"><img ng-src=\"{{getPreviewForTab(tab.icon)}}\" alt=\"\"></div>\n" +
     "          <span class=\"tab-title\">{{tab.title}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Create new tab -->\n" +
     "\n" +
-    "      <div class=\"tab tab-adder col-xs-2\">\n" +
+    "      <div class=\"tab tab-adder col-xs-2\" ng-hide=\"tabs.length >= 5\">\n" +
     "        <div class=\"tab-adder-container\" ng-click=\"openEditModal(-1)\">\n" +
     "          <div class=\"tab-icon\"><span class=\"glyphicon glyphicon-plus-sign\"></span></div>\n" +
     "          <span class=\"tab-title\">New tab</span>\n" +
@@ -3655,10 +3666,17 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"modal-footer\">\n" +
+    "<div class=\"modal-footer ag-tab-adder-modal-footer\">\n" +
     "  <button class=\"btn btn-danger\" ng-click=\"remove()\" ng-hide=\"isNewTab\">Remove tab</button>\n" +
     "\n" +
-    "  <button class=\"btn btn-primary\" ng-click=\"ok()\">Save</button>\n" +
+    "  <span style=\"display: inline-block;\" ng-if=\"!tab.location\" tooltip=\"Select view before saving\" tooltip-trigger=\"mouseenter\" tooltip-append-to-body=\"true\">\n" +
+    "    <button class=\"btn btn-primary\" disabled>Save</button>\n" +
+    "  </span>\n" +
+    "  <span style=\"display: inline-block;\" ng-if=\"!tab.icon && tab.location\" tooltip=\"Select icon before saving\" tooltip-trigger=\"mouseenter\" tooltip-append-to-body=\"true\">\n" +
+    "    <button class=\"btn btn-primary\" disabled>Save</button>\n" +
+    "  </span>\n" +
+    "  <button ng-if=\"tab.icon && tab.location\" class=\"btn btn-primary ag-animation-jump\" ng-click=\"ok()\">Save</button>\n" +
+    "\n" +
     "  <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
     "</div>"
   );

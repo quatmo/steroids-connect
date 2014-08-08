@@ -37,9 +37,16 @@
 
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer ag-tab-adder-modal-footer">
   <button class="btn btn-danger" ng-click="remove()" ng-hide="isNewTab">Remove tab</button>
 
-  <button class="btn btn-primary" ng-click="ok()">Save</button>
+  <span style="display: inline-block;" ng-if="!tab.location" tooltip="Select view before saving" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+    <button class="btn btn-primary" disabled>Save</button>
+  </span>
+  <span style="display: inline-block;" ng-if="!tab.icon && tab.location" tooltip="Select icon before saving" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+    <button class="btn btn-primary" disabled>Save</button>
+  </span>
+  <button ng-if="tab.icon && tab.location" class="btn btn-primary ag-animation-jump" ng-click="ok()">Save</button>
+
   <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </div>

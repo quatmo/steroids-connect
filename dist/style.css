@@ -494,6 +494,11 @@ colorpicker-preview {
     .ag-icon-container > div:hover {
       border: 2px #4dccff solid; }
 
+.ag-animation-jump {
+  -webkit-animation: jump 0.3s 1;
+  -moz-animation: jump 0.3s 1;
+  animation: jump 0.3s 1; }
+
 /* Keep things nice and scoped!
  */
 .ag-header {
@@ -757,6 +762,12 @@ colorpicker-preview {
 
   100% {
     -moz-transform: scale(1); } }
+.ag-tab-adder-modal-footer .btn {
+  position: relative;
+  z-index: 1; }
+.ag-tab-adder-modal-footer .ag-animation-jump {
+  z-index: 2; }
+
 #view-generators {
   padding-top: 40px;
   padding-bottom: 10px; }
