@@ -1,4 +1,14 @@
 steroids-connect
 ================
 
-Steroids Connect screen shared components.
+### To install dependencies:
+
+```
+npm install; bower install
+```
+
+### To run:
+
+```
+grunt develop
+```
