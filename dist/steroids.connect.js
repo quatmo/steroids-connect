@@ -3928,7 +3928,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-xs-12 col-md-5\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
-    "          <qrcode version=\"3\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
+    "          <qrcode version=\"8\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
     "          <br><br>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\">\n" +
@@ -3977,7 +3977,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
-    "</div>"
+    "</div>\n"
   );
 
 }]);
