@@ -17,7 +17,7 @@
       </div>
 
       <!-- Navbar links -->
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav">
         <li ng-repeat="tab in tabs"><a ng-class="{'active': currentTab() == tab.name}" ng-click="setTab(tab.name)">{{tab.label}}</a></li>
       </ul>
 

@@ -1654,14 +1654,8 @@ module.exports = [
             name: "qr",
             label: "Preview"
           }, {
-            name: "navigation",
-            label: "Navigation & themes"
-          }, {
             name: "logs",
             label: "Logs & Errors"
-          }, {
-            name: "generators",
-            label: "Generators"
           }
         ];
         selectedTab = scope.tabs[0].name;
@@ -3366,7 +3360,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      </div>\n" +
     "\n" +
     "      <!-- Navbar links -->\n" +
-    "      <ul class=\"nav navbar-nav navbar-right\">\n" +
+    "      <ul class=\"nav navbar-nav\">\n" +
     "        <li ng-repeat=\"tab in tabs\"><a ng-class=\"{'active': currentTab() == tab.name}\" ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
     "      </ul>\n" +
     "\n" +
@@ -3381,29 +3375,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <preview-view></preview-view>\n" +
     "    </div>\n" +
     "\n" +
-    "    <!-- Navigation -->\n" +
-    "    <div ng-switch-when=\"navigation\">\n" +
-    "      <navigation-and-themes-view></navigation-and-themes-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Backend -->\n" +
-    "    <div ng-switch-when=\"backend\">\n" +
-    "      <iframe src=\"http://composer.testgyver.com/wizard_iframe_providers/592\" id=\"provider-wizard\" frameborder=\"0\" width=\"100%\" scrolling=\"no\" style=\"overflow: hidden; height: 181px;\"></iframe>\n" +
-    "    </div>\n" +
-    "\n" +
     "    <!-- Logs -->\n" +
     "    <div ng-switch-when=\"logs\">\n" +
     "      <log-view></log-view>\n" +
     "    </div>\n" +
     "\n" +
-    "    <!-- Generators -->\n" +
-    "    <div ng-switch-when=\"generators\">\n" +
-    "      <generators-view></generators-view>\n" +
-    "    </div>\n" +
-    "\n" +
     "  </div>\n" +
     "\n" +
-    "</div>"
+    "</div>\n"
   );
 
 

@@ -327,7 +327,7 @@ colorpicker-saturation {
     display: block;
     height: 7px;
     width: 7px;
-    border: 1px solid black;
+    border: 1px solid #000;
     border-radius: 5px;
     position: absolute;
     top: 0;
@@ -338,7 +338,7 @@ colorpicker-saturation {
       display: block;
       height: 7px;
       width: 7px;
-      border: 1px solid white;
+      border: 1px solid #fff;
       border-radius: 5px; }
 
 colorpicker-hue, colorpicker-alpha {
@@ -352,8 +352,8 @@ colorpicker-hue, colorpicker-alpha {
 colorpicker-hue i, colorpicker-alpha i {
   display: block;
   height: 2px;
-  background: black;
-  border-top: 1px solid white;
+  background: #000;
+  border-top: 1px solid #fff;
   position: absolute;
   top: 0;
   left: 0;
@@ -380,8 +380,8 @@ colorpicker-alpha {
   .colorpicker input {
     width: 100px;
     font-size: 11px;
-    color: black;
-    background-color: white; }
+    color: #000;
+    background-color: #fff; }
   .colorpicker.alpha {
     min-width: 140px; }
     .colorpicker.alpha colorpicker-alpha {
@@ -412,7 +412,7 @@ colorpicker-alpha {
       left: 6px; }
 
 .colorpicker-position-top .dropdown-menu::after {
-  border-top: 6px solid white;
+  border-top: 6px solid #fff;
   border-bottom: 0;
   top: auto;
   bottom: -5px; }
@@ -423,7 +423,7 @@ colorpicker-alpha {
   bottom: -6px; }
 
 .colorpicker-position-right .dropdown-menu::after {
-  border-right: 6px solid white;
+  border-right: 6px solid #fff;
   border-left: 0;
   top: 11px;
   left: -5px; }
@@ -434,14 +434,14 @@ colorpicker-alpha {
   left: -6px; }
 
 .colorpicker-position-bottom .dropdown-menu::after {
-  border-bottom: 6px solid white;
+  border-bottom: 6px solid #fff;
   border-top: 0; }
 .colorpicker-position-bottom .dropdown-menu::before {
   border-bottom: 7px solid rgba(0, 0, 0, 0.2);
   border-top: 0; }
 
 .colorpicker-position-left .dropdown-menu::after {
-  border-left: 6px solid white;
+  border-left: 6px solid #fff;
   border-right: 0;
   top: 11px;
   left: auto;
@@ -662,7 +662,7 @@ colorpicker-preview {
       #view-log-view .logs-container table .logMsg.type-error .logMsg-content {
         color: #fa5252; }
       #view-log-view .logs-container table .logMsg .glyphicon {
-        color: #eeeeee;
+        color: #eee;
         display: none; }
       #view-log-view .logs-container table .logMsg .caret {
         cursor: pointer; }
@@ -670,13 +670,11 @@ colorpicker-preview {
 @-webkit-keyframes bg-fade {
   0% {
     background-color: #e5f7ff; }
-
   100% {
     background-color: transparent; } }
 @-moz-keyframes bg-fade {
   0% {
     background-color: #e5f7ff; }
-
   100% {
     background-color: transparent; } }
 #steroids-connect_navigation-and-themes-view {
@@ -691,10 +689,10 @@ colorpicker-preview {
     text-align: center;
     padding: 7px 0px; }
   #steroids-connect_navigation-and-themes-view .ui-configurer-saveform {
-    background: #f9f9f9;
+    background: #F9F9F9;
     padding: 15px;
     border-radius: 4px;
-    border: 1px solid #eeeeee;
+    border: 1px solid #EEE;
     text-align: center;
     width: 100%;
     position: static; }
@@ -738,28 +736,22 @@ colorpicker-preview {
 @keyframes jump {
   0% {
     transform: scale(1); }
-
   50% {
     transform: scale(1.5); }
-
   100% {
     transform: scale(1); } }
 @-webkit-keyframes jump {
   0% {
     -webkit-transform: scale(1); }
-
   50% {
     -webkit-transform: scale(1.5); }
-
   100% {
     -webkit-transform: scale(1); } }
 @-moz-keyframes jump {
   0% {
     -moz-transform: scale(1); }
-
   50% {
     -moz-transform: scale(1.5); }
-
   100% {
     -moz-transform: scale(1); } }
 .ag-tab-adder-modal-footer .btn {
@@ -793,3 +785,5 @@ colorpicker-preview {
       padding: 8px 10px;
       text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
       background: rgba(0, 0, 0, 0.2); }
+
+/*# sourceMappingURL=style.css.map */
