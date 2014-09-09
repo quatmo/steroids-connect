@@ -18,7 +18,7 @@ module.exports =
         filters: {
           deviceName: "" # Name of the device originating the log entry
           view: ""       # Name of the view originating the log entry
-          type: ""       # Type of the log entry (eg. "error" or "log")
+          level: ""      # Level of the log entry (eg. "error" or "info")
         }
 
         # Method for clearing ALL filters
@@ -26,7 +26,7 @@ module.exports =
           @filters = {
             deviceName: ""
             view: ""
-            type: ""
+            level: ""
           }
 
         # Method for settings the filter on device name
@@ -69,23 +69,23 @@ module.exports =
           # Return the composed list of filterable devices
           availableForFiltering
 
-        # Method for settings the filter on message type
-        filterByType: (type) ->
-          if type? then @filters['type'] = type else @filters['type'] = ""
+        # Method for settings the filter on message log level
+        filterByLogLevel: (level) ->
+          if level? then @filters['level'] = level else @filters['level'] = ""
 
-        # Returns a list of available types to filter on
-        availableTypeFilters: [
+        # Returns a list of available log levels to filter on
+        availableLogLevelFilters: [
             {
               label: "All"
-              type: ""
+              level: ""
             }
             {
-              label: "Logs"
-              type: "log"
+              label: "Info"
+              level: "info"
             }
             {
               label: "Errors"
-              type: "error"
+              level: "error"
             }
           ]
 

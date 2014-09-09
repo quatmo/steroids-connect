@@ -20,7 +20,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr log-message="logMsg" ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters"></tr>
+          <tr
+            log-message="logMsg"
+            ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters">
+          </tr>
         </tbody>
       </table>
     </div>

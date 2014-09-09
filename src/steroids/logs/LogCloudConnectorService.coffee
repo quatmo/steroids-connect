@@ -15,11 +15,8 @@ module.exports =
       connection = undefined
 
       requestLogs = () ->
-        connection = $timeout () ->
-          $http.get(endpoint).success (data) ->
-            LogsAPI.add data.slice(0, Math.floor((Math.random() * (data.length+1))))
-            requestLogs()
-        , ((Math.random() * 5000) + 500)
+        $http.get(endpoint).success (data) ->
+            LogsAPI.add data
 
       @setEndpoint = (endpointUrl) ->
         endpoint = endpointUrl

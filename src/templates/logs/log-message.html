@@ -1,4 +1,4 @@
-<tr class="logMsg" ng-class="{'type-error': logMessage.type == 'error'}">
+<tr class="logMsg" ng-class="(logMessage.level == 'error') ? 'level-error' : ''">
   <td class="text-muted logMsg-device-name">
     <span class="glyphicon glyphicon-phone"></span>
     <a ng-click="LogsFilterAPI.filterByDeviceName(logMessage.deviceName)">{{logMessage.deviceName}}</a>
