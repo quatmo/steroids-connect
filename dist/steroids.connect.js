@@ -1691,7 +1691,8 @@ _dereq_("../templates/SteroidsConnectTemplates");
 
 steroidsConnectModules.run([
   "LogCloudConnector", function(LogCloudConnector) {
-    return LogCloudConnector.setEndpoint("./test_log.json");
+    LogCloudConnector.setEndpoint("http://localhost:4567/__appgyver/logger");
+    return LogCloudConnector.connect();
   }
 ]);
 
@@ -1757,12 +1758,9 @@ module.exports = [
     endpoint = void 0;
     connection = void 0;
     requestLogs = function() {
-      return connection = $timeout(function() {
-        return $http.get(endpoint).success(function(data) {
-          LogsAPI.add(data.slice(0, Math.floor(Math.random() * (data.length + 1))));
-          return requestLogs();
-        });
-      }, (Math.random() * 5000) + 500);
+      return $http.get(endpoint).success(function(data) {
+        return LogsAPI.add(data);
+      });
     };
     this.setEndpoint = function(endpointUrl) {
       return endpoint = endpointUrl;
@@ -1817,13 +1815,13 @@ module.exports = [
       filters: {
         deviceName: "",
         view: "",
-        type: ""
+        level: ""
       },
       clearFilters: function() {
         return this.filters = {
           deviceName: "",
           view: "",
-          type: ""
+          level: ""
         };
       },
       filterByDeviceName: function(deviceName) {
@@ -1884,23 +1882,23 @@ module.exports = [
         }
         return availableForFiltering;
       },
-      filterByType: function(type) {
-        if (type != null) {
-          return this.filters['type'] = type;
+      filterByLogLevel: function(level) {
+        if (level != null) {
+          return this.filters['level'] = level;
         } else {
-          return this.filters['type'] = "";
+          return this.filters['level'] = "";
         }
       },
-      availableTypeFilters: [
+      availableLogLevelFilters: [
         {
           label: "All",
-          type: ""
+          level: ""
         }, {
-          label: "Logs",
-          type: "log"
+          label: "Info",
+          level: "info"
         }, {
           label: "Errors",
-          type: "error"
+          level: "error"
         }
       ]
     };
@@ -3454,7 +3452,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <!-- Filter for log msg type -->\n" +
     "    <div class=\"form-group\">\n" +
     "      <div class=\"btn-group\">\n" +
-    "        <button type=\"button\" class=\"btn btn-default\" ng-class=\"{'active': LogsFilterAPI.filters.type == availableType.type}\" ng-click=\"LogsFilterAPI.filterByType(availableType.type)\" ng-repeat=\"availableType in LogsFilterAPI.availableTypeFilters\">{{availableType.label}}</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-class=\"{'active': LogsFilterAPI.filters.level == availableLogLevel.level}\" ng-click=\"LogsFilterAPI.filterByLogLevel(availableLogLevel.level)\" ng-repeat=\"availableLogLevel in LogsFilterAPI.availableLogLevelFilters\">{{availableLogLevel.label}}</button>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
@@ -3480,12 +3478,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  </form>\n" +
     "\n" +
-    "</div>"
+    "</div>\n"
   );
 
 
   $templateCache.put('/steroids-connect/logs/log-message.html',
-    "<tr class=\"logMsg\" ng-class=\"{'type-error': logMessage.type == 'error'}\">\n" +
+    "<tr class=\"logMsg\" ng-class=\"(logMessage.level == 'error') ? 'level-error' : ''\">\n" +
     "  <td class=\"text-muted logMsg-device-name\">\n" +
     "    <span class=\"glyphicon glyphicon-phone\"></span>\n" +
     "    <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMessage.deviceName)\">{{logMessage.deviceName}}</a>\n" +
@@ -3507,7 +3505,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <pre>{{logMessage.blob}}</pre>\n" +
     "    </div>\n" +
     "  </td>\n" +
-    "</tr>"
+    "</tr>\n"
   );
 
 
@@ -3534,13 +3532,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
-    "          <tr log-message=\"logMsg\" ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\"></tr>\n" +
+    "          <tr\n" +
+    "            log-message=\"logMsg\"\n" +
+    "            ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters\">\n" +
+    "          </tr>\n" +
     "        </tbody>\n" +
     "      </table>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "</div>"
+    "</div>\n"
   );
 
 
