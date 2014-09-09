@@ -44,7 +44,7 @@ angular.module('monospaced.qrcode', [])
             tile,
             qr,
             setVersion = function(value) {
-              version = Math.max(1, Math.min(parseInt(value, 10), 10)) || 4;
+              version = Math.max(1, Math.min(parseInt(value, 10), 10)) || 5;
             },
             setErrorCorrectionLevel = function(value) {
               errorCorrectionLevel = value in levels ? value : 'M';

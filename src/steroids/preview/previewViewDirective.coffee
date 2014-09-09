@@ -26,5 +26,6 @@ module.exports =
 
           scope.qrCode = parseQueryParams()["qrcode"]
 
+
       }
   ]
