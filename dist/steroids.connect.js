@@ -1642,6 +1642,25 @@ module.exports = [
     return {
       restrict: "EA",
       replace: true,
+      templateUrl: "/steroids-connect/build-settings/build-settings-view.html",
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],3:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.build-settings", []).directive("buildSettingsView", _dereq_("./buildSettingsViewDirective"));
+
+
+},{"./buildSettingsViewDirective":2}],4:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
       templateUrl: "/steroids-connect/connect-ui/connect-ui.html",
       link: function(scope, element, attrs) {
 
@@ -1654,14 +1673,14 @@ module.exports = [
             name: "qr",
             label: "Preview"
           }, {
-            name: "navigation",
-            label: "Navigation & themes"
-          }, {
             name: "logs",
-            label: "Logs & Errors"
+            label: "Logs"
           }, {
-            name: "generators",
-            label: "Generators"
+            name: "docs",
+            label: "Documentation"
+          }, {
+            name: "build-settings",
+            label: "Build Settings"
           }
         ];
         selectedTab = scope.tabs[0].name;
@@ -1677,15 +1696,15 @@ module.exports = [
 ];
 
 
-},{}],3:[function(_dereq_,module,exports){
+},{}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("connectUi", _dereq_("./connectUiDirective"));
 
 
-},{"./connectUiDirective":2}],4:[function(_dereq_,module,exports){
+},{"./connectUiDirective":4}],6:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
@@ -1697,7 +1716,26 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":38,"./connect-ui":3,"./generators":7,"./logs":12,"./navigation-and-themes":25,"./preview":36}],5:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":42,"./build-settings":3,"./connect-ui":5,"./docs":8,"./generators":11,"./logs":16,"./navigation-and-themes":29,"./preview":40}],7:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/docs/docs-view.html",
+      link: function(scope, element, attrs) {}
+    };
+  }
+];
+
+
+},{}],8:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.docs", []).directive("docsView", _dereq_("./docsViewDirective"));
+
+
+},{"./docsViewDirective":7}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1729,7 +1767,7 @@ module.exports = [
 ];
 
 
-},{}],6:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "GeneratorsAPI", function(GeneratorsAPI) {
@@ -1745,12 +1783,12 @@ module.exports = [
 ];
 
 
-},{}],7:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective")).factory("GeneratorsAPI", _dereq_("./GeneratorsAPI"));
 
 
-},{"./GeneratorsAPI":5,"./generatorsViewDirective":6}],8:[function(_dereq_,module,exports){
+},{"./GeneratorsAPI":9,"./generatorsViewDirective":10}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", "$http", "LogsAPI", function($timeout, $http, LogsAPI) {
@@ -1776,7 +1814,7 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1803,7 +1841,7 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
@@ -1906,7 +1944,7 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 
 /*
 Filters out all duplicate items from an array by checking the specified key
@@ -1954,12 +1992,12 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 });
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":36,"./LogCloudConnectorService":8,"./LogsAPI":9,"./LogsFilterAPI":10,"./filterUnique":11,"./logDateFormatFilter":13,"./logFiltersViewDirective":14,"./logMessageDirective":15,"./logTimeFormatFilter":16,"./logTimeMillisecondsFormatFilter":17,"./logViewDirective":18}],13:[function(_dereq_,module,exports){
+},{"./../preview":40,"./LogCloudConnectorService":12,"./LogsAPI":13,"./LogsFilterAPI":14,"./filterUnique":15,"./logDateFormatFilter":17,"./logFiltersViewDirective":18,"./logMessageDirective":19,"./logTimeFormatFilter":20,"./logTimeMillisecondsFormatFilter":21,"./logViewDirective":22}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1981,7 +2019,7 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -1998,7 +2036,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsFilterAPI", function(LogsFilterAPI) {
@@ -2028,7 +2066,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2053,7 +2091,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2072,7 +2110,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2089,7 +2127,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -2120,7 +2158,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
@@ -2156,7 +2194,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2173,7 +2211,7 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -2613,7 +2651,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2631,7 +2669,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2649,12 +2687,12 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":19,"./TabModalCtrl":20,"./colorInputDirective":21,"./colorpicker":22,"./drawerConfiguratorViewDirective":23,"./generalSettingsConfiguratorViewDirective":24,"./navigationAndThemesViewDirective":26,"./navigationBarConfiguratorViewDirective":27,"./statusBarConfiguratorViewDirective":28,"./stickyScrollDirective":29,"./tabEditorDirective":30,"./tabsConfiguratorViewDirective":31,"./ui-sortable":32,"./viewSelectorDirective":33}],26:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":23,"./TabModalCtrl":24,"./colorInputDirective":25,"./colorpicker":26,"./drawerConfiguratorViewDirective":27,"./generalSettingsConfiguratorViewDirective":28,"./navigationAndThemesViewDirective":30,"./navigationBarConfiguratorViewDirective":31,"./statusBarConfiguratorViewDirective":32,"./stickyScrollDirective":33,"./tabEditorDirective":34,"./tabsConfiguratorViewDirective":35,"./ui-sortable":36,"./viewSelectorDirective":37}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2708,7 +2746,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2725,7 +2763,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2780,7 +2818,7 @@ module.exports = [
 ];
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -2822,7 +2860,7 @@ module.exports = [
 ];
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$modal", function($modal) {
@@ -2878,7 +2916,7 @@ module.exports = [
 ];
 
 
-},{}],31:[function(_dereq_,module,exports){
+},{}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -2916,7 +2954,7 @@ module.exports = [
 ];
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
   "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
     return {
@@ -3073,7 +3111,7 @@ module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {})
 ]);
 
 
-},{}],33:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3108,7 +3146,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3147,7 +3185,7 @@ module.exports = [
 ];
 
 
-},{}],35:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3302,12 +3340,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],36:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
 
 
-},{"./DevicesAPI":34,"./angular-qrcode":35,"./previewViewDirective":37}],37:[function(_dereq_,module,exports){
+},{"./DevicesAPI":38,"./angular-qrcode":39,"./previewViewDirective":41}],41:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "DevicesAPI", function($location, DevicesAPI) {
@@ -3342,9 +3380,26 @@ module.exports = [
 ];
 
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
+
+  $templateCache.put('/steroids-connect/build-settings/build-settings-view.html',
+    "<div id=\"view-docs\" class=\"container\">\n" +
+    "\n" +
+    "  <div class=\"row\">\n" +
+    "\n" +
+    "    <div class=\"col-sm-12\">\n" +
+    "      <a href=\"http://academy.appgyver.com\" target=\"_blank\">\n" +
+    "        <h1>See your app's build settings in the Build Service</h1>\n" +
+    "      </a>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>\n"
+  );
+
 
   $templateCache.put('/steroids-connect/connect-ui/connect-ui.html',
     "<div id=\"view-connect-ui\">\n" +
@@ -3396,6 +3451,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <log-view></log-view>\n" +
     "    </div>\n" +
     "\n" +
+    "    <!-- Documentation -->\n" +
+    "    <div ng-switch-when=\"docs\">\n" +
+    "      <docs-view></docs-view>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- Documentation -->\n" +
+    "    <div ng-switch-when=\"build-settings\">\n" +
+    "      <build-settings-view></build-settings-view>\n" +
+    "    </div>\n" +
+    "\n" +
     "    <!-- Generators -->\n" +
     "    <div ng-switch-when=\"generators\">\n" +
     "      <generators-view></generators-view>\n" +
@@ -3403,7 +3468,24 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  </div>\n" +
     "\n" +
-    "</div>"
+    "</div>\n"
+  );
+
+
+  $templateCache.put('/steroids-connect/docs/docs-view.html',
+    "<div id=\"view-docs\" class=\"container\">\n" +
+    "\n" +
+    "  <div class=\"row\">\n" +
+    "\n" +
+    "    <div class=\"col-sm-12\">\n" +
+    "      <a href=\"http://academy.appgyver.com\" target=\"_blank\">\n" +
+    "        <h1>Awesome documentation available in Academy</h1>\n" +
+    "      </a>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
+    "\n" +
+    "</div>\n"
   );
 
 
@@ -3985,6 +4067,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 }]);
 
-},{}]},{},[4])
-(4)
+},{}]},{},[6])
+(6)
 });
