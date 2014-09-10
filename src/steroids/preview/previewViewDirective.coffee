@@ -11,7 +11,6 @@ module.exports =
         replace: true
         templateUrl: "/steroids-connect/preview/preview-view.html"
         link: (scope, element, attrs) ->
-
           scope.DevicesAPI = DevicesAPI
 
           parseQueryParams = () ->
@@ -24,7 +23,11 @@ module.exports =
               paramObj[param[0]] = param[1]
             paramObj
 
+          #TODO UN
+
           scope.qrCode = parseQueryParams()["qrcode"]
+
+          console.log scope.qrCode
 
 
       }
