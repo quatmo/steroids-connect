@@ -24,7 +24,11 @@ module.exports =
               paramObj[param[0]] = param[1]
             paramObj
 
-          scope.qrCode = parseQueryParams()["qrcode"]
+          qrCode = parseQueryParams()["qrcode"]
+
+          decodedQrCode = decodeURIComponent(qrCode)
+
+          scope.qrCode = decodedQrCode
 
 
       }

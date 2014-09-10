@@ -3316,7 +3316,7 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/preview/preview-view.html",
       link: function(scope, element, attrs) {
-        var parseQueryParams;
+        var decodedQrCode, parseQueryParams, qrCode;
         scope.DevicesAPI = DevicesAPI;
         parseQueryParams = function() {
           var param, paramObj, params, _i, _len;
@@ -3333,7 +3333,9 @@ module.exports = [
           }
           return paramObj;
         };
-        return scope.qrCode = parseQueryParams()["qrcode"];
+        qrCode = parseQueryParams()["qrcode"];
+        decodedQrCode = decodeURIComponent(qrCode);
+        return scope.qrCode = decodedQrCode;
       }
     };
   }
