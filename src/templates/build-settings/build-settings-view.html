@@ -1,11 +1,22 @@
 <div id="view-docs" class="container">
 
-  <div class="row">
+  <div class="row padding-top">
 
     <div class="col-sm-12">
-      <a href="http://academy.appgyver.com" target="_blank">
-        <h1>See your app's build settings in the Build Service</h1>
-      </a>
+      <h1>Build Settings</h1>
+
+      <p>On this tab, you can configure the build settings for your app.</p>
+      <div ng-show="waitingForCloud">Fetching your App ID from Steroids CLI...</div>
+      <div ng-hide="waitingForCloud">
+        <div ng-show="noCloudJson">
+          <p>No <code>config/cloud.json</code> found. Please run <code>$ steroids deploy</code> and reload this page.</p>
+        </div>
+        <div ng-hide="noCloudJson">
+          <a class="btn btn-lg btn-primary" ng-href="http://cloud.appgyver.com/applications/{{cloudId}}" target="_blank">
+            Configure your app's build settings in the Build Service &raquo;
+          </a>
+        </div>
+      </div>
     </div>
 
   </div>

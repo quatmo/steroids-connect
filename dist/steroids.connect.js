@@ -1638,12 +1638,24 @@ module.exports = qrcode;
 },{}],2:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "$http", function($http) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/build-settings/build-settings-view.html",
-      link: function(scope, element, attrs) {}
+      link: function(scope, element, attrs) {
+        scope.waitingForCloud = true;
+        scope.noCloudJson = false;
+        return $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
+          scope.cloudId = res.data.id;
+          return scope.cloudHash = res.data.identification_hash;
+        }, function(error) {
+          console.log(JSON.stringify(error));
+          return scope.noCloudJson = true;
+        })["finally"](function() {
+          return scope.waitingForCloud = false;
+        });
+      }
     };
   }
 ];
@@ -3387,12 +3399,23 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/build-settings/build-settings-view.html',
     "<div id=\"view-docs\" class=\"container\">\n" +
     "\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row padding-top\">\n" +
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
-    "      <a href=\"http://academy.appgyver.com\" target=\"_blank\">\n" +
-    "        <h1>See your app's build settings in the Build Service</h1>\n" +
-    "      </a>\n" +
+    "      <h1>Build Settings</h1>\n" +
+    "\n" +
+    "      <p>On this tab, you can configure the build settings for your app.</p>\n" +
+    "      <div ng-show=\"waitingForCloud\">Fetching your App ID from Steroids CLI...</div>\n" +
+    "      <div ng-hide=\"waitingForCloud\">\n" +
+    "        <div ng-show=\"noCloudJson\">\n" +
+    "          <p>No <code>config/cloud.json</code> found. Please run <code>$ steroids deploy</code> and reload this page.</p>\n" +
+    "        </div>\n" +
+    "        <div ng-hide=\"noCloudJson\">\n" +
+    "          <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
+    "            Configure your app's build settings in the Build Service &raquo;\n" +
+    "          </a>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
