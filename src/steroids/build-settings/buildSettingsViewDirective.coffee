@@ -10,7 +10,7 @@ module.exports =
         replace: true
         templateUrl: "/steroids-connect/build-settings/build-settings-view.html"
         link: (scope, element, attrs) ->
-          scope.waitingForCloud = true
+          scope.waiting = "Fetching your App ID from Steroids CLI..."
           scope.noCloudJson = false
 
           $http.get("http://localhost:4567/__appgyver/cloud_config").then(
@@ -18,11 +18,24 @@ module.exports =
               scope.cloudId = res.data.id
               scope.cloudHash = res.data.identification_hash
             (error) ->
-              console.log JSON.stringify(error)
               scope.noCloudJson = true
 
           ).finally ->
-            scope.waitingForCloud = false
+            scope.waiting = null
+
+          scope.deploy = ->
+            scope.waiting = "Deploying your app to AppGyver Cloud..."
+            $http.get("http://localhost:4567/__appgyver/deploy").then(
+              (res) ->
+                scope.waiting = null
+                scope.noCloudJson = false
+                scope.flashMsg = "All done!"
+              (error) ->
+                scope.flashMsg =
+                  "Could not deploy your project to the cloud. #{error.data.error}"
+
+            ).finally ->
+              scope.waiting = null
 
       }
   ]

@@ -1644,17 +1644,28 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/build-settings/build-settings-view.html",
       link: function(scope, element, attrs) {
-        scope.waitingForCloud = true;
+        scope.waiting = "Fetching your App ID from Steroids CLI...";
         scope.noCloudJson = false;
-        return $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
+        $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
           scope.cloudId = res.data.id;
           return scope.cloudHash = res.data.identification_hash;
         }, function(error) {
-          console.log(JSON.stringify(error));
           return scope.noCloudJson = true;
         })["finally"](function() {
-          return scope.waitingForCloud = false;
+          return scope.waiting = null;
         });
+        return scope.deploy = function() {
+          scope.waiting = "Deploying your app to AppGyver Cloud...";
+          return $http.get("http://localhost:4567/__appgyver/deploy").then(function(res) {
+            scope.waiting = null;
+            scope.noCloudJson = false;
+            return scope.flashMsg = "All done!";
+          }, function(error) {
+            return scope.flashMsg = "Could not deploy your project to the cloud. " + error.data.error;
+          })["finally"](function() {
+            return scope.waiting = null;
+          });
+        };
       }
     };
   }
@@ -3404,11 +3415,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-sm-12\">\n" +
     "      <h1>Build Settings</h1>\n" +
     "\n" +
+    "      <p style=\"padding:20px\" class=\"bg-info\" ng-show=\"flashMsg\">{{flashMsg}}</p>\n" +
+    "\n" +
     "      <p>On this tab, you can configure the build settings for your app.</p>\n" +
-    "      <div ng-show=\"waitingForCloud\">Fetching your App ID from Steroids CLI...</div>\n" +
-    "      <div ng-hide=\"waitingForCloud\">\n" +
+    "      <div ng-show=\"waiting\">{{waiting}}</div>\n" +
+    "      <div ng-hide=\"waiting\">\n" +
     "        <div ng-show=\"noCloudJson\">\n" +
-    "          <p>No <code>config/cloud.json</code> found. Please run <code>$ steroids deploy</code> and reload this page.</p>\n" +
+    "          <p>No <code>config/cloud.json</code> found. Please click below to deploy your app to the cloud.</p>\n" +
+    "          <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\">\n" +
+    "            Deploy <span class=\"glyphicon glyphicon-cloud-upload\">\n" +
+    "          </button>\n" +
     "        </div>\n" +
     "        <div ng-hide=\"noCloudJson\">\n" +
     "          <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +

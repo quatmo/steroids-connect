@@ -5,11 +5,16 @@
     <div class="col-sm-12">
       <h1>Build Settings</h1>
 
+      <p style="padding:20px" class="bg-info" ng-show="flashMsg">{{flashMsg}}</p>
+
       <p>On this tab, you can configure the build settings for your app.</p>
-      <div ng-show="waitingForCloud">Fetching your App ID from Steroids CLI...</div>
-      <div ng-hide="waitingForCloud">
+      <div ng-show="waiting">{{waiting}}</div>
+      <div ng-hide="waiting">
         <div ng-show="noCloudJson">
-          <p>No <code>config/cloud.json</code> found. Please run <code>$ steroids deploy</code> and reload this page.</p>
+          <p>No <code>config/cloud.json</code> found. Please click below to deploy your app to the cloud.</p>
+          <button class="btn btn-lg btn-primary" ng-click="deploy()">
+            Deploy <span class="glyphicon glyphicon-cloud-upload">
+          </button>
         </div>
         <div ng-hide="noCloudJson">
           <a class="btn btn-lg btn-primary" ng-href="http://cloud.appgyver.com/applications/{{cloudId}}" target="_blank">
