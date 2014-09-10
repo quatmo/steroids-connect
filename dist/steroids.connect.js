@@ -3517,8 +3517,19 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
-    "      <a href=\"http://academy.appgyver.com\" target=\"_blank\">\n" +
-    "        <h1>Awesome documentation available in Academy</h1>\n" +
+    "      <h1>Documentation and Tutorials</h1>\n" +
+    "      <a\n" +
+    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        href=\"https://academy.appgyver.com\"\n" +
+    "        target=\"_blank\">\n" +
+    "        Tutorials and Guides in Academy &raquo;\n" +
+    "      </a>\n" +
+    "      <br>\n" +
+    "      <a\n" +
+    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        href=\"https://docs.appgyver.com\"\n" +
+    "        target=\"_blank\">\n" +
+    "        API documentation &raquo;\n" +
     "      </a>\n" +
     "    </div>\n" +
     "\n" +
