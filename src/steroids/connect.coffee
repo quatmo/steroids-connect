@@ -6,6 +6,7 @@ steroidsConnectModules = angular.module "SteroidsConnect", [
     require("./connect-ui").name
     require("./docs").name
     require("./build-settings").name
+    require("./data").name
   ]
 
 require "../templates/SteroidsConnectTemplates"

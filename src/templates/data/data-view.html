@@ -1,0 +1,29 @@
+<div id="view-data" class="container">
+
+  <div class="row padding-top">
+
+    <div class="col-sm-12">
+      <h1>Data</h1>
+
+      <p>On this tab, you can configure Steroids Data for your app.</p>
+
+      <p style="padding:20px" class="bg-info" ng-show="flashMsg">{{flashMsg}}</p>
+
+      <div ng-show="waiting">{{waiting}}</div>
+      <div ng-hide="waiting">
+        <div ng-show="noData">
+          <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>
+          <button class="btn btn-lg btn-primary" ng-click="addData()">
+            Add Data <span class="glyphicon glyphicon-data">
+          </button>
+        </div>
+        <div ng-hide="noData">
+          <iframe ng-href="https://data.appgyver.com/browser/projects/#{cloudId}">
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

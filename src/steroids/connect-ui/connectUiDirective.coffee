@@ -19,6 +19,7 @@ module.exports =
             { name: "logs", label: "Logs" }
             { name: "docs", label: "Documentation" }
             { name: "build-settings", label: "Build Settings"}
+            { name: "data", label: "Data"}
             # { name: "generators", label: "Generators" }
           ]
 
@@ -26,6 +27,7 @@ module.exports =
 
           scope.setTab = (tab) ->
             selectedTab = tab
+            console.log selectedTab
 
           scope.currentTab = () ->
             selectedTab
