@@ -19,7 +19,7 @@ module.exports =
             { name: "logs", label: "Logs" }
             { name: "docs", label: "Documentation" }
             { name: "build-settings", label: "Build Settings"}
-            { name: "data", label: "Data"}
+            # { name: "data", label: "Data"}
             # { name: "generators", label: "Generators" }
           ]
 

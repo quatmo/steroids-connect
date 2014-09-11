@@ -1705,9 +1705,6 @@ module.exports = [
           }, {
             name: "build-settings",
             label: "Build Settings"
-          }, {
-            name: "data",
-            label: "Data"
           }
         ];
         selectedTab = scope.tabs[0].name;
@@ -3589,7 +3586,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <br><br>\n" +
     "      <a\n" +
     "        class=\"btn btn-lrg btn-primary\"\n" +
-    "        href=\"https://docs.appgyver.com\"\n" +
+    "        href=\"http://docs.appgyver.com\"\n" +
     "        target=\"_blank\">\n" +
     "        API documentation &raquo;\n" +
     "      </a>\n" +
