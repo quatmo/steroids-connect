@@ -1835,13 +1835,15 @@ module.exports = angular.module("SteroidsConnect.generators", []).directive("gen
 },{"./GeneratorsAPI":11,"./generatorsViewDirective":12}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$timeout", "$http", "LogsAPI", function($timeout, $http, LogsAPI) {
-    var connection, endpoint, requestLogs;
+  "$interval", "$http", "LogsAPI", function($interval, $http, LogsAPI) {
+    var connection, endpoint, lastRequestTime, requestLogs;
     endpoint = void 0;
     connection = void 0;
+    lastRequestTime = void 0;
     requestLogs = function() {
-      return $http.get(endpoint).success(function(data) {
-        return LogsAPI.add(data);
+      return $http.get("" + endpoint + "?from=" + lastRequestTime).success(function(data) {
+        LogsAPI.add(data);
+        return lastRequestTime = new Date().toISOString();
       });
     };
     this.setEndpoint = function(endpointUrl) {
@@ -1851,7 +1853,7 @@ module.exports = [
       if (!endpoint) {
         throw new Error("Endpoint is not set for LogConnector.");
       }
-      return requestLogs();
+      return connection = $interval(requestLogs, 1000);
     };
     return this;
   }

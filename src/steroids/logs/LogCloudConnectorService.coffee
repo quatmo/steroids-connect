@@ -3,10 +3,10 @@
 # API for handling log manipulation and caching
 module.exports =
   [
-    "$timeout"
+    "$interval"
     "$http"
     "LogsAPI"
-    ($timeout, $http, LogsAPI) ->
+    ($interval, $http, LogsAPI) ->
 
       # Url to be used when connecting to endpoint
       endpoint = undefined
@@ -14,9 +14,12 @@ module.exports =
       # Cache for connection to the endpoint
       connection = undefined
 
+      lastRequestTime = undefined
+
       requestLogs = () ->
-        $http.get(endpoint).success (data) ->
-            LogsAPI.add data
+        $http.get("#{endpoint}?from=#{lastRequestTime}").success (data) ->
+          LogsAPI.add data
+          lastRequestTime = new Date().toISOString()
 
       @setEndpoint = (endpointUrl) ->
         endpoint = endpointUrl
@@ -26,9 +29,10 @@ module.exports =
         throw new Error("Endpoint is not set for LogConnector.") unless endpoint
         # Initiate connection
         # TODO: Replace with actual socket connection
-        requestLogs()
+        connection = $interval requestLogs, 1000
 
-      #@stop = () ->
+
+      # @stop = () ->
       #  # Check if there is an actual connection to stop
       #  return unless connection
       #  # Stop connection
