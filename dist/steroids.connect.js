@@ -3394,7 +3394,7 @@ module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-q
 },{"./DevicesAPI":40,"./angular-qrcode":41,"./previewViewDirective":43}],43:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$location", "DevicesAPI", function($location, DevicesAPI) {
+  "$location", "$http", "DevicesAPI", function($location, $http, DevicesAPI) {
     return {
       restrict: "EA",
       replace: true,
@@ -3419,7 +3419,10 @@ module.exports = [
         };
         qrCode = parseQueryParams()["qrcode"];
         decodedQrCode = decodeURIComponent(qrCode);
-        return scope.qrCode = decodedQrCode;
+        scope.qrCode = decodedQrCode;
+        return scope.launchSimulator = function() {
+          return $http.get("http://localhost:4567/__appgyver/launch_simulator");
+        };
       }
     };
   }
@@ -4166,7 +4169,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <!-- Connection status explained -->\n" +
     "          <span ng-if=\"device.connected\">x min ago</span>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
-    "          <span ng-if=\"!device.connected && !device.error && device.type=='simulator'\"><a href=\"\">Launch simulator &raquo;</a></span>\n" +
+    "          <span ng-if=\"!device.connected && !device.error && device.type=='simulator'\"><a href=\"#\" ng-click=\"launchSimulator()\">Launch simulator &raquo;</a></span>\n" +
     "        </li>\n" +
     "\n" +
     "      </ul>\n" +

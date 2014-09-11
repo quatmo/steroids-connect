@@ -4,8 +4,9 @@
 module.exports =
   [
     "$location"
+    "$http"
     "DevicesAPI"
-    ($location, DevicesAPI) ->
+    ($location, $http, DevicesAPI) ->
       {
         restrict: "EA"
         replace: true
@@ -30,6 +31,7 @@ module.exports =
 
           scope.qrCode = decodedQrCode
 
-
+          scope.launchSimulator = ->
+            $http.get("http://localhost:4567/__appgyver/launch_simulator")
       }
   ]

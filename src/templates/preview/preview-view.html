@@ -47,7 +47,7 @@
           <!-- Connection status explained -->
           <span ng-if="device.connected">x min ago</span>
           <span ng-if="!device.connected && device.error"><a href="">{{device.error.message}}</a></span>
-          <span ng-if="!device.connected && !device.error && device.type=='simulator'"><a href="">Launch simulator &raquo;</a></span>
+          <span ng-if="!device.connected && !device.error && device.type=='simulator'"><a href="#" ng-click="launchSimulator()">Launch simulator &raquo;</a></span>
         </li>
 
       </ul>
