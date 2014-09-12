@@ -35,8 +35,9 @@
 
           <div ng-switch-when="haveData">
             <div ng-if="cloudId">
-              <iframe ng-href="https://data.appgyver.com/browser/projects/#{cloudId}">
-              </iframe>
+              <a href="https://data.appgyver.com/browser/projects/{{ cloudId }}" class="btn btn-lg btn-primary">
+                View data browser
+              </a>
             </div>
           </div>
         </div>
