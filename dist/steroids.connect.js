@@ -1705,6 +1705,9 @@ module.exports = [
           }, {
             name: "build-settings",
             label: "Build Settings"
+          }, {
+            name: "data",
+            label: "Data"
           }
         ];
         selectedTab = scope.tabs[0].name;
@@ -1749,7 +1752,49 @@ module.exports = [
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/data/data-view.html",
-      link: function(scope, element, attrs) {}
+      controller: function($scope) {
+        $scope.waiting = "Fetching your App ID from Steroids CLI...";
+        $scope.status = false;
+        $scope.cloudId = false;
+        $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
+          $scope.cloudId = res.data.id;
+          $scope.cloudHash = res.data.identification_hash;
+          return $scope.status = "noDataConnection";
+        }, function(error) {
+          return $scope.status = "notDeployed";
+        })["finally"](function() {
+          return $scope.waiting = false;
+        });
+        $scope.initData = function() {
+          $scope.waiting = "Initializing your app with Steroids Data...";
+          return $http.post("http://localhost:4567/__appgyver/data/init").then(function(res) {
+            $scope.flashMsg = "Steroids Data initialized!";
+            return $scope.status = "noDataResource";
+          }, function(error) {
+            return $scope.flashMsg = "Could not initialize Steroids Data for your project. " + error.data.error;
+          })["finally"](function() {
+            return $scope.waiting = false;
+          });
+        };
+        return $scope.addResource = function() {
+          $scope.waiting = "Creating your Steroids Data resource...";
+          $scope.flashMsg = false;
+          return $http.post("http://localhost:4567/__appgyver/data/resource/add", {
+            name: "task",
+            fields: {
+              description: "string",
+              completed: "boolean"
+            }
+          }).then(function(res) {
+            $scope.flashMsg = "Steroids Data resource created!";
+            return $scope.status = "haveData";
+          }, function(error) {
+            return $scope.flashMsg = "Could not create a Steroids Data resource for your project. " + error.data.error;
+          })["finally"](function() {
+            return $scope.waiting = false;
+          });
+        };
+      }
     };
   }
 ];
@@ -1757,7 +1802,7 @@ module.exports = [
 
 },{}],8:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.data", []).directive("dataView", _dereq_("./dataViewDirective"));
+module.exports = angular.module("SteroidsConnect.data", []).directive("cloudDataView", _dereq_("./dataViewDirective"));
 
 
 },{"./dataViewDirective":7}],9:[function(_dereq_,module,exports){
@@ -3528,7 +3573,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Data -->\n" +
     "    <div ng-switch-when=\"data\">\n" +
-    "      <data-view></data-view>\n" +
+    "      <cloud-data-view></cloud-data-view>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Generators -->\n" +
@@ -3556,17 +3601,36 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      <div ng-show=\"waiting\">{{waiting}}</div>\n" +
     "      <div ng-hide=\"waiting\">\n" +
-    "        <div ng-show=\"noData\">\n" +
-    "          <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>\n" +
-    "          <button class=\"btn btn-lg btn-primary\" ng-click=\"addData()\">\n" +
-    "            Add Data <span class=\"glyphicon glyphicon-data\">\n" +
-    "          </button>\n" +
+    "        <div ng-switch=\"status\">\n" +
+    "\n" +
+    "          <div ng-switch-when=\"notDeployed\">\n" +
+    "            <p>Your application needs to be deployed to the cloud to be connected with Steroids Data.</p>\n" +
+    "            <p>Go to the build settings tab to deploy your application.</p>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div ng-switch-when=\"noDataConnection\">\n" +
+    "            <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>\n" +
+    "            <button class=\"btn btn-lg btn-primary\" ng-click=\"initData()\">\n" +
+    "              Connect to Steroids Data <span class=\"glyphicon glyphicon-data\">\n" +
+    "            </button>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div ng-switch-when=\"noDataResource\">\n" +
+    "            <p>Your application is in the cloud and connected with Steroids Data.</p>\n" +
+    "\n" +
+    "            <button class=\"btn btn-lg btn-primary\" ng-click=\"addResource()\">\n" +
+    "              Add a Steroids Data resource <span class=\"glyphicon glyphicon-data\">\n" +
+    "            </button>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div ng-switch-when=\"haveData\">\n" +
+    "            <div ng-if=\"cloudId\">\n" +
+    "              <a href=\"https://data.appgyver.com/browser/projects/{{ cloudId }}\" class=\"btn btn-lg btn-primary\">\n" +
+    "                View data browser\n" +
+    "              </a>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "        <div ng-hide=\"noData\">\n" +
-    "          <iframe ng-href=\"https://data.appgyver.com/browser/projects/#{cloudId}\">\n" +
-    "          </iframe>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
