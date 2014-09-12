@@ -9,33 +9,47 @@ module.exports =
         restrict: "EA"
         replace: true
         templateUrl: "/steroids-connect/data/data-view.html"
-        link: (scope, element, attrs) ->
-          # scope.waiting = "Fetching your App ID from Steroids CLI..."
-          # scope.noCloudJson = false
-          #
-          # $http.get("http://localhost:4567/__appgyver/cloud_config").then(
-          #   (res) ->
-          #     scope.cloudId = res.data.id
-          #     scope.cloudHash = res.data.identification_hash
-          #   (error) ->
-          #     scope.noCloudJson = true
-          #
-          # ).finally ->
-          #   scope.waiting = null
-          #
-          # scope.initData = ->
-          #   scope.waiting = "Deploying your app to AppGyver Cloud..."
-          #   $http.get("http://localhost:4567/__appgyver/deploy").then(
-          #     (res) ->
-          #       scope.waiting = null
-          #       scope.noCloudJson = false
-          #       scope.flashMsg = "All done!"
-          #     (error) ->
-          #       scope.flashMsg =
-          #         "Could not deploy your project to the cloud. #{error.data.error}"
-          #
-          #   ).finally ->
-          #     scope.waiting = null
+        controller: ($scope) ->
+          $scope.waiting = "Fetching your App ID from Steroids CLI..."
+          $scope.status = false
+          $scope.cloudId = false
+          
+          $http.get("http://localhost:4567/__appgyver/cloud_config").then(
+            (res) ->
+              $scope.cloudId = res.data.id
+              $scope.cloudHash = res.data.identification_hash
+              $scope.status = "noDataConnection"
+            (error) ->
+              $scope.status = "notDeployed"
+          ).finally ->
+            $scope.waiting = false
+          
+          $scope.initData = ->
+            $scope.waiting = "Initializing your app with Steroids Data..."
+            $http.post("http://localhost:4567/__appgyver/data/init").then(
+              (res) ->
+                $scope.flashMsg = "Steroids Data initialized!"
+                $scope.status = "noDataResource"
+              (error) ->
+                $scope.flashMsg = "Could not initialize Steroids Data for your project. #{error.data.error}"
+            ).finally ->
+              $scope.waiting = false
 
+          $scope.addResource = ->
+            $scope.waiting = "Creating your Steroids Data resource..."
+            $scope.flashMsg = false
+            $http.post("http://localhost:4567/__appgyver/data/resource/add", {
+              name: "task"
+              fields:
+                description: "string"
+                completed: "boolean"
+            }).then(
+              (res) ->
+                $scope.flashMsg = "Steroids Data resource created!"
+                $scope.status = "haveData"
+              (error) ->
+                $scope.flashMsg = "Could not create a Steroids Data resource for your project. #{error.data.error}"
+            ).finally ->
+              $scope.waiting = false
       }
   ]
