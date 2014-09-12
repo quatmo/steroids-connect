@@ -11,17 +11,35 @@
 
       <div ng-show="waiting">{{waiting}}</div>
       <div ng-hide="waiting">
-        <div ng-show="noData">
-          <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>
-          <button class="btn btn-lg btn-primary" ng-click="addData()">
-            Add Data <span class="glyphicon glyphicon-data">
-          </button>
+        <div ng-switch="status">
+
+          <div ng-switch-when="notDeployed">
+            <p>Your application needs to be deployed to the cloud to be connected with Steroids Data.</p>
+            <p>Go to the build settings tab to deploy your application.</p>
+          </div>
+
+          <div ng-switch-when="noDataConnection">
+            <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>
+            <button class="btn btn-lg btn-primary" ng-click="initData()">
+              Connect to Steroids Data <span class="glyphicon glyphicon-data">
+            </button>
+          </div>
+
+          <div ng-switch-when="noDataResource">
+            <p>Your application is in the cloud and connected with Steroids Data.</p>
+
+            <button class="btn btn-lg btn-primary" ng-click="addResource()">
+              Add a Steroids Data resource <span class="glyphicon glyphicon-data">
+            </button>
+          </div>
+
+          <div ng-switch-when="haveData">
+            <div ng-if="cloudId">
+              <iframe ng-href="https://data.appgyver.com/browser/projects/#{cloudId}">
+              </iframe>
+            </div>
+          </div>
         </div>
-        <div ng-hide="noData">
-          <iframe ng-href="https://data.appgyver.com/browser/projects/#{cloudId}">
-          </iframe>
-        </div>
-      </div>
     </div>
 
   </div>
