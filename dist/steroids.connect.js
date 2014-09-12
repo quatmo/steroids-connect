@@ -3625,7 +3625,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "          <div ng-switch-when=\"haveData\">\n" +
     "            <div ng-if=\"cloudId\">\n" +
-    "              <a href=\"https://data.appgyver.com/browser/projects/{{ cloudId }}\" class=\"btn btn-lg btn-primary\">\n" +
+    "              <a href=\"https://composer.appgyver.com/browser/projects/{{ cloudId }}\" class=\"btn btn-lg btn-primary\">\n" +
     "                View data browser\n" +
     "              </a>\n" +
     "            </div>\n" +
