@@ -12,6 +12,7 @@ module.exports =
         controller: ($scope) ->
           $scope.waiting = "Fetching your App ID from Steroids CLI..."
           $scope.status = false
+          $scope.cloudId = false
           
           $http.get("http://localhost:4567/__appgyver/cloud_config").then(
             (res) ->
@@ -27,12 +28,28 @@ module.exports =
             $scope.waiting = "Initializing your app with Steroids Data..."
             $http.post("http://localhost:4567/__appgyver/data/init").then(
               (res) ->
-                $scope.flashMsg = "All done!"
+                $scope.flashMsg = "Steroids Data initialized!"
                 $scope.status = "noDataResource"
               (error) ->
                 $scope.flashMsg = "Could not initialize Steroids Data for your project. #{error.data.error}"
             ).finally ->
               $scope.waiting = false
 
+          $scope.addResource = ->
+            $scope.waiting = "Creating your Steroids Data resource..."
+            $scope.flashMsg = false
+            $http.post("http://localhost:4567/__appgyver/data/resource/add", {
+              name: "task"
+              fields:
+                description: "string"
+                completed: "boolean"
+            }).then(
+              (res) ->
+                $scope.flashMsg = "Steroids Data resource created!"
+                $scope.status = "haveData"
+              (error) ->
+                $scope.flashMsg = "Could not create a Steroids Data resource for your project. #{error.data.error}"
+            ).finally ->
+              $scope.waiting = false
       }
   ]
