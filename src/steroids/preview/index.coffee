@@ -6,3 +6,4 @@ module.exports = angular.module "SteroidsConnect.preview", [
   ]
   .directive "previewView", require("./previewViewDirective")
   .factory "DevicesAPI", require("./DevicesAPI")
+  .service "DeviceCloudConnector", require("./DeviceCloudConnectorService")

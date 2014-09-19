@@ -18,4 +18,11 @@ steroidsConnectModules.run [
     # Configure and run log cloud connector
     LogCloudConnector.setEndpoint("http://localhost:4567/__appgyver/logger")
     LogCloudConnector.connect()
+
+]
+
+steroidsConnectModules.run [
+  "DeviceCloudConnector",
+  (DeviceCloudConnector) ->
+    DeviceCloudConnector.connect()
 ]

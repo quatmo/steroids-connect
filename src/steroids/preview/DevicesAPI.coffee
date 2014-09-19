@@ -10,6 +10,9 @@ module.exports =
         EXPOSED DEVICES API DEFINITION
         ###
 
+        setDevices: (devices) ->
+          @devices = devices
+
         # Devices cache
         devices: [
           {
@@ -17,17 +20,7 @@ module.exports =
             type: "iphone"
             connected: true
             error: null
-            lastAppLoad: 1404217782263
-          }
-          {
-            name: "Bogs' iPhone"
-            type: "iphone"
-            connected: false
-            error:
-              code: 1
-              message: "Old version of AppGyver Scanner"
-              url: "See AppStore, faget"
-            lastAppLoad: 1404217782263
+            lastSeen: 1404217782263
           }
           {
             name: "Simulator"

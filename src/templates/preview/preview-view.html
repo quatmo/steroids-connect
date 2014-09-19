@@ -38,19 +38,19 @@
 
         <li ng-repeat="device in DevicesAPI.devices">
           <!-- Status indicator -->
-          <div class="status-indicator" ng-class="{'yellow': !device.connected && device.error != null, 'green': device.connected}"></div>
+          <div class="status-indicator" ng-class="{'yellow': false, 'green': true}"></div>
           <!-- Device name -->
-          <h2 class="no-margin"><b>{{device.name}}</b></h2>
+          <h2 class="no-margin"><b>{{device.ipAddress}}</b></h2>
           <!-- Connection status -->
-          <span ng-if="device.connected">Connected: </span>
-          <span ng-if="!device.connected">Not connected: </span>
+          <!-- <span ng-if="device.connected">Connected: </span>
+          <span ng-if="!device.connected">Not connected: </span> -->
           <!-- Connection status explained -->
-          <span ng-if="device.connected">x min ago</span>
+          <span ng-if="device.ipAddress">{{device.lastSeen}}</span>
           <span ng-if="!device.connected && device.error"><a href="">{{device.error.message}}</a></span>
-          <span ng-if="!device.connected && !device.error && device.type=='simulator'"><a href="#" ng-click="launchSimulator()">Launch simulator &raquo;</a></span>
         </li>
-
       </ul>
+      <p ng-hide="DevicesAPI.devices">No connceted devices found.</p>
+      <a class="btn btn-primary" href="#" ng-click="launchSimulator()">Launch simulator &raquo;</a></span>
     </div>
 
   </div>

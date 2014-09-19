@@ -1743,8 +1743,14 @@ steroidsConnectModules.run([
   }
 ]);
 
+steroidsConnectModules.run([
+  "DeviceCloudConnector", function(DeviceCloudConnector) {
+    return DeviceCloudConnector.connect();
+  }
+]);
 
-},{"../templates/SteroidsConnectTemplates":44,"./build-settings":3,"./connect-ui":5,"./data":8,"./docs":10,"./generators":13,"./logs":18,"./navigation-and-themes":31,"./preview":42}],7:[function(_dereq_,module,exports){
+
+},{"../templates/SteroidsConnectTemplates":45,"./build-settings":3,"./connect-ui":5,"./data":8,"./docs":10,"./generators":13,"./logs":18,"./navigation-and-themes":31,"./preview":43}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -2088,7 +2094,7 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":42,"./LogCloudConnectorService":14,"./LogsAPI":15,"./LogsFilterAPI":16,"./filterUnique":17,"./logDateFormatFilter":19,"./logFiltersViewDirective":20,"./logMessageDirective":21,"./logTimeFormatFilter":22,"./logTimeMillisecondsFormatFilter":23,"./logViewDirective":24}],19:[function(_dereq_,module,exports){
+},{"./../preview":43,"./LogCloudConnectorService":14,"./LogsAPI":15,"./LogsFilterAPI":16,"./filterUnique":17,"./logDateFormatFilter":19,"./logFiltersViewDirective":20,"./logMessageDirective":21,"./logTimeFormatFilter":22,"./logTimeMillisecondsFormatFilter":23,"./logViewDirective":24}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3240,29 +3246,43 @@ module.exports = [
 },{}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  "$interval", "$http", "DevicesAPI", function($interval, $http, DevicesAPI) {
+    var connection, requestClients;
+    connection = void 0;
+    requestClients = function() {
+      return $http.get("http://localhost:4567/__appgyver/clients").success(function(data) {
+        var devices;
+        devices = Object.keys(data.clients).length === 0 ? null : data.clients;
+        return DevicesAPI.setDevices(devices);
+      });
+    };
+    this.connect = function() {
+      return connection = $interval(requestClients, 1000);
+    };
+    return this;
+  }
+];
+
+
+},{}],41:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   function() {
     return {
 
       /*
       EXPOSED DEVICES API DEFINITION
        */
+      setDevices: function(devices) {
+        return this.devices = devices;
+      },
       devices: [
         {
           name: "Tomi's iPhone",
           type: "iphone",
           connected: true,
           error: null,
-          lastAppLoad: 1404217782263
-        }, {
-          name: "Bogs' iPhone",
-          type: "iphone",
-          connected: false,
-          error: {
-            code: 1,
-            message: "Old version of AppGyver Scanner",
-            url: "See AppStore, faget"
-          },
-          lastAppLoad: 1404217782263
+          lastSeen: 1404217782263
         }, {
           name: "Simulator",
           type: "simulator",
@@ -3276,7 +3296,7 @@ module.exports = [
 ];
 
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3431,12 +3451,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],42:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],43:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI"));
+module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService"));
 
 
-},{"./DevicesAPI":40,"./angular-qrcode":41,"./previewViewDirective":43}],43:[function(_dereq_,module,exports){
+},{"./DeviceCloudConnectorService":40,"./DevicesAPI":41,"./angular-qrcode":42,"./previewViewDirective":44}],44:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$http", "DevicesAPI", function($location, $http, DevicesAPI) {
@@ -3474,7 +3494,7 @@ module.exports = [
 ];
 
 
-},{}],44:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -4224,19 +4244,19 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <!-- Status indicator -->\n" +
-    "          <div class=\"status-indicator\" ng-class=\"{'yellow': !device.connected && device.error != null, 'green': device.connected}\"></div>\n" +
+    "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <!-- Device name -->\n" +
-    "          <h2 class=\"no-margin\"><b>{{device.name}}</b></h2>\n" +
+    "          <h2 class=\"no-margin\"><b>{{device.ipAddress}}</b></h2>\n" +
     "          <!-- Connection status -->\n" +
-    "          <span ng-if=\"device.connected\">Connected: </span>\n" +
-    "          <span ng-if=\"!device.connected\">Not connected: </span>\n" +
+    "          <!-- <span ng-if=\"device.connected\">Connected: </span>\n" +
+    "          <span ng-if=\"!device.connected\">Not connected: </span> -->\n" +
     "          <!-- Connection status explained -->\n" +
-    "          <span ng-if=\"device.connected\">x min ago</span>\n" +
+    "          <span ng-if=\"device.ipAddress\">{{device.lastSeen}}</span>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
-    "          <span ng-if=\"!device.connected && !device.error && device.type=='simulator'\"><a href=\"#\" ng-click=\"launchSimulator()\">Launch simulator &raquo;</a></span>\n" +
     "        </li>\n" +
-    "\n" +
     "      </ul>\n" +
+    "      <p ng-hide=\"DevicesAPI.devices\">No connceted devices found.</p>\n" +
+    "      <a class=\"btn btn-primary\" href=\"#\" ng-click=\"launchSimulator()\">Launch simulator &raquo;</a></span>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
