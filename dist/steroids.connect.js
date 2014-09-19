@@ -2034,6 +2034,12 @@ module.exports = [
         }, {
           label: "Errors",
           level: "error"
+        }, {
+          label: "Warnings",
+          level: "warn"
+        }, {
+          label: "Debug",
+          level: "debug"
         }
       ]
     };
