@@ -1732,7 +1732,7 @@ module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("con
 },{"./connectUiDirective":4}],6:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.DataBrowser"]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
@@ -3616,6 +3616,17 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
+    "  <div class=\"row padding-top ag__global__products\">\n" +
+    "    <br>\n" +
+    "    <div ag-data-browser-ui data-raml-url=\"https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17\"></div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "\n" +
+    "  <br>\n" +
+    "  <br>\n" +
+    "  <br>\n" +
+    "\n" +
+    "\n" +
     "  <div class=\"row padding-top\">\n" +
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
@@ -3661,7 +3672,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  </div>\n" +
     "\n" +
-    "</div>\n"
+    "</div>"
   );
 
 
