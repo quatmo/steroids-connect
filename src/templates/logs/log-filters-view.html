@@ -1,6 +1,6 @@
 <div id="view-log-filters">
 
-  <form class="form-inline font-proxima" role="form" id="log-view-filters-form">
+  <form class="ag__form form-inline font-proxima" role="form" id="log-view-filters-form">
 
     <!-- Filter for log msg type -->
     <div class="form-group">
@@ -11,12 +11,16 @@
 
     <!-- Filter for device name -->
     <div class="form-group" style="margin-left: 10px;">
-      <select name="filterByDeviceName" ng-model="LogsFilterAPI.filters.deviceName" ng-options="x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()" class="form-control"></select>
+      <div class="form-control-select ag__pill">
+        <select name="filterByDeviceName" ng-model="LogsFilterAPI.filters.deviceName" ng-options="x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()"></select>
+      </div>
     </div>
 
     <!-- Filter for view name -->
     <div class="form-group" style="margin-left: 10px;">
-      <select name="filterByViewName" ng-model="LogsFilterAPI.filters.view" ng-options="x.filterBy as x.label for x in LogsFilterAPI.availableViewNameFilters()" class="form-control"></select>
+      <div class="form-control-select ag__pill">
+        <select name="filterByViewName" ng-model="LogsFilterAPI.filters.view" ng-options="x.filterBy as x.label for x in LogsFilterAPI.availableViewNameFilters()"></select>
+      </div>
     </div>
 
     <!-- Button for clearing out all filters -->

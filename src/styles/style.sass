@@ -1,10 +1,161 @@
 // Import style dependencies
 
-@import "basics/font_faces.css.scss"
-@import "basics/typography.css.sass"
-@import "basics/color_classes.css.sass"
+@import "globals/IMPORTER"
 
 @import "colorpicker/colorpicker.css.sass"
+
+
+////////////////////////////////////////////////////////////////
+//  NAVIGATION & HEADER
+////////////////////////////////////////////////////////////////
+
+.ag__steroids-connect
+
+  .ag__steroids-connect__header
+    background-color: $color-blue
+    color: white
+    border: none
+    margin-bottom: 0px
+
+    .navbar-brand
+      img
+        max-height: 40px
+
+    .nav
+      li
+
+        a
+          color: white
+          font-family: "Proxima Nova Soft W03 Smbd"
+          cursor: pointer
+
+        &.active
+          a
+            color: black
+            background: none
+
+
+////////////////////////////////////////////////////////////////
+//  LOG VIEW
+////////////////////////////////////////////////////////////////
+
+.ag__steroids-connect
+
+  #view-log-filters
+
+    .btn
+
+      &.btn-default
+        background: $color-blue-dark-7
+        border-color: $color-blue-dark-6
+        color: white
+        &.active
+          background: $color-blue-dark-6
+          border-color: $color-blue-dark-5
+          color: white
+
+    select
+      background: $color-blue-dark-7
+      border-color: $color-blue-dark-6
+      color: white
+      box-shadow: none
+      -webkit-box-shadow: none
+
+  .filters-container
+    padding-top: 10px
+    padding-bottom: 10px
+    background: $color-blue-dark
+
+  .logs-container
+    padding-top: 20px
+    padding-bottom: 20px
+
+    table
+      width: 100%
+
+      th, td
+        vertical-align: top
+
+      thead
+        th
+          padding-bottom: 10px
+
+      .logMsg-device-name, .logMsg-view-name, .logMsg-time
+        padding-right: 20px
+        white-space: nowrap
+
+      .logMsg-time
+        padding-right: 40px
+
+      .logMsg-content
+        width: 100%
+
+        .has-more-details
+          cursor: pointer
+
+      .logMsg
+        padding-bottom: 2px
+        -webkit-animation: bg-fade 0.5s 1
+        -moz-animation: bg-fade 0.5s 1
+
+        &.level-error
+          .logMsg-content
+            color: $color-red
+
+        .glyphicon
+          color: #eee
+          display: none
+
+        .caret
+          cursor: pointer
+
+@-webkit-keyframes bg-fade
+  0%
+    background-color: $color-blue-1
+  100%
+    background-color: transparent
+
+@-moz-keyframes bg-fade
+  0%
+    background-color: $color-blue-1
+  100%
+    background-color: transparent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ////////////////////////////////////////////////////////////////
 // ANTI-FLICKER
@@ -202,92 +353,7 @@
 // LOGS VIEW
 ////////////////////////////////////////////////////////////////
 
-#view-log-view
 
-  #view-log-filters
-
-    .btn
-
-      &.btn-danger
-        background: $color-red
-        border-color: $color-red
-        color: white
-
-      &.btn-default
-        background: $color-blue-dark-7
-        border-color: $color-blue-dark-6
-        color: white
-        &.active
-          background: $color-blue-dark-6
-          border-color: $color-blue-dark-5
-          color: white
-          font-family: "Proxima N W01 Bold"
-
-    select
-      background: $color-blue-dark-7
-      border-color: $color-blue-dark-6
-      color: white
-
-  .filters-container
-    padding-top: 10px
-    padding-bottom: 10px
-    border-bottom: 2px $color-gray-2 solid
-    background: $color-blue-dark
-
-  .logs-container
-    padding-top: 20px
-    padding-bottom: 20px
-
-    table
-      width: 100%
-
-      th, td
-        vertical-align: top
-
-      thead
-        th
-          padding-bottom: 10px
-
-      .logMsg-device-name, .logMsg-view-name, .logMsg-time
-        padding-right: 20px
-        white-space: nowrap
-
-      .logMsg-time
-        padding-right: 40px
-
-      .logMsg-content
-        width: 100%
-
-        .has-more-details
-          cursor: pointer
-
-      .logMsg
-        padding-bottom: 2px
-        -webkit-animation: bg-fade 0.5s 1
-        -moz-animation: bg-fade 0.5s 1
-
-        &.level-error
-          .logMsg-content
-            color: $color-red
-
-        .glyphicon
-          color: #eee
-          display: none
-
-        .caret
-          cursor: pointer
-
-@-webkit-keyframes bg-fade
-  0%
-    background-color: $color-blue-1
-  100%
-    background-color: transparent
-
-@-moz-keyframes bg-fade
-  0%
-    background-color: $color-blue-1
-  100%
-    background-color: transparent
 
 
 ////////////////////////////////////////////////////////////////

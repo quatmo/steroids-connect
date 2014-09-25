@@ -3538,15 +3538,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/connect-ui/connect-ui.html',
-    "<div id=\"view-connect-ui\">\n" +
+    "<div id=\"view-connect-ui\" class=\"ag__global__products ag__steroids-connect\">\n" +
     "\n" +
     "  <!-- Navbar -->\n" +
-    "  <nav class=\"navbar navbar-default ag-header text-gray\" role=\"navigation\">\n" +
+    "  <nav class=\"navbar navbar-default navbar-static-top ag__steroids-connect__header\" role=\"navigation\">\n" +
     "    <div class=\"container-fluid\">\n" +
     "\n" +
     "      <!-- Navbar header -->\n" +
     "      <div class=\"navbar-header\">\n" +
-    "        <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n" +
+    "        <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#ag-steroids-connect-nav\">\n" +
     "          <span class=\"icon-bar\"></span>\n" +
     "          <span class=\"icon-bar\"></span>\n" +
     "          <span class=\"icon-bar\"></span>\n" +
@@ -3558,7 +3558,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      <!-- Navbar links -->\n" +
     "      <ul class=\"nav navbar-nav navbar-right\">\n" +
-    "        <li ng-repeat=\"tab in tabs\"><a ng-class=\"{'active': currentTab() == tab.name}\" ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
+    "        <li ng-repeat=\"tab in tabs\" ng-class=\"{'active': currentTab() == tab.name}\"><a ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
     "      </ul>\n" +
     "\n" +
     "    </div>\n" +
@@ -3616,9 +3616,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
-    "  <div class=\"row padding-top ag__global__products\">\n" +
-    "    <br>\n" +
-    "    <div ag-data-browser-ui data-raml-url=\"https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17\"></div>\n" +
+    "  <div class=\"row padding-top\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "      <h1>Data</h1>\n" +
+    "      <br>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"row\">\n" +
+    "    <div ag-data-browser-ui data-raml-url=\"/cloud.raml\"></div>\n" +
     "  </div>\n" +
     "\n" +
     "\n" +
@@ -3746,7 +3752,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/logs/log-filters-view.html',
     "<div id=\"view-log-filters\">\n" +
     "\n" +
-    "  <form class=\"form-inline font-proxima\" role=\"form\" id=\"log-view-filters-form\">\n" +
+    "  <form class=\"ag__form form-inline font-proxima\" role=\"form\" id=\"log-view-filters-form\">\n" +
     "\n" +
     "    <!-- Filter for log msg type -->\n" +
     "    <div class=\"form-group\">\n" +
@@ -3757,12 +3763,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <!-- Filter for device name -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
-    "      <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\" class=\"form-control\"></select>\n" +
+    "      <div class=\"form-control-select ag__pill\">\n" +
+    "        <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\"></select>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Filter for view name -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
-    "      <select name=\"filterByViewName\" ng-model=\"LogsFilterAPI.filters.view\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableViewNameFilters()\" class=\"form-control\"></select>\n" +
+    "      <div class=\"form-control-select ag__pill\">\n" +
+    "        <select name=\"filterByViewName\" ng-model=\"LogsFilterAPI.filters.view\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableViewNameFilters()\"></select>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- Button for clearing out all filters -->\n" +

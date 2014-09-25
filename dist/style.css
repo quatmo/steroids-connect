@@ -1,72 +1,21 @@
-@import url("http://fast.fonts.net/t/1.css?apiType=css&projectid=c31060dd-6952-4b73-8945-c15f2cb44bd6");
-@font-face {
-  font-family: "Adelle W01 Regular";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e800d24d-133b-4293-a15b-611f67139c09.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e800d24d-133b-4293-a15b-611f67139c09.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/89fe91e2-46a0-4e3b-8735-78b3de8da38f.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/152fa65e-e42f-431d-a37f-a66d10903310.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/6ad1d18a-0166-4178-812f-07e16b64000b.svg#6ad1d18a-0166-4178-812f-07e16b64000b") format("svg"); }
-@font-face {
-  font-family: "Adelle W01 Light";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/498b62bf-272a-424f-8438-963e84290a7b.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/498b62bf-272a-424f-8438-963e84290a7b.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/747b7cce-295f-4e39-903b-5858af155c13.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/d1367539-252f-43f2-b898-5585bcee553d.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/4a93e3f0-a4a0-48bb-a0ac-56b7d14dc1a2.svg#4a93e3f0-a4a0-48bb-a0ac-56b7d14dc1a2") format("svg"); }
-@font-face {
-  font-family: "Adelle W01 Italic";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/1a1c1f39-8512-4715-976c-6062108d7dfe.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/1a1c1f39-8512-4715-976c-6062108d7dfe.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e66b90fd-f201-4525-b5ee-8a854221367c.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/6d7b9fc4-60ad-4c03-92a4-48444579beb2.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/b517960a-2dcd-4827-8a2c-c62681d34342.svg#b517960a-2dcd-4827-8a2c-c62681d34342") format("svg"); }
-@font-face {
-  font-family: "Adelle W01 Light Italic";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/bc714449-63c7-400e-a289-1c6604dd49e8.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/bc714449-63c7-400e-a289-1c6604dd49e8.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/18a324fe-d364-4d8f-aab5-9e81fa1b520c.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/a7a2f85c-84d1-4f65-a6e8-c6c36d8232a5.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/6d5c8a96-bee5-4352-b588-298973002deb.svg#6d5c8a96-bee5-4352-b588-298973002deb") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Smbd It";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/06ebb3e2-5f11-4e26-8736-0f7acb3c7743.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/06ebb3e2-5f11-4e26-8736-0f7acb3c7743.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/d2a02f92-9826-4117-ae36-8fcfd72ad46e.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/d786d7d1-696a-47f9-9d03-7608fcb29cc4.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e7fe23f1-b364-4a20-905a-86ed7e89efae.svg#e7fe23f1-b364-4a20-905a-86ed7e89efae") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Bold";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/fbc6b03a-b3a1-427c-a884-053deca3a53c.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/d999c07b-a049-4eb5-b8a6-4f36ae25e67e.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/4d4a75f5-d32a-4a09-8665-133afd39cc37.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/8152bc4e-d700-4c78-b6be-326893e6f53f.svg#8152bc4e-d700-4c78-b6be-326893e6f53f") format("svg"); }
-@font-face {
-  font-family: "Adelle W01 Bold";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/51f4be3b-9293-44bc-baf2-f0663ce40eac.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/51f4be3b-9293-44bc-baf2-f0663ce40eac.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/643fcd9d-f9b1-4f47-a110-c713cb07cd7b.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/5bf8f2b2-84f8-432d-ba12-ad87271d929d.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/f0f4d2d3-35c7-4435-8638-114d75943f51.svg#f0f4d2d3-35c7-4435-8638-114d75943f51") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Light";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/93cc6d34-798e-42c8-87d2-fd6391801b63.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/93cc6d34-798e-42c8-87d2-fd6391801b63.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/2fa30669-9bbd-4ced-912f-db94a367ed6c.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/c12b3ebb-3771-483f-a84a-ac63d615c28e.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/2a961063-ea56-4a4b-8cea-bdae32edb0e2.svg#2a961063-ea56-4a4b-8cea-bdae32edb0e2") format("svg"); }
-@font-face {
-  font-family: "Adelle W01 Bold Italic";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e90e7dc9-2652-434d-aa93-0bc0374ebe69.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e90e7dc9-2652-434d-aa93-0bc0374ebe69.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/f61bd8c5-1229-4701-85eb-353ad21be6a3.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/23fe9455-8651-48e4-a7d1-13b2c148c4c3.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/852ad3e8-3c81-48c7-af31-4c57e268cd8c.svg#852ad3e8-3c81-48c7-af31-4c57e268cd8c") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Light It";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/ee3e7ba6-7c22-4ff7-ad76-656505595a8a.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/ee3e7ba6-7c22-4ff7-ad76-656505595a8a.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/0c4be1a2-8e16-48b4-a384-165fa5baffe3.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/a7e6cc5b-7ba3-44be-9063-2cc1b3c05155.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/a1adf259-df55-4d1c-a2ab-dd790daf22f8.svg#a1adf259-df55-4d1c-a2ab-dd790daf22f8") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Reg";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/7e90123f-e4a7-4689-b41f-6bcfe331c00a.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/e56ecb6d-da41-4bd9-982d-2d295bec9ab0.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/2aff4f81-3e97-4a83-9e6c-45e33c024796.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/ab9cd062-380f-4b53-b1a7-c0bec7402235.svg#ab9cd062-380f-4b53-b1a7-c0bec7402235") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Reg It";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/bc15a635-a09b-40d1-a5c4-70310166177d.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/bc15a635-a09b-40d1-a5c4-70310166177d.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/9c69c878-2255-4027-8632-ed3635cddf45.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/b7eb3871-e910-4522-9982-effb425a2714.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/a0d89860-20e5-4bc0-b6c5-eae8ae0ebbbf.svg#a0d89860-20e5-4bc0-b6c5-eae8ae0ebbbf") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Smbd";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/87e4b4fc-cdf1-450a-8bed-dd818cba908d.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/87e4b4fc-cdf1-450a-8bed-dd818cba908d.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/70ae52ec-d89b-4c6a-9402-854ebe423c54.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/6a35571c-ea14-4dac-9ae1-0e7af0abeec8.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/ac2bdafc-d4a8-49d0-8a10-4e2f16bf7e3c.svg#ac2bdafc-d4a8-49d0-8a10-4e2f16bf7e3c") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Bold It";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/cb0c3396-af1a-4c16-95aa-8085e21044c7.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/cb0c3396-af1a-4c16-95aa-8085e21044c7.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/46d5674a-f287-4240-b87a-f207aeb83064.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/9bd640b2-9a56-4391-b213-767ae9c30ef4.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/1500822b-1abc-4461-81dd-b48cfcf99020.svg#1500822b-1abc-4461-81dd-b48cfcf99020") format("svg"); }
-@font-face {
-  font-family: "Proxima N W01 Xbold";
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/9fbce143-f5db-4c0b-9159-b1e666079f67.eot?#iefix");
-  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/9fbce143-f5db-4c0b-9159-b1e666079f67.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/19dd5cf2-ac2d-48d5-901a-c432fd291ee2.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/22cfbfa4-f607-4751-92eb-6fa194353e57.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/3d6b6348-e05f-4123-b19a-3bfd02c7f361.svg#3d6b6348-e05f-4123-b19a-3bfd02c7f361") format("svg"); }
-/* Typography.css.sass
- * Details about fonts and font sizes.
+/* Basics
+ */
+/* breaking_points.css.sass
  *
  * Maintained by Tomi Hiltunen
  */
-/* Import the color scheme.
- * Do NOT change to "require" -syntax.
- * This way the shared parameters persist... which is nice.
+/* Using breakpoints:
+ *
+ * @media (min-width: $breakpoint-sm) { ... }
+ * @media (min-width: $breakpoint-md) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
+ */
+/* Using breakpoints (restrictive):
+ *
+ * @media (max-width: $breakpoint-xs-max) { ... }
+ * @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-sm-max) { ... }
+ * @media (min-width: $breakpoint-md) and (max-width: $breakpoint-md-max) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
  */
 /* color_scheme.css.sass
  * Colors according to AppGyver UI guidelines (vol.2)
@@ -80,124 +29,6 @@
  *   - As brand color.
  *   - Background for "call-to-action" -elements.
  */
-/* This is the basic font for every element.
- * Overwrites are defined below.
- */
-body, html {
-  font-family: "Adelle W01 Regular";
-  color: #36383b;
-  font-size: 18px; }
-
-h1 {
-  font-family: "Proxima N W01 Smbd";
-  font-size: 36pt; }
-
-h2 {
-  font-family: "Adelle W01 Light";
-  font-size: 21pt; }
-  h2.lead {
-    font-size: 24pt; }
-
-.lead h2 {
-  font-size: 24pt; }
-
-h3 {
-  font-family: "Proxima N W01 Bold";
-  font-size: 14pt;
-  text-transform: uppercase; }
-
-p {
-  font-family: "Adelle W01 Regular"; }
-  p.lead {
-    font-size: 22px; }
-
-b, strong {
-  font-family: "Adelle W01 Bold";
-  font-weight: normal; }
-
-i {
-  font-family: "Adelle W01 Italic";
-  font-style: normal; }
-
-.text-uppercase {
-  text-transform: uppercase; }
-
-.text-smaller {
-  font-size: 16px; }
-
-.inline-block {
-  display: inline-block; }
-
-/* We use different font families for bold, italic and regular fonts.
- * For that reason we have nested definitions for each font-family.
- * Please keep them that way unless you have a better idea (then, of course, edit them).
- */
-.font-proxima {
-  font-family: "Proxima N W01 Reg"; }
-  .font-proxima b, .font-proxima strong {
-    font-family: "Proxima N W01 Bold"; }
-    .font-proxima b i, .font-proxima strong i {
-      font-family: "Proxima N W01 Bold It"; }
-  .font-proxima i {
-    font-family: "Proxima N W01 Reg It"; }
-    .font-proxima i b, .font-proxima i strong {
-      font-family: "Proxima N W01 Bold It"; }
-
-.font-proxima-thin {
-  font-family: "Proxima N W01 Light"; }
-
-.font-proxima-semibold {
-  font-family: "Proxima N W01 Smbd"; }
-
-.font-adelle {
-  font-family: "Adelle W01 Regular"; }
-  .font-adelle b, .font-adelle strong {
-    font-family: "Adelle W01 Bold"; }
-    .font-adelle b i, .font-adelle strong i {
-      font-family: "Adelle W01 Bold Italic"; }
-  .font-adelle i {
-    font-family: "Adelle W01 Italic"; }
-    .font-adelle i b, .font-adelle i strong {
-      font-family: "Adelle W01 Bold Italic"; }
-
-/* The nested fonts also apply for different type of elements; like the headings.
- */
-h1.font-adelle {
-  font-family: "Adelle W01 Bold"; }
-
-h2.font-proxima {
-  font-family: "Proxima N W01 Light"; }
-
-h3.font-adelle {
-  font-family: "Adelle W01 Bold"; }
-h3.sideline-heading::before {
-  content: "_";
-  display: block;
-  font-size: 60px;
-  color: #00b5ff;
-  line-height: 0px;
-  height: 44px; }
-
-/* Also, the b/i elements can, too, have font overwritten (not just the containers).
- */
-b.font-proxima, strong.font-proxima {
-  font-family: "Proxima N W01 Bold"; }
-  b.font-proxima i, strong.font-proxima i {
-    font-family: "Proxima N W01 Bold It"; }
-b.font-adelle, strong.font-adelle {
-  font-family: "Adelle W01 Bold"; }
-  b.font-adelle i, strong.font-adelle i {
-    font-family: "Adelle W01 Bold Italic"; }
-
-i.font-proxima {
-  font-family: "Proxima N W01 Reg It"; }
-  i.font-proxima b, i.font-proxima strong {
-    font-family: "Proxima N W01 Bold It"; }
-i.font-adelle {
-  font-family: "Adelle W01 Italic"; }
-  i.font-adelle b, i.font-adelle strong {
-    font-family: "Adelle W01 Bold Italic"; }
-
 /* color_classes.css.sass
  * Helper classes to utilize defined colors.
  *
@@ -223,6 +54,7 @@ i.font-adelle {
  * Simply add the class to the container.
  * Respect the intended use cases for the colors.
  */
+@import url("//fast.fonts.net/t/1.css?apiType=css&projectid=fcd5ed54-4e22-4c50-9a6a-2fdc2404cec3");
 .text-color-primary-1, .text-blue {
   color: #00b5ff; }
 
@@ -245,7 +77,7 @@ i.font-adelle {
   .text-color-primary-2.text-shade-2, .text-gray.text-shade-2 {
     color: #d6d6d9; }
   .text-color-primary-2.text-shade-1, .text-gray.text-shade-1 {
-    color: #ebebeb; }
+    color: #f3f3f3; }
 
 .text-color-secondary-1, .text-green {
   color: #14bda6; }
@@ -291,7 +123,7 @@ i.font-adelle {
   .bg-color-primary-2.bg-shade-2, .bg-gray.bg-shade-2 {
     background-color: #d6d6d9; }
   .bg-color-primary-2.bg-shade-1, .bg-gray.bg-shade-1 {
-    background-color: #ebebeb; }
+    background-color: #f3f3f3; }
 
 .bg-color-secondary-1, .bg-green {
   background-color: #14bda6; }
@@ -310,6 +142,341 @@ i.font-adelle {
 
 .bg-white {
   background-color: white; }
+
+@font-face {
+  font-family: "Proxima Nova Soft W03 Reg";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/198fa8c4-b0f0-4203-bcfc-0c2b956f6784.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/587b832a-8371-49fe-b902-0adad1aaf3dc.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e28c18e1-aaa4-43ab-96df-94b8bb15cbaa.svg#e28c18e1-aaa4-43ab-96df-94b8bb15cbaa") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Medium";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/b2f276ad-1e77-4185-8b1f-3dd39d9a8290.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/08f55ece-01d7-4e92-86bc-d1f217e8559d.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/c66d5a3f-4b8c-4b93-bb11-926a24104f29.svg#c66d5a3f-4b8c-4b93-bb11-926a24104f29") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Bd";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/2872b823-fc6d-455c-a05e-fe9554da8ba1.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e114d697-9817-4b4a-ac3f-456f1f39a381.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf.svg#b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Smbd";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/1b4cb635-3c1e-49aa-b391-55b5f85708be.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/9107c65c-774a-4893-b490-87c1b9932967.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/78bc3037-273c-43cb-bb0b-59a7ba5263d8.svg#78bc3037-273c-43cb-bb0b-59a7ba5263d8") format("svg"); }
+/* Typography.css.sass
+ * Details about fonts and font sizes.
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products {
+  /* This is the basic font for every element.
+   * Overwrites are defined below.
+   */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Proxima Nova Soft W03 Reg";
+  color: #4a4a4d;
+  font-size: 16px; }
+  .ag__global__products h3 {
+    font-family: "Proxima Nova Soft W03 Smbd"; }
+  .ag__global__products b {
+    font-family: "Proxima Nova Soft W03 Smbd"; }
+    .ag__global__products b.bolder {
+      font-family: "Proxima Nova Soft W03 Bd"; }
+  .ag__global__products .text-capitalize {
+    text-transform: capitalize; }
+
+/* Components
+ */
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products input, .ag__global__products select {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important; }
+  .ag__global__products input:focus, .ag__global__products select:focus {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important; }
+.ag__global__products .ag__form .form-group {
+  position: relative; }
+  .ag__global__products .ag__form .form-group label {
+    font-family: "Proxima Nova Soft W03 Smbd";
+    letter-spacing: 1px;
+    font-size: 10pt;
+    text-transform: uppercase;
+    margin-bottom: 13px; }
+  .ag__global__products .ag__form .form-group .form-control-static, .ag__global__products .ag__form .form-group select, .ag__global__products .ag__form .form-group .form-control {
+    line-height: 17px;
+    font-size: 16px;
+    padding-top: 6px;
+    padding-bottom: 6px; }
+  .ag__global__products .ag__form .form-group .form-control, .ag__global__products .ag__form .form-group .form-control-select > select {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 17px;
+    font-size: 14px;
+    border-color: #b0b0b0; }
+    .ag__global__products .ag__form .form-group .form-control:hover, .ag__global__products .ag__form .form-group .form-control-select > select:hover {
+      border-color: #36383b; }
+  .ag__global__products .ag__form .form-group .form-control-select {
+    cursor: pointer; }
+    .ag__global__products .ag__form .form-group .form-control-select select {
+      -webkit-appearance: none;
+      padding-right: 39px;
+      padding-left: 10px; }
+  .ag__global__products .ag__form .form-group .form-control-select {
+    position: relative;
+    cursor: pointer; }
+    .ag__global__products .ag__form .form-group .form-control-select:after {
+      content: "\25BC";
+      position: absolute;
+      top: 0px;
+      right: 0;
+      bottom: 0;
+      font-size: 60%;
+      padding-top: 7px;
+      height: 29px;
+      width: 29px;
+      text-align: center;
+      color: white;
+      background: #b0b0b0;
+      border-color: #b0b0b0;
+      border-width: 1px 1px 1px 0px;
+      border-style: solid;
+      pointer-events: none;
+      -webkit-border-radius: 0px 4px 4px 0px;
+      -moz-border-radius: 0px 4px 4px 0px;
+      border-radius: 0px 4px 4px 0px; }
+    .ag__global__products .ag__form .form-group .form-control-select:hover:after {
+      background-color: #36383b;
+      border-color: #36383b; }
+    .ag__global__products .ag__form .form-group .form-control-select:hover input, .ag__global__products .ag__form .form-group .form-control-select:hover select {
+      border-color: #36383b; }
+.ag__global__products .ag__form:not(.form-inline) .form-group + .form-group {
+  margin-top: 40px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .form-control-select.ag__pill select {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px !important;
+  padding: 6px 20px;
+  font-family: "Proxima Nova Soft W03 Smbd";
+  border-radius: 14px;
+  border: none;
+  -webkit-appearance: none; }
+.ag__global__products .form-control-select.ag__pill:after {
+  background: transparent !important;
+  border-color: transparent !important; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .alert {
+  font-family: "Proxima Nova Soft W03 Reg";
+  border-radius: 0px;
+  border: none; }
+  .ag__global__products .alert.alert-info {
+    color: white;
+    background-color: #00b5ff; }
+  .ag__global__products .alert.alert-danger {
+    color: white;
+    background-color: #fa5252; }
+  .ag__global__products .alert.alert-success {
+    color: white;
+    background-color: #14bda6; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .btn {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 6px 20px;
+  font-family: "Proxima Nova Soft W03 Smbd";
+  border-radius: 14px;
+  border: none; }
+  .ag__global__products .btn:not([disabled]) {
+    cursor: pointer; }
+  .ag__global__products .btn.btn-default {
+    color: white;
+    background-color: #b0b0b0; }
+    .ag__global__products .btn.btn-default:hover {
+      background-color: #d6d6d9; }
+  .ag__global__products .btn.btn-primary {
+    color: white;
+    background-color: #00b5ff; }
+    .ag__global__products .btn.btn-primary:hover {
+      background-color: #4dccff; }
+  .ag__global__products .btn.btn-danger {
+    color: white;
+    background-color: #fa5252; }
+    .ag__global__products .btn.btn-danger:hover {
+      background-color: #fc8587; }
+  .ag__global__products .btn .glyphicon {
+    font-size: 14px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .modal-backdrop {
+  background: rgba(0, 0, 0, 0.4); }
+.ag__global__products .modal.fade .modal-dialog {
+  -o-transform: translate3d(0, -2%, 0) scale(0.95);
+  -ms-transform: translate3d(0, -2%, 0) scale(0.95);
+  -moz-transform: translate3d(0, -2%, 0) scale(0.95);
+  -webkit-transform: translate3d(0, -2%, 0) scale(0.95);
+  transform: translate3d(0, -2%, 0) scale(0.95); }
+.ag__global__products .modal.fade.in .modal-dialog {
+  -o-transform: translate3d(0, 0, 0) scale(1);
+  -ms-transform: translate3d(0, 0, 0) scale(1);
+  -moz-transform: translate3d(0, 0, 0) scale(1);
+  -webkit-transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1); }
+.ag__global__products .modal .modal-header, .ag__global__products .modal .modal-footer, .ag__global__products .modal .modal-content {
+  position: relative;
+  border: none;
+  border-radius: 0px; }
+.ag__global__products .modal .modal-body {
+  padding: 30px 60px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products table {
+  border-collapse: separate; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .text-info {
+  color: #00b5ff; }
+.ag__global__products .text-danger {
+  color: #fa5252; }
+.ag__global__products .text-success {
+  color: #14bda6; }
 
 .colorpicker-visible {
   display: block !important; }
@@ -460,6 +627,81 @@ colorpicker-preview {
   clear: both;
   background-position: 0 100%; }
 
+.ag__steroids-connect .ag__steroids-connect__header {
+  background-color: #00b5ff;
+  color: white;
+  border: none;
+  margin-bottom: 0px; }
+  .ag__steroids-connect .ag__steroids-connect__header .navbar-brand img {
+    max-height: 40px; }
+  .ag__steroids-connect .ag__steroids-connect__header .nav li a {
+    color: white;
+    font-family: "Proxima Nova Soft W03 Smbd";
+    cursor: pointer; }
+  .ag__steroids-connect .ag__steroids-connect__header .nav li.active a {
+    color: black;
+    background: none; }
+
+.ag__steroids-connect #view-log-filters .btn.btn-default {
+  background: #59616e;
+  border-color: #6e7380;
+  color: white; }
+  .ag__steroids-connect #view-log-filters .btn.btn-default.active {
+    background: #6e7380;
+    border-color: #828791;
+    color: white; }
+.ag__steroids-connect #view-log-filters select {
+  background: #59616e;
+  border-color: #6e7380;
+  color: white;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
+.ag__steroids-connect .filters-container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #30384a; }
+.ag__steroids-connect .logs-container {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+  .ag__steroids-connect .logs-container table {
+    width: 100%; }
+    .ag__steroids-connect .logs-container table th, .ag__steroids-connect .logs-container table td {
+      vertical-align: top; }
+    .ag__steroids-connect .logs-container table thead th {
+      padding-bottom: 10px; }
+    .ag__steroids-connect .logs-container table .logMsg-device-name, .ag__steroids-connect .logs-container table .logMsg-view-name, .ag__steroids-connect .logs-container table .logMsg-time {
+      padding-right: 20px;
+      white-space: nowrap; }
+    .ag__steroids-connect .logs-container table .logMsg-time {
+      padding-right: 40px; }
+    .ag__steroids-connect .logs-container table .logMsg-content {
+      width: 100%; }
+      .ag__steroids-connect .logs-container table .logMsg-content .has-more-details {
+        cursor: pointer; }
+    .ag__steroids-connect .logs-container table .logMsg {
+      padding-bottom: 2px;
+      -webkit-animation: bg-fade 0.5s 1;
+      -moz-animation: bg-fade 0.5s 1; }
+      .ag__steroids-connect .logs-container table .logMsg.level-error .logMsg-content {
+        color: #fa5252; }
+      .ag__steroids-connect .logs-container table .logMsg .glyphicon {
+        color: #eeeeee;
+        display: none; }
+      .ag__steroids-connect .logs-container table .logMsg .caret {
+        cursor: pointer; }
+
+@-webkit-keyframes bg-fade {
+  0% {
+    background-color: #e5f7ff; }
+
+  100% {
+    background-color: transparent; } }
+@-moz-keyframes bg-fade {
+  0% {
+    background-color: #e5f7ff; }
+
+  100% {
+    background-color: transparent; } }
 * {
   -webkit-backface-visibility: hidden; }
 
@@ -615,70 +857,6 @@ colorpicker-preview {
 .no-margin {
   margin: 0px; }
 
-#view-log-view #view-log-filters .btn.btn-danger {
-  background: #fa5252;
-  border-color: #fa5252;
-  color: white; }
-#view-log-view #view-log-filters .btn.btn-default {
-  background: #59616e;
-  border-color: #6e7380;
-  color: white; }
-  #view-log-view #view-log-filters .btn.btn-default.active {
-    background: #6e7380;
-    border-color: #828791;
-    color: white;
-    font-family: "Proxima N W01 Bold"; }
-#view-log-view #view-log-filters select {
-  background: #59616e;
-  border-color: #6e7380;
-  color: white; }
-#view-log-view .filters-container {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-bottom: 2px #d6d6d9 solid;
-  background: #30384a; }
-#view-log-view .logs-container {
-  padding-top: 20px;
-  padding-bottom: 20px; }
-  #view-log-view .logs-container table {
-    width: 100%; }
-    #view-log-view .logs-container table th, #view-log-view .logs-container table td {
-      vertical-align: top; }
-    #view-log-view .logs-container table thead th {
-      padding-bottom: 10px; }
-    #view-log-view .logs-container table .logMsg-device-name, #view-log-view .logs-container table .logMsg-view-name, #view-log-view .logs-container table .logMsg-time {
-      padding-right: 20px;
-      white-space: nowrap; }
-    #view-log-view .logs-container table .logMsg-time {
-      padding-right: 40px; }
-    #view-log-view .logs-container table .logMsg-content {
-      width: 100%; }
-      #view-log-view .logs-container table .logMsg-content .has-more-details {
-        cursor: pointer; }
-    #view-log-view .logs-container table .logMsg {
-      padding-bottom: 2px;
-      -webkit-animation: bg-fade 0.5s 1;
-      -moz-animation: bg-fade 0.5s 1; }
-      #view-log-view .logs-container table .logMsg.level-error .logMsg-content {
-        color: #fa5252; }
-      #view-log-view .logs-container table .logMsg .glyphicon {
-        color: #eeeeee;
-        display: none; }
-      #view-log-view .logs-container table .logMsg .caret {
-        cursor: pointer; }
-
-@-webkit-keyframes bg-fade {
-  0% {
-    background-color: #e5f7ff; }
-
-  100% {
-    background-color: transparent; } }
-@-moz-keyframes bg-fade {
-  0% {
-    background-color: #e5f7ff; }
-
-  100% {
-    background-color: transparent; } }
 #steroids-connect_navigation-and-themes-view {
   padding-top: 40px;
   padding-bottom: 40px; }
