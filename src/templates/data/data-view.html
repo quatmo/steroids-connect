@@ -3,7 +3,7 @@
   <div class="row padding-top">
     <div class="col-xs-12">
       <h1>Data</h1>
-      <br>
+      <p>On this tab, you can configure Steroids Data for your app.</p>
     </div>
   </div>
 
@@ -18,12 +18,7 @@
 
 
   <div class="row padding-top">
-
     <div class="col-sm-12">
-      <h1>Data</h1>
-
-      <p>On this tab, you can configure Steroids Data for your app.</p>
-
       <p style="padding:20px" class="bg-info" ng-show="flashMsg">{{flashMsg}}</p>
 
       <div ng-show="waiting">{{waiting}}</div>
@@ -36,26 +31,14 @@
           </div>
 
           <div ng-switch-when="noDataConnection">
-            <p>No <code>config/sandbox.yaml</code> found. Please click below to add data to your app.</p>
+            <p>No <code>config/sandboxdb.yaml</code> found. Please click below to add data to your app.</p>
             <button class="btn btn-lg btn-primary" ng-click="initData()">
               Connect to Steroids Data <span class="glyphicon glyphicon-data">
             </button>
           </div>
 
-          <div ng-switch-when="noDataResource">
-            <p>Your application is in the cloud and connected with Steroids Data.</p>
-
-            <button class="btn btn-lg btn-primary" ng-click="addResource()">
-              Add a Steroids Data resource <span class="glyphicon glyphicon-data">
-            </button>
-          </div>
-
-          <div ng-switch-when="haveData">
-            <div ng-if="cloudId">
-              <a href="https://composer.appgyver.com/browser/projects/{{ cloudId }}" class="btn btn-lg btn-primary">
-                View data browser
-              </a>
-            </div>
+          <div ng-switch-when="dataInitialized">
+            <p>Your application is in the cloud and connected with Steroids Data. Use the data browser above to add resources to your app.</p>
           </div>
         </div>
     </div>
