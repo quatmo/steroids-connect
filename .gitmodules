@@ -1,6 +1,3 @@
-[submodule "vendor/ag-data-browser"]
-	path = vendor/ag-data-browser
-	url = git@github.com:AppGyver/ag-data-browser.git
 [submodule "src/styles/globals"]
 	path = src/styles/globals
 	url = git@github.com:AppGyver/global-product-styles.git
