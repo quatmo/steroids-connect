@@ -4251,7 +4251,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
-    "      <p ng-hide=\"DevicesAPI.devices\">No connceted devices found.</p>\n" +
+    "      <p ng-hide=\"DevicesAPI.devices\">No devices found.</p>\n" +
     "      <a class=\"btn btn-primary\" href=\"#\" ng-click=\"launchSimulator()\">Launch simulator &raquo;</a></span>\n" +
     "    </div>\n" +
     "\n" +
