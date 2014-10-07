@@ -1,7 +1,7 @@
 module.exports =
   build:
     options:
-      livereload: true
+      livereload: 35733
     files: [
       '<%= dir.src %>/**/*'
     ]

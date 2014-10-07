@@ -1732,7 +1732,7 @@ module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("con
 },{"./connectUiDirective":4}],6:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.DataBrowser"]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
@@ -1762,6 +1762,10 @@ module.exports = [
         $scope.waiting = "Fetching your App ID from Steroids CLI...";
         $scope.status = false;
         $scope.cloudId = false;
+        $scope.dataTab = "configure";
+        $scope.setDataTab = function(newTab) {
+          return $scope.dataTab = newTab;
+        };
         $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
           $scope.cloudId = res.data.id;
           $scope.cloudHash = res.data.identification_hash;
@@ -3602,15 +3606,38 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
+    "  <ul>\n" +
+    "    <li><b>RAML URL w/ hash:</b> ... <i>(eg. https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17)</i></li>\n" +
+    "    <li><b>App ANKA Id:</b> ...</li>\n" +
+    "    <li><b>User Access Token (Harri knows):</b> ...</li>\n" +
+    "  </ul>\n" +
+    "\n" +
+    "  <br>\n" +
+    "  <br>\n" +
+    "  <br>\n" +
+    "\n" +
     "  <div class=\"row padding-top\">\n" +
     "    <div class=\"col-xs-12\">\n" +
+    "      <ul class=\"nav nav-pills pull-right\">\n" +
+    "        <li ng-class=\"{'active': dataTab == 'browse'}\">\n" +
+    "          <a ng-click=\"setDataTab('browse')\">Browse data</a>\n" +
+    "        </li>\n" +
+    "        <li ng-class=\"{'active': dataTab == 'configure'}\">\n" +
+    "          <a ng-click=\"setDataTab('configure')\">Configure data</a>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
     "      <h1>Data</h1>\n" +
     "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
+    "      <br>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row\" ng-if=\"dataTab=='browse'\">\n" +
     "    <div ag-data-browser-ui data-raml-url=\"/cloud.raml\"></div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"row\" ng-if=\"dataTab=='configure'\">\n" +
+    "    <div ag-data-configurator config-api-base-url=\"https://config-api.testgyver.com/\" config-api-app-id=\"12886\" config-api-authorization-token=\"c5a28a6132e9194c7834c2f9a09d14a4\"></div>\n" +
     "  </div>\n" +
     "\n" +
     "\n" +

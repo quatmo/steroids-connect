@@ -12,13 +12,26 @@
 
   <div class="row padding-top">
     <div class="col-xs-12">
+      <ul class="nav nav-pills pull-right">
+        <li ng-class="{'active': dataTab == 'browse'}">
+          <a ng-click="setDataTab('browse')">Browse data</a>
+        </li>
+        <li ng-class="{'active': dataTab == 'configure'}">
+          <a ng-click="setDataTab('configure')">Configure data</a>
+        </li>
+      </ul>
       <h1>Data</h1>
       <p>On this tab, you can configure Steroids Data for your app.</p>
+      <br>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" ng-if="dataTab=='browse'">
     <div ag-data-browser-ui data-raml-url="/cloud.raml"></div>
+  </div>
+
+  <div class="row" ng-if="dataTab=='configure'">
+    <div ag-data-configurator config-api-base-url="https://config-api.testgyver.com/" config-api-app-id="12886" config-api-authorization-token="c5a28a6132e9194c7834c2f9a09d14a4"></div>
   </div>
 
 

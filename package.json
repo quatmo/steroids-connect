@@ -4,7 +4,8 @@
   "description": "Shared components for AppGyver Steroids Connect.",
   "main": "index.js",
   "dependencies": {
-    "ag-data-browser": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-browser#master"
+    "ag-data-browser": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-browser#master",
+    "ag-data-configurator": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-configurator#master"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
