@@ -4,6 +4,7 @@
   "description": "Shared components for AppGyver Steroids Connect.",
   "main": "index.js",
   "dependencies": {
+    "ag-ui-kit": "git+https://ag-global-styles-bridge:with_dis_i_read_styles_2014@github.com/AppGyver/ag-ui-kit.git#master",
     "ag-data-browser": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-browser#master",
     "ag-data-configurator": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-configurator#master"
   },

@@ -1732,7 +1732,7 @@ module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("con
 },{"./connectUiDirective":4}],6:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
@@ -1762,7 +1762,7 @@ module.exports = [
         $scope.waiting = "Fetching your App ID from Steroids CLI...";
         $scope.status = false;
         $scope.cloudId = false;
-        $scope.dataTab = "configure";
+        $scope.dataTab = "browse";
         $scope.setDataTab = function(newTab) {
           return $scope.dataTab = newTab;
         };

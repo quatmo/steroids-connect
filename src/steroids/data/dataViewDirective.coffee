@@ -14,7 +14,7 @@ module.exports =
           $scope.status = false
           $scope.cloudId = false
 
-          $scope.dataTab = "configure"
+          $scope.dataTab = "browse"
           $scope.setDataTab = (newTab) -> $scope.dataTab = newTab
 
           $http.get("http://localhost:4567/__appgyver/cloud_config").then(
