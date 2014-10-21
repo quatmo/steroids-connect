@@ -633,7 +633,8 @@ colorpicker-preview {
   border: none;
   margin-bottom: 0px; }
   .ag__steroids-connect .ag__steroids-connect__header .navbar-brand img {
-    max-height: 40px; }
+    max-height: 30px;
+    margin-top: -5px; }
   .ag__steroids-connect .ag__steroids-connect__header .nav li a {
     color: white;
     font-family: "Proxima Nova Soft W03 Smbd";

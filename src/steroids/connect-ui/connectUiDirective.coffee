@@ -18,7 +18,7 @@ module.exports =
             { name: "qr", label: "Preview" }
             { name: "logs", label: "Logs" }
             { name: "docs", label: "Documentation" }
-            { name: "build-settings", label: "Build Settings"}
+            { name: "build-settings", label: "Cloud Settings"}
             { name: "data", label: "Data"}
             # { name: "generators", label: "Generators" }
           ]

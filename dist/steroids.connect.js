@@ -1639,32 +1639,54 @@ module.exports = qrcode;
 "use strict";
 module.exports = [
   "$http", function($http) {
+    this.getCloudConfig = function() {
+      return $http.get("http://localhost:4567/__appgyver/cloud_config");
+    };
+    this.deploy = function() {
+      return $http.get("http://localhost:4567/__appgyver/deploy");
+    };
+    return this;
+  }
+];
+
+
+},{}],3:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$http", "BuildServerApi", function($http, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/build-settings/build-settings-view.html",
       link: function(scope, element, attrs) {
-        scope.noCloudJson = false;
+        scope.viewReady = false;
+        scope.isDeploying = false;
+        scope.hasCloudJson = false;
         scope.getCloudJson = function() {
           scope.waiting = "Fetching your App ID from Steroids CLI...";
-          return $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
+          return BuildServerApi.getCloudConfig().then(function(res) {
             scope.cloudId = res.data.id;
-            return scope.cloudHash = res.data.identification_hash;
+            scope.cloudHash = res.data.identification_hash;
+            return scope.hasCloudJson = true;
           }, function(error) {
-            return scope.noCloudJson = true;
+            return scope.hasCloudJson = false;
           })["finally"](function() {
-            return scope.waiting = null;
+            scope.waiting = null;
+            return scope.viewReady = true;
           });
         };
         scope.getCloudJson();
         return scope.deploy = function() {
-          scope.waiting = "Deploying your app to AppGyver Cloud...";
-          return $http.get("http://localhost:4567/__appgyver/deploy").then(function(res) {
+          if (scope.isDeploying) {
+            return;
+          }
+          scope.isDeploying = true;
+          return BuildServerApi.deploy().then(function(res) {
             return scope.getCloudJson();
           }, function(error) {
             return scope.flashMsg = "Could not deploy your project to the cloud. " + error.data.error;
           })["finally"](function() {
-            return scope.waiting = null;
+            return scope.isDeploying = false;
           });
         };
       }
@@ -1673,12 +1695,12 @@ module.exports = [
 ];
 
 
-},{}],3:[function(_dereq_,module,exports){
+},{}],4:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.build-settings", []).directive("buildSettingsView", _dereq_("./buildSettingsViewDirective"));
+module.exports = angular.module("SteroidsConnect.build-settings", []).directive("buildSettingsView", _dereq_("./buildSettingsViewDirective")).service("BuildServerApi", _dereq_("./BuildServerApiService"));
 
 
-},{"./buildSettingsViewDirective":2}],4:[function(_dereq_,module,exports){
+},{"./BuildServerApiService":2,"./buildSettingsViewDirective":3}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1704,7 +1726,7 @@ module.exports = [
             label: "Documentation"
           }, {
             name: "build-settings",
-            label: "Build Settings"
+            label: "Cloud Settings"
           }, {
             name: "data",
             label: "Data"
@@ -1724,12 +1746,12 @@ module.exports = [
 ];
 
 
-},{}],5:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("connectUi", _dereq_("./connectUiDirective"));
 
 
-},{"./connectUiDirective":4}],6:[function(_dereq_,module,exports){
+},{"./connectUiDirective":5}],7:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
 steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
@@ -1750,7 +1772,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":45,"./build-settings":3,"./connect-ui":5,"./data":8,"./docs":10,"./generators":13,"./logs":18,"./navigation-and-themes":31,"./preview":43}],7:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":46,"./build-settings":4,"./connect-ui":6,"./data":9,"./docs":11,"./generators":14,"./logs":19,"./navigation-and-themes":32,"./preview":44}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -1796,12 +1818,12 @@ module.exports = [
 ];
 
 
-},{}],8:[function(_dereq_,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.data", []).directive("cloudDataView", _dereq_("./dataViewDirective"));
 
 
-},{"./dataViewDirective":7}],9:[function(_dereq_,module,exports){
+},{"./dataViewDirective":8}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1815,12 +1837,12 @@ module.exports = [
 ];
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.docs", []).directive("docsView", _dereq_("./docsViewDirective"));
 
 
-},{"./docsViewDirective":9}],11:[function(_dereq_,module,exports){
+},{"./docsViewDirective":10}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1852,7 +1874,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "GeneratorsAPI", function(GeneratorsAPI) {
@@ -1868,12 +1890,12 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective")).factory("GeneratorsAPI", _dereq_("./GeneratorsAPI"));
 
 
-},{"./GeneratorsAPI":11,"./generatorsViewDirective":12}],14:[function(_dereq_,module,exports){
+},{"./GeneratorsAPI":12,"./generatorsViewDirective":13}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "LogsAPI", function($interval, $http, LogsAPI) {
@@ -1901,7 +1923,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1928,7 +1950,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
@@ -2037,7 +2059,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 
 /*
 Filters out all duplicate items from an array by checking the specified key
@@ -2085,12 +2107,12 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 });
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":43,"./LogCloudConnectorService":14,"./LogsAPI":15,"./LogsFilterAPI":16,"./filterUnique":17,"./logDateFormatFilter":19,"./logFiltersViewDirective":20,"./logMessageDirective":21,"./logTimeFormatFilter":22,"./logTimeMillisecondsFormatFilter":23,"./logViewDirective":24}],19:[function(_dereq_,module,exports){
+},{"./../preview":44,"./LogCloudConnectorService":15,"./LogsAPI":16,"./LogsFilterAPI":17,"./filterUnique":18,"./logDateFormatFilter":20,"./logFiltersViewDirective":21,"./logMessageDirective":22,"./logTimeFormatFilter":23,"./logTimeMillisecondsFormatFilter":24,"./logViewDirective":25}],20:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2112,7 +2134,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2129,7 +2151,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsFilterAPI", function(LogsFilterAPI) {
@@ -2159,7 +2181,7 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2184,7 +2206,7 @@ module.exports = [
 ];
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2203,7 +2225,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2220,7 +2242,7 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -2251,7 +2273,7 @@ module.exports = [
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
@@ -2287,7 +2309,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2304,7 +2326,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -2744,7 +2766,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2762,7 +2784,7 @@ module.exports = [
 ];
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2780,12 +2802,12 @@ module.exports = [
 ];
 
 
-},{}],31:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":25,"./TabModalCtrl":26,"./colorInputDirective":27,"./colorpicker":28,"./drawerConfiguratorViewDirective":29,"./generalSettingsConfiguratorViewDirective":30,"./navigationAndThemesViewDirective":32,"./navigationBarConfiguratorViewDirective":33,"./statusBarConfiguratorViewDirective":34,"./stickyScrollDirective":35,"./tabEditorDirective":36,"./tabsConfiguratorViewDirective":37,"./ui-sortable":38,"./viewSelectorDirective":39}],32:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":26,"./TabModalCtrl":27,"./colorInputDirective":28,"./colorpicker":29,"./drawerConfiguratorViewDirective":30,"./generalSettingsConfiguratorViewDirective":31,"./navigationAndThemesViewDirective":33,"./navigationBarConfiguratorViewDirective":34,"./statusBarConfiguratorViewDirective":35,"./stickyScrollDirective":36,"./tabEditorDirective":37,"./tabsConfiguratorViewDirective":38,"./ui-sortable":39,"./viewSelectorDirective":40}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2839,7 +2861,7 @@ module.exports = [
 ];
 
 
-},{}],33:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2856,7 +2878,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2911,7 +2933,7 @@ module.exports = [
 ];
 
 
-},{}],35:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -2953,7 +2975,7 @@ module.exports = [
 ];
 
 
-},{}],36:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$modal", function($modal) {
@@ -3009,7 +3031,7 @@ module.exports = [
 ];
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -3047,7 +3069,7 @@ module.exports = [
 ];
 
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
   "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
     return {
@@ -3204,7 +3226,7 @@ module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {})
 ]);
 
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3239,7 +3261,7 @@ module.exports = [
 ];
 
 
-},{}],40:[function(_dereq_,module,exports){
+},{}],41:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "DevicesAPI", function($interval, $http, DevicesAPI) {
@@ -3260,7 +3282,7 @@ module.exports = [
 ];
 
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3292,7 +3314,7 @@ module.exports = [
 ];
 
 
-},{}],42:[function(_dereq_,module,exports){
+},{}],43:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3447,12 +3469,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],43:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],44:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService"));
 
 
-},{"./DeviceCloudConnectorService":40,"./DevicesAPI":41,"./angular-qrcode":42,"./previewViewDirective":44}],44:[function(_dereq_,module,exports){
+},{"./DeviceCloudConnectorService":41,"./DevicesAPI":42,"./angular-qrcode":43,"./previewViewDirective":45}],45:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$http", "DevicesAPI", function($location, $http, DevicesAPI) {
@@ -3490,7 +3512,7 @@ module.exports = [
 ];
 
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],46:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -3499,25 +3521,61 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <div class=\"row padding-top\">\n" +
     "\n" +
-    "    <div class=\"col-sm-12\">\n" +
-    "      <h1>Build Settings</h1>\n" +
+    "    <br><br>\n" +
     "\n" +
-    "      <p style=\"padding:20px\" class=\"bg-info\" ng-show=\"flashMsg\">{{flashMsg}}</p>\n" +
+    "    <!-- Content -->\n" +
+    "    <div class=\"col-xs-12\" ng-if=\"viewReady\">\n" +
+    "      <div class=\"row\">\n" +
     "\n" +
-    "      <p>On this tab, you can configure the build settings for your app.</p>\n" +
-    "      <div ng-show=\"waiting\">{{waiting}}</div>\n" +
-    "      <div ng-hide=\"waiting\">\n" +
-    "        <div ng-show=\"noCloudJson\">\n" +
-    "          <p>No <code>config/cloud.json</code> found. Please click below to deploy your app to the cloud.</p>\n" +
-    "          <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\">\n" +
-    "            Deploy <span class=\"glyphicon glyphicon-cloud-upload\">\n" +
-    "          </button>\n" +
+    "        <!-- App actions -->\n" +
+    "        <div class=\"col-sm-7\">\n" +
+    "\n" +
+    "          <h2 class=\"no-margin\">App cloud settings</h2>\n" +
+    "          <br><br>\n" +
+    "          <p>App ID: <b>{{hasCloudJson ? cloudId : \"&laquo;App hasn't been deployed&raquo;\"}}</b></p>\n" +
+    "          <br>\n" +
+    "\n" +
+    "          <!-- Deploy button -->\n" +
+    "          <div class=\"clearfix\">\n" +
+    "            <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\" ng-disabled=\"isDeploying\" style=\"display: inline-block; float: left;\">\n" +
+    "              <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isDeploying ? 'Deploying...' : (hasCloudJson ? 'Re-deploy' : 'Deploy')}}\n" +
+    "            </button>\n" +
+    "            <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <p class=\"text-muted\" ng-hide=\"hasCloudJson\" style=\"padding-top: 4px;\"><small>Deploy the app to AppGyver cloud to use build service, <br class=\"hidden-xs hidden-sm\">data and to share your app with your peers and clients.</small></p>\n" +
+    "\n" +
+    "          <!-- Configure build settings -->\n" +
+    "          <div ng-show=\"hasCloudJson\">\n" +
+    "            <br>\n" +
+    "            <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
+    "              <span class=\"glyphicon glyphicon-cog\"></span> Configure build settings in cloud\n" +
+    "            </a>\n" +
+    "          </div>\n" +
+    "\n" +
     "        </div>\n" +
-    "        <div ng-hide=\"noCloudJson\">\n" +
-    "          <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
-    "            Configure your app's build settings in the Build Service &raquo;\n" +
-    "          </a>\n" +
+    "\n" +
+    "        <!-- App details -->\n" +
+    "        <div class=\"col-sm-4 col-sm-offset-1\">\n" +
+    "          <div ng-if=\"hasCloudJson\">\n" +
+    "            <h2 class=\"no-margin\">Share app</h2>\n" +
+    "            <br>\n" +
+    "            <br>\n" +
+    "            <a class=\"btn btn-primary\" ng-href=\"https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}\" target=\"_blank\">Open cloud share page</a>\n" +
+    "            <br><br>\n" +
+    "            <div class=\"text-muted\">or share QR code:</div>\n" +
+    "            <br>\n" +
+    "            <qrcode version=\"8\" error-correction-level=\"M\" size=\"100%\" data=\"appgyver://?id={{cloudId}}&hash={{cloudHash}}\" class=\"img-responsive\"></qrcode>\n" +
+    "            <p class=\"text-muted\"><small><b>Note:</b> this QR code points to the deployed app in the cloud. This cannot be used for connecting to the live development environment.</small></p>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div ng-hide=\"hasCloudJson\">\n" +
+    "            <h2 class=\"no-margin\">Share app</h2>\n" +
+    "            <br>\n" +
+    "            <p>To share your application it has to be deployed first.</p>\n" +
+    "          </div>\n" +
     "        </div>\n" +
+    "\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
@@ -3542,7 +3600,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span class=\"icon-bar\"></span>\n" +
     "        </button>\n" +
     "        <div class=\"navbar-brand\">\n" +
-    "          <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/steroids-logo.png\" alt=\"Steroids Connect\">\n" +
+    "          <img src=\"//s3.amazonaws.com/appgyver.assets/global-assets/images/appgyver-universal-logos/appgyver-logo-white.svg\" alt=\"Steroids Connect\">\n" +
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
@@ -4288,6 +4346,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 }]);
 
-},{}]},{},[6])
-(6)
+},{}]},{},[7])
+(7)
 });
