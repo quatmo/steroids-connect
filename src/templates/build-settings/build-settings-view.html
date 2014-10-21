@@ -22,7 +22,9 @@
             <ag-ui-spinner size="29" color="black" ng-show="isDeploying" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
           </div>
 
-          <p class="text-muted" ng-hide="hasCloudJson" style="padding-top: 4px;"><small>Deploy the app to AppGyver cloud to use build service, <br class="hidden-xs hidden-sm">data and to share your app with your peers and clients.</small></p>
+          <p class="text-muted" ng-hide="hasCloudJson || deployError" style="padding-top: 6px;"><small>Deploy the app to AppGyver cloud to use build service, <br class="hidden-xs hidden-sm">data and to share your app with your peers and clients.</small></p>
+
+          <p class="text-danger" ng-show="deployError" style="margin-top: 6px;"><small>{{deployError}}</small></p>
 
           <!-- Configure build settings -->
           <div ng-show="hasCloudJson">

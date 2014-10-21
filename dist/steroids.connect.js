@@ -1665,6 +1665,7 @@ module.exports = [
         scope.viewReady = false;
         scope.isDeploying = false;
         scope.hasCloudJson = false;
+        scope.deployError = void 0;
         scope.getCloudJson = function() {
           scope.waiting = "Fetching your App ID from Steroids CLI...";
           return BuildServerApi.getCloudConfig().then(function(res) {
@@ -1685,9 +1686,10 @@ module.exports = [
           }
           scope.isDeploying = true;
           return BuildServerApi.deploy().then(function(res) {
-            return scope.getCloudJson();
+            scope.getCloudJson();
+            return scope.deployError = void 0;
           }, function(error) {
-            return scope.flashMsg = "Could not deploy your project to the cloud. " + error.data.error;
+            return scope.deployError = "Could not deploy your project to the cloud. " + error.data.error;
           })["finally"](function() {
             return scope.isDeploying = false;
           });
@@ -3570,7 +3572,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "          </div>\n" +
     "\n" +
-    "          <p class=\"text-muted\" ng-hide=\"hasCloudJson\" style=\"padding-top: 4px;\"><small>Deploy the app to AppGyver cloud to use build service, <br class=\"hidden-xs hidden-sm\">data and to share your app with your peers and clients.</small></p>\n" +
+    "          <p class=\"text-muted\" ng-hide=\"hasCloudJson || deployError\" style=\"padding-top: 6px;\"><small>Deploy the app to AppGyver cloud to use build service, <br class=\"hidden-xs hidden-sm\">data and to share your app with your peers and clients.</small></p>\n" +
+    "\n" +
+    "          <p class=\"text-danger\" ng-show=\"deployError\" style=\"margin-top: 6px;\"><small>{{deployError}}</small></p>\n" +
     "\n" +
     "          <!-- Configure build settings -->\n" +
     "          <div ng-show=\"hasCloudJson\">\n" +
@@ -3762,6 +3766,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
     "      <h1 class=\"no-margin\">Documentation and Tutorials</h1>\n" +
+    "      <br><br>\n" +
     "      <a\n" +
     "        class=\"btn btn-lrg btn-primary\"\n" +
     "        href=\"https://academy.appgyver.com\"\n" +
