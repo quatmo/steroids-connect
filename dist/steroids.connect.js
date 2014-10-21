@@ -1642,9 +1642,6 @@ module.exports = [
     this.getCloudConfig = function() {
       return $http.get("http://localhost:4567/__appgyver/cloud_config");
     };
-    this.getSandboxConfig = function() {
-      return $http.get("http://localhost:4567/__appgyver/data/sandboxdb_yaml");
-    };
     this.getAccessToken = function() {
       return $http.get("http://localhost:4567/__appgyver/access_token");
     };
@@ -1781,40 +1778,67 @@ steroidsConnectModules.run([
 },{"../templates/SteroidsConnectTemplates":46,"./build-settings":4,"./connect-ui":6,"./data":9,"./docs":11,"./generators":14,"./logs":19,"./navigation-and-themes":32,"./preview":44}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$http", "BuildServerApi", function($http, BuildServerApi) {
+  "$http", "$q", "$timeout", "BuildServerApi", function($http, $q, $timeout, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/data/data-view.html",
       controller: function($scope) {
-        var _gettingAccessToken, _gettingCloudJson, _gettingSanboxConfig;
+
+        /*
+        View state
+         */
+        var _finishBeforeViewReady, _getCloudConfig;
         $scope.viewReady = false;
         $scope.appDeployed = false;
         $scope.dataEnabled = false;
-        _gettingCloudJson = BuildServerApi.getCloudConfig().then(function(res) {
-          $scope.cloudId = res.data.id;
-          $scope.cloudHash = res.data.identification_hash;
-          return $scope.appDeployed = true;
-        });
-        _gettingSanboxConfig = BuildServerApi.getSandboxConfig().then(function(res) {
-          return $scope.appDeployed = true;
-        });
-        _gettingAccessToken = BuildServerApi.getAccessToken().then(function(res) {
+        $scope.error = void 0;
+
+        /*
+        View initialization
+         */
+        _finishBeforeViewReady = [];
+        _getCloudConfig = function() {
+          return BuildServerApi.getCloudConfig().then(function(res) {
+            $scope.cloudId = res.data.id;
+            $scope.cloudHash = res.data.identification_hash;
+            return $scope.appDeployed = true;
+          });
+        };
+        _finishBeforeViewReady.push(_getCloudConfig());
+        _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
           return $scope.accessToken = res.data;
+        }));
+        $q.all(_finishBeforeViewReady)["finally"](function() {
+          return $timeout(function() {
+            return $scope.viewReady = true;
+          }, 100);
         });
+
+        /*
+        View tabs
+         */
         $scope.dataTab = "configure";
         $scope.setDataTab = function(newTab) {
           return $scope.dataTab = newTab;
         };
-        return $scope.initData = function() {
-          $scope.waiting = "Initializing your app with Steroids Data...";
-          return $http.post("http://localhost:4567/__appgyver/data/init").then(function(res) {
-            $scope.flashMsg = "Steroids Data initialized!";
-            return $scope.status = "dataInitialized";
-          }, function(error) {
-            return $scope.flashMsg = "Could not initialize Steroids Data for your project. " + error.data.error;
+
+        /*
+        View functionalities
+         */
+        $scope.isDeploying = false;
+        return $scope.deploy = function() {
+          if ($scope.isDeploying) {
+            return;
+          }
+          $scope.isDeploying = true;
+          $scope.error = void 0;
+          return BuildServerApi.deploy().then(function() {
+            return _getCloudConfig();
+          }, function(err) {
+            return $scope.error = "Could not deploy your project to the cloud. " + err.data.error;
           })["finally"](function() {
-            return $scope.waiting = false;
+            return $scope.isDeploying = false;
           });
         };
       }
@@ -3522,11 +3546,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   'use strict';
 
   $templateCache.put('/steroids-connect/build-settings/build-settings-view.html',
-    "<div id=\"view-build-settings\" class=\"container\">\n" +
+    "<div id=\"view-cloud-settings\" class=\"container\">\n" +
     "\n" +
-    "  <div class=\"row padding-top\">\n" +
-    "\n" +
-    "    <br><br>\n" +
+    "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- Content -->\n" +
     "    <div class=\"col-xs-12\" ng-if=\"viewReady\">\n" +
@@ -3543,7 +3565,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <!-- Deploy button -->\n" +
     "          <div class=\"clearfix\">\n" +
     "            <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\" ng-disabled=\"isDeploying\" style=\"display: inline-block; float: left;\">\n" +
-    "              <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isDeploying ? 'Deploying...' : (hasCloudJson ? 'Re-deploy' : 'Deploy')}}\n" +
+    "              <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isDeploying ? 'Deploying...' : 'Deploy to cloud'}}\n" +
     "            </button>\n" +
     "            <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "          </div>\n" +
@@ -3669,20 +3691,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
-    "  <ul>\n" +
-    "    <li><b>RAML URL w/ hash:</b> ... <i>(eg. https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17)</i></li>\n" +
-    "    <li><b>Cloud ID:</b> {{cloudId}}</li>\n" +
-    "    <li><b>Cloud hash:</b> {{cloudHash}}</li>\n" +
-    "    <li><b>User Access Token:</b> {{accessToken}}</li>\n" +
-    "  </ul>\n" +
     "\n" +
-    "  <br>\n" +
-    "  <br>\n" +
-    "  <br>\n" +
+    "  <!-- Title + tabs -->\n" +
     "\n" +
-    "  <div class=\"row padding-top\">\n" +
+    "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <ul class=\"nav nav-pills pull-right\">\n" +
+    "      <ul class=\"nav nav-pills pull-right\" ng-if=\"viewReady && appDeployed\">\n" +
     "        <li ng-class=\"{'active': dataTab == 'browse'}\">\n" +
     "          <a ng-click=\"setDataTab('browse')\">Browse data</a>\n" +
     "        </li>\n" +
@@ -3690,53 +3704,52 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <a ng-click=\"setDataTab('configure')\">Configure data</a>\n" +
     "        </li>\n" +
     "      </ul>\n" +
-    "      <h1>Data</h1>\n" +
+    "      <h1 class=\"no-margin\">Data</h1>\n" +
     "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
-    "      <br>\n" +
+    "      <br><br>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"row\" ng-if=\"dataTab=='browse'\">\n" +
-    "    <div ag-data-browser-ui data-raml-url=\"https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
-    "  </div>\n" +
     "\n" +
-    "  <div class=\"row\" ng-if=\"dataTab=='configure'\">\n" +
-    "    <div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>\n" +
-    "  </div>\n" +
+    "  <!-- If app's not deployed -->\n" +
     "\n" +
+    "  <div class=\"row\" ng-if=\"viewReady && !appDeployed\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
     "\n" +
-    "  <br>\n" +
-    "  <br>\n" +
-    "  <br>\n" +
+    "      <!-- Deploy button -->\n" +
+    "      <div class=\"clearfix\">\n" +
+    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\" ng-disabled=\"isDeploying\" style=\"display: inline-block; float: left;\">\n" +
+    "          <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isDeploying ? 'Deploying...' : 'Deploy to cloud'}}\n" +
+    "        </button>\n" +
+    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "      </div>\n" +
     "\n" +
+    "      <p ng-class=\"{'text-muted': !error, 'text-danger': error}\" style=\"margin-top: 6px;\"><small>{{error ? error : \"Before you can use data, your app needs to be deployed to the cloud.\"}}</small></p>\n" +
     "\n" +
-    "  <div class=\"row padding-top\">\n" +
-    "    <div class=\"col-sm-12\">\n" +
-    "      <p style=\"padding:20px\" class=\"bg-info\" ng-show=\"flashMsg\">{{flashMsg}}</p>\n" +
-    "\n" +
-    "      <div ng-show=\"waiting\">{{waiting}}</div>\n" +
-    "      <div ng-hide=\"waiting\">\n" +
-    "        <div ng-switch=\"status\">\n" +
-    "\n" +
-    "          <div ng-switch-when=\"notDeployed\">\n" +
-    "            <p>Your application needs to be deployed to the cloud to be connected with Steroids Data.</p>\n" +
-    "            <p>Go to the build settings tab to deploy your application.</p>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div ng-switch-when=\"noDataConnection\">\n" +
-    "            <p>No <code>config/sandboxdb.yaml</code> found. Please click below to add data to your app.</p>\n" +
-    "            <button class=\"btn btn-lg btn-primary\" ng-click=\"initData()\">\n" +
-    "              Connect to Steroids Data <span class=\"glyphicon glyphicon-data\">\n" +
-    "            </button>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div ng-switch-when=\"dataInitialized\">\n" +
-    "            <p>Your application is in the cloud and connected with Steroids Data. Use the data browser above to add resources to your app.</p>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
     "    </div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "\n" +
+    "  <!-- All good! -->\n" +
+    "\n" +
+    "  <div class=\"row\" ng-if=\"viewReady && appDeployed\">\n" +
+    "    <div class=\"col-xs-12\">\n" +
+    "\n" +
+    "      <!-- Data Browser -->\n" +
+    "\n" +
+    "      <div class=\"row\" ng-if=\"dataTab=='browse'\">\n" +
+    "        <div ag-data-browser-ui data-raml-url=\"https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <!-- Data Configurator -->\n" +
+    "\n" +
+    "      <div class=\"row\" ng-if=\"dataTab=='configure'\">\n" +
+    "        <div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
     "\n" +
     "</div>\n"
   );
@@ -3748,7 +3761,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
-    "      <h1>Documentation and Tutorials</h1>\n" +
+    "      <h1 class=\"no-margin\">Documentation and Tutorials</h1>\n" +
     "      <a\n" +
     "        class=\"btn btn-lrg btn-primary\"\n" +
     "        href=\"https://academy.appgyver.com\"\n" +

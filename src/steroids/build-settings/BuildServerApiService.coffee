@@ -12,11 +12,6 @@ module.exports =
           .get "http://localhost:4567/__appgyver/cloud_config"
 
       # Get cloud config from Steroids API
-      @getSandboxConfig = ->
-        $http
-          .get "http://localhost:4567/__appgyver/data/sandboxdb_yaml"
-
-      # Get cloud config from Steroids API
       @getAccessToken = ->
         $http
           .get "http://localhost:4567/__appgyver/access_token"
@@ -25,8 +20,6 @@ module.exports =
       @deploy = ->
         $http
           .get "http://localhost:4567/__appgyver/deploy"
-          #.then (res) ->
-          #  @getCloudConfig
 
       # Return this
       @

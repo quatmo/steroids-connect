@@ -4,51 +4,80 @@
 module.exports =
   [
     "$http"
+    "$q"
+    "$timeout"
     "BuildServerApi"
-    ($http, BuildServerApi) ->
+    ($http, $q, $timeout, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
         templateUrl: "/steroids-connect/data/data-view.html"
         controller: ($scope) ->
+
+          ###
+          View state
+          ###
+
           $scope.viewReady = false # Whether view is ready or not
           $scope.appDeployed = false
           $scope.dataEnabled = false
+          $scope.error = undefined
+
+          ###
+          View initialization
+          ###
+
+          # Collection of promises to finish before view can be called ready
+          _finishBeforeViewReady = []
+
+          _getCloudConfig = () ->
+            BuildServerApi.getCloudConfig().then(
+              (res) ->
+                $scope.cloudId = res.data.id
+                $scope.cloudHash = res.data.identification_hash
+                $scope.appDeployed = true
+            )
 
           # Check if app is deployed
-          _gettingCloudJson = BuildServerApi.getCloudConfig().then(
-            (res) ->
-              $scope.cloudId = res.data.id
-              $scope.cloudHash = res.data.identification_hash
-              $scope.appDeployed = true
-          )
-
-          # Get Sandbox configuration
-          _gettingSanboxConfig = BuildServerApi.getSandboxConfig().then(
-            (res) ->
-              $scope.appDeployed = true
-          )
+          _finishBeforeViewReady.push _getCloudConfig()
 
           # Get access token for user
-          _gettingAccessToken = BuildServerApi.getAccessToken().then(
+          _finishBeforeViewReady.push BuildServerApi.getAccessToken().then(
             (res) ->
               $scope.accessToken = res.data # acually is the token
           )
 
-          # Tabs
+          # After all are resolved, set view ready
+          $q.all(_finishBeforeViewReady).finally () ->
+            $timeout () ->
+              $scope.viewReady = true
+            , 100
+
+          ###
+          View tabs
+          ###
+
           $scope.dataTab = "configure"
           $scope.setDataTab = (newTab) -> $scope.dataTab = newTab
 
-          $scope.initData = ->
-            $scope.waiting = "Initializing your app with Steroids Data..."
-            $http.post("http://localhost:4567/__appgyver/data/init").then(
-              (res) ->
-                $scope.flashMsg = "Steroids Data initialized!"
-                $scope.status = "dataInitialized"
-              (error) ->
-                $scope.flashMsg = "Could not initialize Steroids Data for your project. #{error.data.error}"
+          ###
+          View functionalities
+          ###
+
+          $scope.isDeploying = false
+          $scope.deploy = () ->
+            # check that deploy isn't running
+            return if $scope.isDeploying
+            $scope.isDeploying = true
+            $scope.error = undefined
+            #
+            BuildServerApi.deploy().then(
+              () ->
+                _getCloudConfig()
+              (err) ->
+                $scope.error = "Could not deploy your project to the cloud. #{err.data.error}"
             ).finally ->
-              $scope.waiting = false
+              $scope.isDeploying = false
 
       }
   ]

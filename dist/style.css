@@ -643,6 +643,9 @@ colorpicker-preview {
     color: black;
     background: none; }
 
+.no-margin {
+  margin: 0px; }
+
 .ag__steroids-connect #view-log-filters .btn.btn-default {
   background: #59616e;
   border-color: #6e7380;
@@ -726,5 +729,14 @@ colorpicker-preview {
         #view-preview-view ul.devices-list > li .status-indicator.green {
           background: #14bda6; }
 
-.no-margin {
-  margin: 0px; }
+#view-docs {
+  padding-top: 40px;
+  padding-bottom: 40px; }
+
+#view-cloud-settings {
+  padding-top: 40px;
+  padding-bottom: 40px; }
+
+#view-data {
+  padding-top: 40px;
+  padding-bottom: 40px; }

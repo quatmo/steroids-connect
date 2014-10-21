@@ -1,8 +1,6 @@
-<div id="view-build-settings" class="container">
+<div id="view-cloud-settings" class="container">
 
-  <div class="row padding-top">
-
-    <br><br>
+  <div class="row">
 
     <!-- Content -->
     <div class="col-xs-12" ng-if="viewReady">
@@ -19,7 +17,7 @@
           <!-- Deploy button -->
           <div class="clearfix">
             <button class="btn btn-lg btn-primary" ng-click="deploy()" ng-disabled="isDeploying" style="display: inline-block; float: left;">
-              <span class="glyphicon glyphicon-cloud-upload"></span> {{isDeploying ? 'Deploying...' : (hasCloudJson ? 'Re-deploy' : 'Deploy')}}
+              <span class="glyphicon glyphicon-cloud-upload"></span> {{isDeploying ? 'Deploying...' : 'Deploy to cloud'}}
             </button>
             <ag-ui-spinner size="29" color="black" ng-show="isDeploying" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
           </div>

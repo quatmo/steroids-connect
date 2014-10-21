@@ -1,19 +1,11 @@
 <div id="view-data" class="container">
 
-  <ul>
-    <li><b>RAML URL w/ hash:</b> ... <i>(eg. https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17)</i></li>
-    <li><b>Cloud ID:</b> {{cloudId}}</li>
-    <li><b>Cloud hash:</b> {{cloudHash}}</li>
-    <li><b>User Access Token:</b> {{accessToken}}</li>
-  </ul>
 
-  <br>
-  <br>
-  <br>
+  <!-- Title + tabs -->
 
-  <div class="row padding-top">
+  <div class="row">
     <div class="col-xs-12">
-      <ul class="nav nav-pills pull-right">
+      <ul class="nav nav-pills pull-right" ng-if="viewReady && appDeployed">
         <li ng-class="{'active': dataTab == 'browse'}">
           <a ng-click="setDataTab('browse')">Browse data</a>
         </li>
@@ -21,52 +13,51 @@
           <a ng-click="setDataTab('configure')">Configure data</a>
         </li>
       </ul>
-      <h1>Data</h1>
+      <h1 class="no-margin">Data</h1>
       <p>On this tab, you can configure Steroids Data for your app.</p>
-      <br>
+      <br><br>
     </div>
   </div>
 
-  <div class="row" ng-if="dataTab=='browse'">
-    <div ag-data-browser-ui data-raml-url="https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}"></div>
-  </div>
 
-  <div class="row" ng-if="dataTab=='configure'">
-    <div ag-data-configurator config-api-base-url="https://config-api.appgyver.com/application_configuration" config-api-app-id="{{cloudId}}" config-api-authorization-token="{{accessToken}}"></div>
-  </div>
+  <!-- If app's not deployed -->
 
+  <div class="row" ng-if="viewReady && !appDeployed">
+    <div class="col-xs-12">
 
-  <br>
-  <br>
-  <br>
+      <!-- Deploy button -->
+      <div class="clearfix">
+        <button class="btn btn-lg btn-primary" ng-click="deploy()" ng-disabled="isDeploying" style="display: inline-block; float: left;">
+          <span class="glyphicon glyphicon-cloud-upload"></span> {{isDeploying ? 'Deploying...' : 'Deploy to cloud'}}
+        </button>
+        <ag-ui-spinner size="29" color="black" ng-show="isDeploying" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
+      </div>
 
+      <p ng-class="{'text-muted': !error, 'text-danger': error}" style="margin-top: 6px;"><small>{{error ? error : "Before you can use data, your app needs to be deployed to the cloud."}}</small></p>
 
-  <div class="row padding-top">
-    <div class="col-sm-12">
-      <p style="padding:20px" class="bg-info" ng-show="flashMsg">{{flashMsg}}</p>
-
-      <div ng-show="waiting">{{waiting}}</div>
-      <div ng-hide="waiting">
-        <div ng-switch="status">
-
-          <div ng-switch-when="notDeployed">
-            <p>Your application needs to be deployed to the cloud to be connected with Steroids Data.</p>
-            <p>Go to the build settings tab to deploy your application.</p>
-          </div>
-
-          <div ng-switch-when="noDataConnection">
-            <p>No <code>config/sandboxdb.yaml</code> found. Please click below to add data to your app.</p>
-            <button class="btn btn-lg btn-primary" ng-click="initData()">
-              Connect to Steroids Data <span class="glyphicon glyphicon-data">
-            </button>
-          </div>
-
-          <div ng-switch-when="dataInitialized">
-            <p>Your application is in the cloud and connected with Steroids Data. Use the data browser above to add resources to your app.</p>
-          </div>
-        </div>
     </div>
-
   </div>
+
+
+  <!-- All good! -->
+
+  <div class="row" ng-if="viewReady && appDeployed">
+    <div class="col-xs-12">
+
+      <!-- Data Browser -->
+
+      <div class="row" ng-if="dataTab=='browse'">
+        <div ag-data-browser-ui data-raml-url="https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}"></div>
+      </div>
+
+      <!-- Data Configurator -->
+
+      <div class="row" ng-if="dataTab=='configure'">
+        <div ag-data-configurator config-api-base-url="https://config-api.appgyver.com/application_configuration" config-api-app-id="{{cloudId}}" config-api-authorization-token="{{accessToken}}"></div>
+      </div>
+
+    </div>
+  </div>
+
 
 </div>
