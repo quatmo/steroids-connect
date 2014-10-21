@@ -2,8 +2,9 @@
 
   <ul>
     <li><b>RAML URL w/ hash:</b> ... <i>(eg. https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17)</i></li>
-    <li><b>App ANKA Id:</b> ...</li>
-    <li><b>User Access Token (Harri knows):</b> ...</li>
+    <li><b>Cloud ID:</b> {{cloudId}}</li>
+    <li><b>Cloud hash:</b> {{cloudHash}}</li>
+    <li><b>User Access Token:</b> {{accessToken}}</li>
   </ul>
 
   <br>
@@ -27,11 +28,11 @@
   </div>
 
   <div class="row" ng-if="dataTab=='browse'">
-    <div ag-data-browser-ui data-raml-url="/cloud.raml"></div>
+    <div ag-data-browser-ui data-raml-url="https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}"></div>
   </div>
 
   <div class="row" ng-if="dataTab=='configure'">
-    <div ag-data-configurator config-api-base-url="https://config-api.testgyver.com/" config-api-app-id="12886" config-api-authorization-token="c5a28a6132e9194c7834c2f9a09d14a4"></div>
+    <div ag-data-configurator config-api-base-url="https://config-api.appgyver.com/application_configuration" config-api-app-id="{{cloudId}}" config-api-authorization-token="{{accessToken}}"></div>
   </div>
 
 

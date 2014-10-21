@@ -3,9 +3,8 @@
 # Directive for displaying the log view
 module.exports =
   [
-    "$http"
     "BuildServerApi"
-    ($http, BuildServerApi) ->
+    (BuildServerApi) ->
       {
         restrict: "EA"
         replace: true

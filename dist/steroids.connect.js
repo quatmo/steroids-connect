@@ -1642,6 +1642,12 @@ module.exports = [
     this.getCloudConfig = function() {
       return $http.get("http://localhost:4567/__appgyver/cloud_config");
     };
+    this.getSandboxConfig = function() {
+      return $http.get("http://localhost:4567/__appgyver/data/sandboxdb_yaml");
+    };
+    this.getAccessToken = function() {
+      return $http.get("http://localhost:4567/__appgyver/access_token");
+    };
     this.deploy = function() {
       return $http.get("http://localhost:4567/__appgyver/deploy");
     };
@@ -1653,7 +1659,7 @@ module.exports = [
 },{}],3:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$http", "BuildServerApi", function($http, BuildServerApi) {
+  "BuildServerApi", function(BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1775,32 +1781,31 @@ steroidsConnectModules.run([
 },{"../templates/SteroidsConnectTemplates":46,"./build-settings":4,"./connect-ui":6,"./data":9,"./docs":11,"./generators":14,"./logs":19,"./navigation-and-themes":32,"./preview":44}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$http", function($http) {
+  "$http", "BuildServerApi", function($http, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/data/data-view.html",
       controller: function($scope) {
-        $scope.waiting = "Fetching your App ID from Steroids CLI...";
-        $scope.status = false;
-        $scope.cloudId = false;
-        $scope.dataTab = "browse";
+        var _gettingAccessToken, _gettingCloudJson, _gettingSanboxConfig;
+        $scope.viewReady = false;
+        $scope.appDeployed = false;
+        $scope.dataEnabled = false;
+        _gettingCloudJson = BuildServerApi.getCloudConfig().then(function(res) {
+          $scope.cloudId = res.data.id;
+          $scope.cloudHash = res.data.identification_hash;
+          return $scope.appDeployed = true;
+        });
+        _gettingSanboxConfig = BuildServerApi.getSandboxConfig().then(function(res) {
+          return $scope.appDeployed = true;
+        });
+        _gettingAccessToken = BuildServerApi.getAccessToken().then(function(res) {
+          return $scope.accessToken = res.data;
+        });
+        $scope.dataTab = "configure";
         $scope.setDataTab = function(newTab) {
           return $scope.dataTab = newTab;
         };
-        $http.get("http://localhost:4567/__appgyver/cloud_config").then(function(res) {
-          $scope.cloudId = res.data.id;
-          $scope.cloudHash = res.data.identification_hash;
-          return $http.get("http://localhost:4567/__appgyver/data/sandboxdb_yaml").then(function(res) {
-            return $scope.status = "dataInitialized";
-          }, function(error) {
-            return $scope.status = "noDataConnection";
-          });
-        }, function(error) {
-          return $scope.status = "notDeployed";
-        })["finally"](function() {
-          return $scope.waiting = false;
-        });
         return $scope.initData = function() {
           $scope.waiting = "Initializing your app with Steroids Data...";
           return $http.post("http://localhost:4567/__appgyver/data/init").then(function(res) {
@@ -3666,8 +3671,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <ul>\n" +
     "    <li><b>RAML URL w/ hash:</b> ... <i>(eg. https://composer.testgyver.com/application_configuration/app/12886/raml.yml?identification_hash=98c2cdbf9383ea81c32c949de88297baa93a198fa5d34cf1a0129f6930268a17)</i></li>\n" +
-    "    <li><b>App ANKA Id:</b> ...</li>\n" +
-    "    <li><b>User Access Token (Harri knows):</b> ...</li>\n" +
+    "    <li><b>Cloud ID:</b> {{cloudId}}</li>\n" +
+    "    <li><b>Cloud hash:</b> {{cloudHash}}</li>\n" +
+    "    <li><b>User Access Token:</b> {{accessToken}}</li>\n" +
     "  </ul>\n" +
     "\n" +
     "  <br>\n" +
@@ -3691,11 +3697,11 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <div class=\"row\" ng-if=\"dataTab=='browse'\">\n" +
-    "    <div ag-data-browser-ui data-raml-url=\"/cloud.raml\"></div>\n" +
+    "    <div ag-data-browser-ui data-raml-url=\"https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
     "  </div>\n" +
     "\n" +
     "  <div class=\"row\" ng-if=\"dataTab=='configure'\">\n" +
-    "    <div ag-data-configurator config-api-base-url=\"https://config-api.testgyver.com/\" config-api-app-id=\"12886\" config-api-authorization-token=\"c5a28a6132e9194c7834c2f9a09d14a4\"></div>\n" +
+    "    <div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>\n" +
     "  </div>\n" +
     "\n" +
     "\n" +

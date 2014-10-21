@@ -4,33 +4,40 @@
 module.exports =
   [
     "$http"
-    ($http) ->
+    "BuildServerApi"
+    ($http, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
         templateUrl: "/steroids-connect/data/data-view.html"
         controller: ($scope) ->
-          $scope.waiting = "Fetching your App ID from Steroids CLI..."
-          $scope.status = false
-          $scope.cloudId = false
+          $scope.viewReady = false # Whether view is ready or not
+          $scope.appDeployed = false
+          $scope.dataEnabled = false
 
-          $scope.dataTab = "browse"
-          $scope.setDataTab = (newTab) -> $scope.dataTab = newTab
-
-          $http.get("http://localhost:4567/__appgyver/cloud_config").then(
+          # Check if app is deployed
+          _gettingCloudJson = BuildServerApi.getCloudConfig().then(
             (res) ->
               $scope.cloudId = res.data.id
               $scope.cloudHash = res.data.identification_hash
-              $http.get("http://localhost:4567/__appgyver/data/sandboxdb_yaml").then(
-                (res) ->
-                  $scope.status = "dataInitialized"
-                (error) ->
-                  $scope.status = "noDataConnection"
-              )
-            (error) ->
-              $scope.status = "notDeployed"
-          ).finally ->
-            $scope.waiting = false
+              $scope.appDeployed = true
+          )
+
+          # Get Sandbox configuration
+          _gettingSanboxConfig = BuildServerApi.getSandboxConfig().then(
+            (res) ->
+              $scope.appDeployed = true
+          )
+
+          # Get access token for user
+          _gettingAccessToken = BuildServerApi.getAccessToken().then(
+            (res) ->
+              $scope.accessToken = res.data # acually is the token
+          )
+
+          # Tabs
+          $scope.dataTab = "configure"
+          $scope.setDataTab = (newTab) -> $scope.dataTab = newTab
 
           $scope.initData = ->
             $scope.waiting = "Initializing your app with Steroids Data..."
