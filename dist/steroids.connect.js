@@ -1639,14 +1639,19 @@ module.exports = qrcode;
 "use strict";
 module.exports = [
   "$http", function($http) {
+    var _apiBase;
+    _apiBase = "http://localhost:4567";
     this.getCloudConfig = function() {
-      return $http.get("http://localhost:4567/__appgyver/cloud_config");
+      return $http.get("" + _apiBase + "/__appgyver/cloud_config");
     };
     this.getAccessToken = function() {
-      return $http.get("http://localhost:4567/__appgyver/access_token");
+      return $http.get("" + _apiBase + "/__appgyver/access_token");
     };
     this.deploy = function() {
-      return $http.get("http://localhost:4567/__appgyver/deploy");
+      return $http.get("" + _apiBase + "/__appgyver/deploy");
+    };
+    this.launchSimulator = function() {
+      return $http.get("" + _apiBase + "/__appgyver/launch_simulator");
     };
     return this;
   }
@@ -3508,14 +3513,14 @@ module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-q
 },{"./DeviceCloudConnectorService":41,"./DevicesAPI":42,"./angular-qrcode":43,"./previewViewDirective":45}],45:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$location", "$http", "DevicesAPI", function($location, $http, DevicesAPI) {
+  "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($location, $timeout, DevicesAPI, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
       templateUrl: "/steroids-connect/preview/preview-view.html",
-      link: function(scope, element, attrs) {
-        var decodedQrCode, parseQueryParams, qrCode;
-        scope.DevicesAPI = DevicesAPI;
+      link: function($scope, element, attrs) {
+        var decodedQrCode, parseQueryParams, qrCode, _simulatorTimeout;
+        $scope.DevicesAPI = DevicesAPI;
         parseQueryParams = function() {
           var param, paramObj, params, _i, _len;
           params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
@@ -3533,9 +3538,22 @@ module.exports = [
         };
         qrCode = parseQueryParams()["qrcode"];
         decodedQrCode = decodeURIComponent(qrCode);
-        scope.qrCode = decodedQrCode;
-        return scope.launchSimulator = function() {
-          return $http.get("http://localhost:4567/__appgyver/launch_simulator");
+        $scope.qrCode = decodedQrCode;
+
+        /*
+        SIMULATOR
+         */
+        $scope.simulatorIsLaunching = false;
+        _simulatorTimeout = void 0;
+        return $scope.launchSimulator = function() {
+          if ($scope.simulatorIsLaunching) {
+            return;
+          }
+          $scope.simulatorIsLaunching = true;
+          BuildServerApi.launchSimulator()["finally"](function() {});
+          return $timeout(function() {
+            return $scope.simulatorIsLaunching = false;
+          }, 2000);
         };
       }
     };
@@ -4360,8 +4378,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
-    "      <p ng-hide=\"DevicesAPI.devices\">No devices found.</p>\n" +
-    "      <a class=\"btn btn-primary\" href=\"#\" ng-click=\"launchSimulator()\">Launch simulator &raquo;</a></span>\n" +
+    "      <p ng-hide=\"DevicesAPI.devices\">No connected devices.<br><br></p>\n" +
+    "\n" +
+    "      <div class=\"clearfix\">\n" +
+    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchSimulator()\" ng-disabled=\"simulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
+    "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching simulator...\" : \"Launch simulator\"}}\n" +
+    "        </button>\n" +
+    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"simulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "      </div>\n" +
+    "\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +

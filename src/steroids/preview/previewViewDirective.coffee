@@ -4,16 +4,17 @@
 module.exports =
   [
     "$location"
-    "$http"
+    "$timeout"
     "DevicesAPI"
-    ($location, $http, DevicesAPI) ->
+    "BuildServerApi"
+    ($location, $timeout, DevicesAPI, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
         templateUrl: "/steroids-connect/preview/preview-view.html"
-        link: (scope, element, attrs) ->
+        link: ($scope, element, attrs) ->
 
-          scope.DevicesAPI = DevicesAPI
+          $scope.DevicesAPI = DevicesAPI
 
           parseQueryParams = () ->
             params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec $location.absUrl()
@@ -29,9 +30,23 @@ module.exports =
 
           decodedQrCode = decodeURIComponent(qrCode)
 
-          scope.qrCode = decodedQrCode
+          $scope.qrCode = decodedQrCode
 
-          scope.launchSimulator = ->
-            $http.get("http://localhost:4567/__appgyver/launch_simulator")
+          ###
+          SIMULATOR
+          ###
+
+          $scope.simulatorIsLaunching = false
+          _simulatorTimeout = undefined
+
+          $scope.launchSimulator = ->
+            # Only one at time
+            return if $scope.simulatorIsLaunching
+            $scope.simulatorIsLaunching = true
+            BuildServerApi.launchSimulator().finally () ->
+            $timeout () ->
+              $scope.simulatorIsLaunching = false
+            , 2000
+
       }
   ]

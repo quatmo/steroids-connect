@@ -6,20 +6,23 @@ module.exports =
     "$http"
     ($http) ->
 
-      # Get cloud config from Steroids API
+      _apiBase = "http://localhost:4567"
+
       @getCloudConfig = ->
         $http
-          .get "http://localhost:4567/__appgyver/cloud_config"
+          .get "#{_apiBase}/__appgyver/cloud_config"
 
-      # Get cloud config from Steroids API
       @getAccessToken = ->
         $http
-          .get "http://localhost:4567/__appgyver/access_token"
+          .get "#{_apiBase}/__appgyver/access_token"
 
-      # Get cloud config from Steroids API
       @deploy = ->
         $http
-          .get "http://localhost:4567/__appgyver/deploy"
+          .get "#{_apiBase}/__appgyver/deploy"
+
+      @launchSimulator = ->
+        $http
+          .get "#{_apiBase}/__appgyver/launch_simulator"
 
       # Return this
       @
