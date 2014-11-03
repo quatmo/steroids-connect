@@ -9,7 +9,7 @@
   </td>
   <td class="text-muted logMsg-time">
     <span class="glyphicon glyphicon-time"></span>
-    <abbr title="{{logMessage.timestamp | logDateFormat}}">{{logMessage.timestamp | logTimeFormat}}.{{logMessage.timestamp | logTimeMillisecondsFormat}}</abbr>
+    <abbr title="{{logMessage.datetime | logDateFormat}}">{{logMessage.datetime | logTimeFormat}}.{{logMessage.datetime | logTimeMillisecondsFormat}}</abbr>
   </td>
   <td class="logMsg-content font-proxima">
     <div ng-click="toggleAdditionalDetails()" ng-class="{'has-more-details': hasAdditionalDetails()}">
