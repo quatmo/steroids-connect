@@ -4,6 +4,7 @@ steroids-connect
 ### To install dependencies:
 
 ```
+bundle install
 npm install
 bower install
 git submodule init
