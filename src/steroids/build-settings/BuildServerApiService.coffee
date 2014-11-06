@@ -5,23 +5,19 @@ module.exports = [
   "$http"
   ($http) ->
 
-    _apiBase = "http://localhost:4567"
+    _apiBase = "http://localhost:4567/__appgyver"
 
     @getCloudConfig = ->
-      $http
-        .get "#{_apiBase}/__appgyver/cloud_config"
+      $http.get "#{_apiBase}/cloud_config"
 
     @getAccessToken = ->
-      $http
-        .get "#{_apiBase}/__appgyver/access_token"
+      $http.get "#{_apiBase}/access_token"
 
     @deploy = ->
-      $http
-        .get "#{_apiBase}/__appgyver/deploy"
+      $http.get "#{_apiBase}/deploy"
 
     @launchSimulator = ->
-      $http
-        .get "#{_apiBase}/__appgyver/launch_simulator"
+      $http.get "#{_apiBase}/launch_simulator"
 
     # Return this
     @
