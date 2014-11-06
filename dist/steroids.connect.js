@@ -1640,18 +1640,27 @@ module.exports = qrcode;
 module.exports = [
   "$http", function($http) {
     var _apiBase;
-    _apiBase = "http://localhost:4567";
+    _apiBase = "http://localhost:4567/__appgyver";
     this.getCloudConfig = function() {
-      return $http.get("" + _apiBase + "/__appgyver/cloud_config");
+      return $http.get("" + _apiBase + "/cloud_config");
     };
     this.getAccessToken = function() {
-      return $http.get("" + _apiBase + "/__appgyver/access_token");
+      return $http.get("" + _apiBase + "/access_token");
     };
     this.deploy = function() {
-      return $http.get("" + _apiBase + "/__appgyver/deploy");
+      return $http.get("" + _apiBase + "/deploy");
     };
     this.launchSimulator = function() {
-      return $http.get("" + _apiBase + "/__appgyver/launch_simulator");
+      return $http.get("" + _apiBase + "/launch_simulator");
+    };
+    this.getDataConfig = function() {
+      return $http.get("" + _apiBase + "/data/config");
+    };
+    this.initData = function() {
+      return $http.post("" + _apiBase + "/data/init");
+    };
+    this.syncData = function() {
+      return $http.post("" + _apiBase + "/data/sync");
     };
     return this;
   }
@@ -1744,8 +1753,7 @@ module.exports = [
         ];
         selectedTab = scope.tabs[0].name;
         scope.setTab = function(tab) {
-          selectedTab = tab;
-          return console.log(selectedTab);
+          return selectedTab = tab;
         };
         return scope.currentTab = function() {
           return selectedTab;
@@ -1785,7 +1793,7 @@ steroidsConnectModules.run([
 },{"../templates/SteroidsConnectTemplates":46,"./build-settings":4,"./connect-ui":6,"./data":9,"./docs":11,"./generators":14,"./logs":19,"./navigation-and-themes":32,"./preview":44}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$http", "$q", "$timeout", "BuildServerApi", function($http, $q, $timeout, BuildServerApi) {
+  "$q", "$timeout", "BuildServerApi", function($q, $timeout, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1793,28 +1801,51 @@ module.exports = [
       controller: function($scope) {
 
         /*
-        View state
+        Internal helpers
          */
-        var _finishBeforeViewReady, _getCloudConfig;
+        var _deploy, _finishBeforeViewReady, _initializeData;
+        _deploy = function() {
+          return BuildServerApi.deploy().then(function(res) {
+            $scope.cloudId = res.data.id;
+            $scope.cloudHash = res.data.identification_hash;
+            return $scope.appDeployed = true;
+          }, function(err) {
+            return $scope.error = "Could not deploy your project to the cloud. " + err.data.error;
+          });
+        };
+        _initializeData = function() {
+          return BuildServerApi.initData().then(function() {
+            return $scope.dataReady = true;
+          }, function(err) {
+            return $scope.error = "Could not initialize data to your project. " + err.data.error;
+          });
+        };
+
+        /*
+        View initial state
+         */
         $scope.viewReady = false;
         $scope.appDeployed = false;
+        $scope.dataReady = false;
         $scope.dataEnabled = false;
         $scope.error = void 0;
+        $scope.isInitializing = false;
+        $scope.currentTab = "configure";
 
         /*
         View initialization
          */
         _finishBeforeViewReady = [];
-        _getCloudConfig = function() {
-          return BuildServerApi.getCloudConfig().then(function(res) {
-            $scope.cloudId = res.data.id;
-            $scope.cloudHash = res.data.identification_hash;
-            return $scope.appDeployed = true;
-          });
-        };
-        _finishBeforeViewReady.push(_getCloudConfig());
+        _finishBeforeViewReady.push(BuildServerApi.getCloudConfig().then(function(res) {
+          $scope.cloudId = res.data.id;
+          $scope.cloudHash = res.data.identification_hash;
+          return $scope.appDeployed = true;
+        }));
         _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
           return $scope.accessToken = res.data;
+        }));
+        _finishBeforeViewReady.push(BuildServerApi.getDataConfig().then(function(res) {
+          return $scope.dataReady = res.data.initialized;
         }));
         $q.all(_finishBeforeViewReady)["finally"](function() {
           return $timeout(function() {
@@ -1823,29 +1854,26 @@ module.exports = [
         });
 
         /*
-        View tabs
+        View actions
          */
-        $scope.dataTab = "configure";
-        $scope.setDataTab = function(newTab) {
-          return $scope.dataTab = newTab;
+        $scope.synchronize = function() {
+          return BuildServerApi.syncData().then(function() {
+            return alert("Synchronized successfully.");
+          });
         };
-
-        /*
-        View functionalities
-         */
-        $scope.isDeploying = false;
-        return $scope.deploy = function() {
-          if ($scope.isDeploying) {
+        $scope.setCurrentTab = function(newTab) {
+          return $scope.currentTab = newTab;
+        };
+        return $scope.initializeData = function() {
+          var promise;
+          if ($scope.isInitializing) {
             return;
           }
-          $scope.isDeploying = true;
+          $scope.isInitializing = true;
           $scope.error = void 0;
-          return BuildServerApi.deploy().then(function() {
-            return _getCloudConfig();
-          }, function(err) {
-            return $scope.error = "Could not deploy your project to the cloud. " + err.data.error;
-          })["finally"](function() {
-            return $scope.isDeploying = false;
+          promise = !$scope.appDeployed ? _deploy().then(_initializeData) : _initializeData();
+          return promise["finally"](function() {
+            return $scope.isInitializing = false;
           });
         };
       }
@@ -3718,32 +3746,38 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <ul class=\"nav nav-pills pull-right\" ng-if=\"viewReady && appDeployed\">\n" +
-    "        <li ng-class=\"{'active': dataTab == 'browse'}\">\n" +
-    "          <a ng-click=\"setDataTab('browse')\">Browse data</a>\n" +
-    "        </li>\n" +
-    "        <li ng-class=\"{'active': dataTab == 'configure'}\">\n" +
-    "          <a ng-click=\"setDataTab('configure')\">Configure data</a>\n" +
-    "        </li>\n" +
-    "      </ul>\n" +
     "      <h1 class=\"no-margin\">Data</h1>\n" +
     "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
+    "      <ul class=\"nav nav-pills pull-right\" ng-if=\"viewReady && dataReady\">\n" +
+    "        <li ng-class=\"{'active': currentTab == 'configure'}\">\n" +
+    "          <a ng-click=\"setCurrentTab('configure')\">1. Configure data</a>\n" +
+    "        </li>\n" +
+    "        <li ng-class=\"{'active': currentTab == 'browse'}\">\n" +
+    "          <a ng-click=\"setCurrentTab('browse')\">2. Browse data</a>\n" +
+    "        </li>\n" +
+    "        <li ng-class=\"{'active': currentTab == 'generate'}\">\n" +
+    "          <a ng-click=\"setCurrentTab('generate')\">3. Generate scaffolds</a>\n" +
+    "        </li>\n" +
+    "        <li>\n" +
+    "          <a ng-click=\"synchronize()\">4. Export configuration to project</a>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
     "      <br><br>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
     "\n" +
-    "  <!-- If app's not deployed -->\n" +
+    "  <!-- If data is not initialized -->\n" +
     "\n" +
-    "  <div class=\"row\" ng-if=\"viewReady && !appDeployed\">\n" +
+    "  <div class=\"row\" ng-if=\"viewReady && !dataReady\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "\n" +
-    "      <!-- Deploy button -->\n" +
+    "      <!-- Initialize button -->\n" +
     "      <div class=\"clearfix\">\n" +
-    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"deploy()\" ng-disabled=\"isDeploying\" style=\"display: inline-block; float: left;\">\n" +
-    "          <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isDeploying ? 'Deploying...' : 'Deploy to cloud'}}\n" +
+    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"initializeData()\" ng-disabled=\"isInitializing\" style=\"display: inline-block; float: left;\">\n" +
+    "          <span class=\"glyphicon glyphicon-cloud-upload\"></span> {{isInitializing ? 'Initializing...' : 'Initialize data'}}\n" +
     "        </button>\n" +
-    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isInitializing\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "      </div>\n" +
     "\n" +
     "      <p ng-class=\"{'text-muted': !error, 'text-danger': error}\" style=\"margin-top: 6px;\"><small>{{error ? error : \"Before you can use data, your app needs to be deployed to the cloud.\"}}</small></p>\n" +
@@ -3754,19 +3788,25 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <!-- All good! -->\n" +
     "\n" +
-    "  <div class=\"row\" ng-if=\"viewReady && appDeployed\">\n" +
+    "  <div class=\"row\" ng-if=\"viewReady && dataReady\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "\n" +
     "      <!-- Data Browser -->\n" +
     "\n" +
-    "      <div class=\"row\" ng-if=\"dataTab=='browse'\">\n" +
-    "        <div ag-data-browser-ui data-raml-url=\"https://composer.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
+    "      <div class=\"row\" ng-if=\"currentTab=='browse'\">\n" +
+    "        <div ag-data-browser-ui data-raml-url=\"https://config-api.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Data Configurator -->\n" +
     "\n" +
-    "      <div class=\"row\" ng-if=\"dataTab=='configure'\">\n" +
+    "      <div class=\"row\" ng-if=\"currentTab=='configure'\">\n" +
     "        <div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <!-- Scaffold generator -->\n" +
+    "\n" +
+    "      <div class=\"row\" ng-if=\"currentTab=='generate'\">\n" +
+    "        <div>TODO</div>\n" +
     "      </div>\n" +
     "\n" +
     "    </div>\n" +
@@ -3899,7 +3939,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </td>\n" +
     "  <td class=\"text-muted logMsg-time\">\n" +
     "    <span class=\"glyphicon glyphicon-time\"></span>\n" +
-    "    <abbr title=\"{{logMessage.timestamp | logDateFormat}}\">{{logMessage.timestamp | logTimeFormat}}.{{logMessage.timestamp | logTimeMillisecondsFormat}}</abbr>\n" +
+    "    <abbr title=\"{{logMessage.datetime | logDateFormat}}\">{{logMessage.datetime | logTimeFormat}}.{{logMessage.datetime | logTimeMillisecondsFormat}}</abbr>\n" +
     "  </td>\n" +
     "  <td class=\"logMsg-content font-proxima\">\n" +
     "    <div ng-click=\"toggleAdditionalDetails()\" ng-class=\"{'has-more-details': hasAdditionalDetails()}\">\n" +
