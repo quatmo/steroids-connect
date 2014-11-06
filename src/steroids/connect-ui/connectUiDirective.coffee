@@ -27,7 +27,6 @@ module.exports =
 
           scope.setTab = (tab) ->
             selectedTab = tab
-            console.log selectedTab
 
           scope.currentTab = () ->
             selectedTab

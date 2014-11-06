@@ -19,6 +19,15 @@ module.exports = [
     @launchSimulator = ->
       $http.get "#{_apiBase}/launch_simulator"
 
+    @getDataConfig = ->
+      $http.get "#{_apiBase}/data/config"
+
+    @initData = ->
+      $http.post "#{_apiBase}/data/init"
+
+    @syncData = ->
+      $http.post "#{_apiBase}/data/sync"
+
     # Return this
     @
 
