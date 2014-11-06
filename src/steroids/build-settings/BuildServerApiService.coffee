@@ -28,6 +28,9 @@ module.exports = [
     @syncData = ->
       $http.post "#{_apiBase}/data/sync"
 
+    @generate = (parameters)->
+      $http.post "#{_apiBase}/generate", parameters
+
     # Return this
     @
 

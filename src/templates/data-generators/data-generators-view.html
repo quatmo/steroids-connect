@@ -1,0 +1,27 @@
+<div id="data-view-generators" class="container">
+
+  <!-- View header -->
+  <div class="row">
+    <div class="col-xs-12 col-sm-8">
+      <h2 style="margin: 0px;">Data Generators:</h2>
+    </div>
+  </div>
+
+  <br><br>
+
+  <!-- List of available generators -->
+  <div class="row">
+
+    <!-- Individual generators -->
+    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in generators">
+      <div class="generator-card">
+        <div class="generator-name font-proxima">
+          <b>{{generator.humanName}}</b>
+        </div>
+        <div ng-repeat="resource in resources">
+          <button ng-click="generate(generator, resource)">Generate for {{resource.name}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
