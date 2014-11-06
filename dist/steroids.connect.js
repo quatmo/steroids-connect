@@ -1662,6 +1662,9 @@ module.exports = [
     this.syncData = function() {
       return $http.post("" + _apiBase + "/data/sync");
     };
+    this.generate = function(parameters) {
+      return $http.post("" + _apiBase + "/generate", parameters);
+    };
     return this;
   }
 ];
@@ -1772,7 +1775,7 @@ module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("con
 },{"./connectUiDirective":5}],7:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
+steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, _dereq_("./data-generators").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
@@ -1790,7 +1793,97 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":46,"./build-settings":4,"./connect-ui":6,"./data":9,"./docs":11,"./generators":14,"./logs":19,"./navigation-and-themes":32,"./preview":44}],8:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":48,"./build-settings":4,"./connect-ui":6,"./data":11,"./data-generators":9,"./docs":13,"./generators":16,"./logs":21,"./navigation-and-themes":34,"./preview":46}],8:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$q", "$timeout", "Restangular", "BuildServerApi", function($q, $timeout, Restangular, BuildServerApi) {
+    return {
+      restrict: "EA",
+      replace: true,
+      templateUrl: "/steroids-connect/data-generators/data-generators-view.html",
+      scope: {
+        configApiBaseUrl: "@",
+        appId: "@",
+        authorizationToken: "@"
+      },
+      controller: function($scope) {
+
+        /*
+        Initial State
+         */
+        $scope.generators = [
+          {
+            humanName: "Coffeescript scaffold",
+            name: "scaffold"
+          }, {
+            humanName: "Javascript scaffold",
+            name: "scaffold"
+          }
+        ];
+        $scope.resources = [];
+
+        /*
+        View Initialization
+         */
+        (function() {
+          Restangular.setBaseUrl($scope.configApiBaseUrl);
+          Restangular.setRequestSuffix(".json");
+          Restangular.setDefaultHttpFields({
+            withCredentials: true
+          });
+          Restangular.setRestangularFields({
+            id: "uid"
+          });
+          if ($scope.authorizationToken && $scope.authorizationToken !== "") {
+            Restangular.setDefaultHeaders({
+              Authorization: $scope.authorizationToken
+            });
+          }
+          return Restangular.one("app", $scope.appId).all("service_providers").getList().then(function(providers) {
+            var provider, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = providers.length; _i < _len; _i++) {
+              provider = providers[_i];
+              _results.push(Restangular.one("app", $scope.appId).one("service_providers", provider.uid).all("resources").getList().then(function(resources) {
+                var resource, _j, _len1, _results1;
+                _results1 = [];
+                for (_j = 0, _len1 = resources.length; _j < _len1; _j++) {
+                  resource = resources[_j];
+                  _results1.push($scope.resources.push(resource));
+                }
+                return _results1;
+              }));
+            }
+            return _results;
+          });
+        })();
+
+        /*
+        View actions
+         */
+        return $scope.generate = function(generator, resource) {
+          return BuildServerApi.generate({
+            name: generator.name,
+            parameters: {
+              name: resource.name,
+              options: []
+            }
+          }).then(function() {
+            return alert("Generated!");
+          });
+        };
+      }
+    };
+  }
+];
+
+
+},{}],9:[function(_dereq_,module,exports){
+"use strict";
+module.exports = angular.module("SteroidsConnect.data-generators", []).directive("dataGeneratorsView", _dereq_("./dataGeneratorsViewDirective"));
+
+
+},{"./dataGeneratorsViewDirective":8}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$q", "$timeout", "BuildServerApi", function($q, $timeout, BuildServerApi) {
@@ -1882,12 +1975,12 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.data", []).directive("cloudDataView", _dereq_("./dataViewDirective"));
 
 
-},{"./dataViewDirective":8}],10:[function(_dereq_,module,exports){
+},{"./dataViewDirective":10}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1901,12 +1994,12 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.docs", []).directive("docsView", _dereq_("./docsViewDirective"));
 
 
-},{"./docsViewDirective":10}],12:[function(_dereq_,module,exports){
+},{"./docsViewDirective":12}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -1938,7 +2031,7 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "GeneratorsAPI", function(GeneratorsAPI) {
@@ -1954,12 +2047,12 @@ module.exports = [
 ];
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective")).factory("GeneratorsAPI", _dereq_("./GeneratorsAPI"));
 
 
-},{"./GeneratorsAPI":12,"./generatorsViewDirective":13}],15:[function(_dereq_,module,exports){
+},{"./GeneratorsAPI":14,"./generatorsViewDirective":15}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "LogsAPI", function($interval, $http, LogsAPI) {
@@ -1987,7 +2080,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2014,7 +2107,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
@@ -2123,7 +2216,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 
 /*
 Filters out all duplicate items from an array by checking the specified key
@@ -2171,12 +2264,12 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 });
 
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
 
 
-},{"./../preview":44,"./LogCloudConnectorService":15,"./LogsAPI":16,"./LogsFilterAPI":17,"./filterUnique":18,"./logDateFormatFilter":20,"./logFiltersViewDirective":21,"./logMessageDirective":22,"./logTimeFormatFilter":23,"./logTimeMillisecondsFormatFilter":24,"./logViewDirective":25}],20:[function(_dereq_,module,exports){
+},{"./../preview":46,"./LogCloudConnectorService":17,"./LogsAPI":18,"./LogsFilterAPI":19,"./filterUnique":20,"./logDateFormatFilter":22,"./logFiltersViewDirective":23,"./logMessageDirective":24,"./logTimeFormatFilter":25,"./logTimeMillisecondsFormatFilter":26,"./logViewDirective":27}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2198,7 +2291,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2215,7 +2308,7 @@ module.exports = [
 ];
 
 
-},{}],22:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsFilterAPI", function(LogsFilterAPI) {
@@ -2245,7 +2338,7 @@ module.exports = [
 ];
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2270,7 +2363,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2289,7 +2382,7 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2306,7 +2399,7 @@ module.exports = [
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -2337,7 +2430,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
@@ -2373,7 +2466,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2390,7 +2483,7 @@ module.exports = [
 ];
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -2830,7 +2923,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2848,7 +2941,7 @@ module.exports = [
 ];
 
 
-},{}],31:[function(_dereq_,module,exports){
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2866,12 +2959,12 @@ module.exports = [
 ];
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":26,"./TabModalCtrl":27,"./colorInputDirective":28,"./colorpicker":29,"./drawerConfiguratorViewDirective":30,"./generalSettingsConfiguratorViewDirective":31,"./navigationAndThemesViewDirective":33,"./navigationBarConfiguratorViewDirective":34,"./statusBarConfiguratorViewDirective":35,"./stickyScrollDirective":36,"./tabEditorDirective":37,"./tabsConfiguratorViewDirective":38,"./ui-sortable":39,"./viewSelectorDirective":40}],33:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":28,"./TabModalCtrl":29,"./colorInputDirective":30,"./colorpicker":31,"./drawerConfiguratorViewDirective":32,"./generalSettingsConfiguratorViewDirective":33,"./navigationAndThemesViewDirective":35,"./navigationBarConfiguratorViewDirective":36,"./statusBarConfiguratorViewDirective":37,"./stickyScrollDirective":38,"./tabEditorDirective":39,"./tabsConfiguratorViewDirective":40,"./ui-sortable":41,"./viewSelectorDirective":42}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -2925,7 +3018,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2942,7 +3035,7 @@ module.exports = [
 ];
 
 
-},{}],35:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2997,7 +3090,7 @@ module.exports = [
 ];
 
 
-},{}],36:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -3039,7 +3132,7 @@ module.exports = [
 ];
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$modal", function($modal) {
@@ -3095,7 +3188,7 @@ module.exports = [
 ];
 
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -3133,7 +3226,7 @@ module.exports = [
 ];
 
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],41:[function(_dereq_,module,exports){
 module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
   "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
     return {
@@ -3290,7 +3383,7 @@ module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {})
 ]);
 
 
-},{}],40:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3325,7 +3418,7 @@ module.exports = [
 ];
 
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],43:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "DevicesAPI", function($interval, $http, DevicesAPI) {
@@ -3346,7 +3439,7 @@ module.exports = [
 ];
 
 
-},{}],42:[function(_dereq_,module,exports){
+},{}],44:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3378,7 +3471,7 @@ module.exports = [
 ];
 
 
-},{}],43:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3533,12 +3626,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],44:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],46:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService"));
 
 
-},{"./DeviceCloudConnectorService":41,"./DevicesAPI":42,"./angular-qrcode":43,"./previewViewDirective":45}],45:[function(_dereq_,module,exports){
+},{"./DeviceCloudConnectorService":43,"./DevicesAPI":44,"./angular-qrcode":45,"./previewViewDirective":47}],47:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($location, $timeout, DevicesAPI, BuildServerApi) {
@@ -3589,7 +3682,7 @@ module.exports = [
 ];
 
 
-},{}],46:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -3738,6 +3831,37 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
+  $templateCache.put('/steroids-connect/data-generators/data-generators-view.html',
+    "<div id=\"data-view-generators\" class=\"container\">\n" +
+    "\n" +
+    "  <!-- View header -->\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"col-xs-12 col-sm-8\">\n" +
+    "      <h2 style=\"margin: 0px;\">Data Generators:</h2>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <br><br>\n" +
+    "\n" +
+    "  <!-- List of available generators -->\n" +
+    "  <div class=\"row\">\n" +
+    "\n" +
+    "    <!-- Individual generators -->\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in generators\">\n" +
+    "      <div class=\"generator-card\">\n" +
+    "        <div class=\"generator-name font-proxima\">\n" +
+    "          <b>{{generator.humanName}}</b>\n" +
+    "        </div>\n" +
+    "        <div ng-repeat=\"resource in resources\">\n" +
+    "          <button ng-click=\"generate(generator, resource)\">Generate for {{resource.name}}</button>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n"
+  );
+
+
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
@@ -3806,7 +3930,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <!-- Scaffold generator -->\n" +
     "\n" +
     "      <div class=\"row\" ng-if=\"currentTab=='generate'\">\n" +
-    "        <div>TODO</div>\n" +
+    "        <data-data-generators-view config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" app-id=\"{{cloudId}}\" authorization-token=\"{{accessToken}}\"></data-data-generators-view>\n" +
     "      </div>\n" +
     "\n" +
     "    </div>\n" +
@@ -4391,7 +4515,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          </a>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
-    "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.android\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
+    "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.freshandroid\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
     "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
     "          </a>\n" +
     "        </div>\n" +
