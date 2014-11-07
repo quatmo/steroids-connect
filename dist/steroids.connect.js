@@ -3733,10 +3733,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <br>\n" +
     "            <a class=\"btn btn-primary\" ng-href=\"https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}\" target=\"_blank\">Open cloud share page</a>\n" +
     "            <br><br>\n" +
-    "            <div class=\"text-muted\">or share QR code:</div>\n" +
-    "            <br>\n" +
-    "            <qrcode version=\"8\" error-correction-level=\"M\" size=\"100%\" data=\"appgyver://?id={{cloudId}}&hash={{cloudHash}}\" class=\"img-responsive\"></qrcode>\n" +
-    "            <p class=\"text-muted\"><small><b>Note:</b> this QR code points to the deployed app in the cloud. This cannot be used for connecting to the live development environment.</small></p>\n" +
     "          </div>\n" +
     "\n" +
     "          <div ng-hide=\"hasCloudJson\">\n" +

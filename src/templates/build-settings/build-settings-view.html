@@ -44,10 +44,6 @@
             <br>
             <a class="btn btn-primary" ng-href="https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}" target="_blank">Open cloud share page</a>
             <br><br>
-            <div class="text-muted">or share QR code:</div>
-            <br>
-            <qrcode version="8" error-correction-level="M" size="100%" data="appgyver://?id={{cloudId}}&hash={{cloudHash}}" class="img-responsive"></qrcode>
-            <p class="text-muted"><small><b>Note:</b> this QR code points to the deployed app in the cloud. This cannot be used for connecting to the live development environment.</small></p>
           </div>
 
           <div ng-hide="hasCloudJson">
