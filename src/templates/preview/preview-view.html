@@ -56,6 +56,7 @@
           <span class="glyphicon glyphicon-phone"></span> {{simulatorIsLaunching? "Launching simulator..." : "Launch simulator"}}
         </button>
         <ag-ui-spinner size="29" color="black" ng-show="simulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
+        <p class="text-danger" ng-show="simulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{simulatorLaunchError}}</small></p>
       </div>
 
     </div>

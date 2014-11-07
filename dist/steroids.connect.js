@@ -3642,6 +3642,7 @@ module.exports = [
       link: function($scope, element, attrs) {
         var decodedQrCode, parseQueryParams, qrCode, _simulatorTimeout;
         $scope.DevicesAPI = DevicesAPI;
+        $scope.simulatorLaunchError = void 0;
         parseQueryParams = function() {
           var param, paramObj, params, _i, _len;
           params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
@@ -3671,7 +3672,12 @@ module.exports = [
             return;
           }
           $scope.simulatorIsLaunching = true;
-          BuildServerApi.launchSimulator()["finally"](function() {});
+          BuildServerApi.launchSimulator().then(function(res) {
+            return $scope.simulatorLaunchError = void 0;
+          }, function(error) {
+            $scope.simulatorIsLaunching = false;
+            return $scope.simulatorLaunchError = error.data.error;
+          })["finally"](function() {});
           return $timeout(function() {
             return $scope.simulatorIsLaunching = false;
           }, 2000);
@@ -4545,6 +4551,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching simulator...\" : \"Launch simulator\"}}\n" +
     "        </button>\n" +
     "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"simulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "        <p class=\"text-danger\" ng-show=\"simulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{simulatorLaunchError}}</small></p>\n" +
     "      </div>\n" +
     "\n" +
     "    </div>\n" +

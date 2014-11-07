@@ -15,6 +15,7 @@ module.exports =
         link: ($scope, element, attrs) ->
 
           $scope.DevicesAPI = DevicesAPI
+          $scope.simulatorLaunchError = undefined
 
           parseQueryParams = () ->
             params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec $location.absUrl()
@@ -43,10 +44,15 @@ module.exports =
             # Only one at time
             return if $scope.simulatorIsLaunching
             $scope.simulatorIsLaunching = true
-            BuildServerApi.launchSimulator().finally () ->
-            $timeout () ->
+            BuildServerApi.launchSimulator().then(
+              (res) ->
+                $scope.simulatorLaunchError = undefined
+              (error) ->
+                $scope.simulatorIsLaunching = false
+                $scope.simulatorLaunchError = error.data.error
+            ).finally () ->
+            $timeout ->
               $scope.simulatorIsLaunching = false
             , 2000
-
       }
   ]
