@@ -28,5 +28,7 @@ steroidsConnectModules.run [
 steroidsConnectModules.run [
   "DeviceCloudConnector",
   (DeviceCloudConnector) ->
+
     DeviceCloudConnector.connect()
+
 ]

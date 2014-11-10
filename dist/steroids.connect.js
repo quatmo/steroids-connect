@@ -1725,7 +1725,7 @@ module.exports = angular.module("SteroidsConnect.build-settings", []).directive(
 },{"./BuildServerApiService":2,"./buildSettingsViewDirective":3}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "$rootScope", "BuildServerApi", function($rootScope, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1735,7 +1735,7 @@ module.exports = [
         /*
         Tabs
          */
-        var selectedTab;
+        var selectedTab, syncDataAfterTheseEvents;
         scope.tabs = [
           {
             name: "qr",
@@ -1758,9 +1758,22 @@ module.exports = [
         scope.setTab = function(tab) {
           return selectedTab = tab;
         };
-        return scope.currentTab = function() {
+        scope.currentTab = function() {
           return selectedTab;
         };
+
+        /*
+        Events
+         */
+        syncDataAfterTheseEvents = ["ag.data-configurator.provider.created", "ag.data-configurator.provider.updated", "ag.data-configurator.provider.destroyed", "ag.data-configurator.resource.created", "ag.data-configurator.resource.updated", "ag.data-configurator.resource.destroyed", "ag.data-configurator.service.created", "ag.data-configurator.service.updated", "ag.data-configurator.service.destroyed"];
+        return angular.forEach(syncDataAfterTheseEvents, function(eventName) {
+          return $rootScope.$on(eventName, function() {
+            console.log("Syncing data...");
+            return BuildServerApi.syncData().then(function() {
+              return console.log("Data synced successfully.");
+            });
+          });
+        });
       }
     };
   }
@@ -1949,11 +1962,6 @@ module.exports = [
         /*
         View actions
          */
-        $scope.synchronize = function() {
-          return BuildServerApi.syncData().then(function() {
-            return alert("Synchronized successfully.");
-          });
-        };
         $scope.setCurrentTab = function(newTab) {
           return $scope.currentTab = newTab;
         };
@@ -3872,8 +3880,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "      <h1 class=\"no-margin\">Data</h1>\n" +
-    "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
     "      <ul class=\"nav nav-pills pull-right\" ng-if=\"viewReady && dataReady\">\n" +
     "        <li ng-class=\"{'active': currentTab == 'configure'}\">\n" +
     "          <a ng-click=\"setCurrentTab('configure')\">1. Configure data</a>\n" +
@@ -3884,10 +3890,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <li ng-class=\"{'active': currentTab == 'generate'}\">\n" +
     "          <a ng-click=\"setCurrentTab('generate')\">3. Generate scaffolds</a>\n" +
     "        </li>\n" +
-    "        <li>\n" +
-    "          <a ng-click=\"synchronize()\">4. Export configuration to project</a>\n" +
-    "        </li>\n" +
     "      </ul>\n" +
+    "      <h1 class=\"no-margin\">Data</h1>\n" +
+    "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
     "      <br><br>\n" +
     "    </div>\n" +
     "  </div>\n" +

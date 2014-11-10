@@ -69,10 +69,6 @@ module.exports = [
       ###
       View actions
       ###
-      $scope.synchronize = ->
-        BuildServerApi.syncData().then ->
-          #TODO report success to user
-          alert("Synchronized successfully.")
 
       $scope.setCurrentTab = (newTab)->
         $scope.currentTab = newTab

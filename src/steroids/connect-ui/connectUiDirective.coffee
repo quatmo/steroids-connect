@@ -3,7 +3,9 @@
 # Directive for displaying the log view
 module.exports =
   [
-    () ->
+    "$rootScope"
+    "BuildServerApi"
+    ($rootScope, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
@@ -30,6 +32,31 @@ module.exports =
 
           scope.currentTab = () ->
             selectedTab
+
+          ###
+          Events
+          ###
+
+          syncDataAfterTheseEvents = [
+            # Provider CRUD
+            "ag.data-configurator.provider.created"
+            "ag.data-configurator.provider.updated"
+            "ag.data-configurator.provider.destroyed"
+            # Resource CRUD
+            "ag.data-configurator.resource.created"
+            "ag.data-configurator.resource.updated"
+            "ag.data-configurator.resource.destroyed"
+            # Service CRUD
+            "ag.data-configurator.service.created"
+            "ag.data-configurator.service.updated"
+            "ag.data-configurator.service.destroyed"
+          ]
+
+          angular.forEach syncDataAfterTheseEvents, (eventName) ->
+            $rootScope.$on eventName, () ->
+              console.log "Syncing data..."
+              BuildServerApi.syncData().then ->
+                console.log "Data synced successfully."
 
       }
   ]

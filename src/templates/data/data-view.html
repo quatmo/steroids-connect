@@ -5,8 +5,6 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <h1 class="no-margin">Data</h1>
-      <p>On this tab, you can configure Steroids Data for your app.</p>
       <ul class="nav nav-pills pull-right" ng-if="viewReady && dataReady">
         <li ng-class="{'active': currentTab == 'configure'}">
           <a ng-click="setCurrentTab('configure')">1. Configure data</a>
@@ -17,10 +15,9 @@
         <li ng-class="{'active': currentTab == 'generate'}">
           <a ng-click="setCurrentTab('generate')">3. Generate scaffolds</a>
         </li>
-        <li>
-          <a ng-click="synchronize()">4. Export configuration to project</a>
-        </li>
       </ul>
+      <h1 class="no-margin">Data</h1>
+      <p>On this tab, you can configure Steroids Data for your app.</p>
       <br><br>
     </div>
   </div>
