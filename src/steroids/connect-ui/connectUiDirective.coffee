@@ -4,8 +4,9 @@
 module.exports =
   [
     "$rootScope"
+    "$interval"
     "BuildServerApi"
-    ($rootScope, BuildServerApi) ->
+    ($rootScope, $interval, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
@@ -45,6 +46,15 @@ module.exports =
 
           scope.finishWorking = () ->
             scope.workingOn = undefined
+
+          $interval ->
+            BuildServerApi.ping().then(
+              ->
+                scope.isConnected = true
+              ->
+                scope.isConnected = false
+            )
+          , 1000
 
           ###
           Events

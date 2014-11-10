@@ -654,6 +654,8 @@ colorpicker-preview {
     display: inline-block;
     vertical-align: top;
     color: #737375; }
+    .ag__steroids-connect .ag__steroids-connect__status-bar .ag__steroids-connect__status-bar__status-text.red {
+      color: #fa5252; }
   .ag__steroids-connect .ag__steroids-connect__status-bar .ag__steroids-connect__status-bar__iconbox {
     display: inline-block;
     vertical-align: top;

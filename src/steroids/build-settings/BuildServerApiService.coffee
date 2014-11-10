@@ -7,6 +7,9 @@ module.exports = [
 
     _apiBase = "http://localhost:4567/__appgyver"
 
+    @ping = ->
+      $http.get "#{_apiBase}/ping"
+
     @getCloudConfig = ->
       $http.get "#{_apiBase}/cloud_config"
 

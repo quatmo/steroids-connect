@@ -1641,6 +1641,9 @@ module.exports = [
   "$http", function($http) {
     var _apiBase;
     _apiBase = "http://localhost:4567/__appgyver";
+    this.ping = function() {
+      return $http.get("" + _apiBase + "/ping");
+    };
     this.getCloudConfig = function() {
       return $http.get("" + _apiBase + "/cloud_config");
     };
@@ -1725,7 +1728,7 @@ module.exports = angular.module("SteroidsConnect.build-settings", []).directive(
 },{"./BuildServerApiService":2,"./buildSettingsViewDirective":3}],5:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "BuildServerApi", function($rootScope, BuildServerApi) {
+  "$rootScope", "$interval", "BuildServerApi", function($rootScope, $interval, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1773,6 +1776,13 @@ module.exports = [
         scope.finishWorking = function() {
           return scope.workingOn = void 0;
         };
+        $interval(function() {
+          return BuildServerApi.ping().then(function() {
+            return scope.isConnected = true;
+          }, function() {
+            return scope.isConnected = false;
+          });
+        }, 1000);
 
         /*
         Events
@@ -3823,7 +3833,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign\"></span>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text text-danger\">Cannot connect to Steroids! Run Steroids by running ´steroids connect´ in terminal in your project directory.</small>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text red\"><b>Cannot connect to Steroids!</b> Run Steroids by running ´<b>steroids connect</b>´ in terminal in your project directory.</span></small>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
