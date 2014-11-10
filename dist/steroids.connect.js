@@ -1739,7 +1739,7 @@ module.exports = [
         scope.tabs = [
           {
             name: "qr",
-            label: "Preview"
+            label: "Connect"
           }, {
             name: "logs",
             label: "Logs"

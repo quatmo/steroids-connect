@@ -17,11 +17,11 @@ module.exports =
           ###
 
           scope.tabs = [
-            { name: "qr", label: "Preview" }
+            { name: "qr", label: "Connect" }
             { name: "logs", label: "Logs" }
             { name: "docs", label: "Documentation" }
-            { name: "build-settings", label: "Cloud Settings"}
-            { name: "data", label: "Data"}
+            { name: "build-settings", label: "Cloud Settings" }
+            { name: "data", label: "Data" }
             # { name: "generators", label: "Generators" }
           ]
 
