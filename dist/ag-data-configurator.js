@@ -1491,7 +1491,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <!-- Services -->\n" +
     "\n" +
-    "    <div class=\"row\">\n" +
+    "    <div class=\"row\" ng-if=\"providerTemplate && providerTemplate.uid==1\">\n" +
     "      <div class=\"col-xs-12\">\n" +
     "        <br><br>\n" +
     "        <h3 style=\"margin-bottom: 0px;\">Services</h3>\n" +
