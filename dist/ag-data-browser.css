@@ -1,0 +1,28 @@
+/* Maintained by Tomi Hiltunen
+ */
+/* Import components
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+/* Keep things nice and scoped!
+ */
+.modal.ag__record-modal .modal-header {
+  background: #00b5ff;
+  color: white; }
+.modal.ag__record-modal .modal-body {
+  padding: 30px 60px; }
+.modal.ag__record-modal .modal-footer {
+  background: #30384a;
+  color: white; }
+
+/*# sourceMappingURL=ag-data-browser.css.map */

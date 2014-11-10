@@ -1,6 +1,6 @@
 module.exports = (grunt) ->
   grunt.registerTask 'develop', [
-    'connect:develop'
     'build'
+    'connect:develop'
     'watch:build'
   ]

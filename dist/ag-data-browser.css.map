@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": ";;;;;;;;;;;;;;;;;;AAmBE,qCAAa;EACX,UAAU,ECqBC,OAAkB;EDpB7B,KAAK,EAAE,KAAK;AAEd,mCAAW;EACT,OAAO,EAAE,SAAS;AAEpB,qCAAa;EACX,UAAU,ECkHM,OAAoB;EDjHpC,KAAK,EAAE,KAAK",
+"sources": ["../src/sass/ag-data-browser.sass","../src/sass/globals/basics/color_scheme.sass"],
+"names": [],
+"file": "ag-data-browser.css"
+}

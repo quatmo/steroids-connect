@@ -1,0 +1,576 @@
+/* Maintained by Tomi Hiltunen
+ */
+/* Import components
+ */
+/* Basics
+ */
+/* breaking_points.css.sass
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Using breakpoints:
+ *
+ * @media (min-width: $breakpoint-sm) { ... }
+ * @media (min-width: $breakpoint-md) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
+ */
+/* Using breakpoints (restrictive):
+ *
+ * @media (max-width: $breakpoint-xs-max) { ... }
+ * @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-sm-max) { ... }
+ * @media (min-width: $breakpoint-md) and (max-width: $breakpoint-md-max) { ... }
+ * @media (min-width: $breakpoint-lg) { ... }
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+/* color_classes.css.sass
+ * Helper classes to utilize defined colors.
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+/* Use these for basic font colors.
+ * Simply add the class to the container.
+ * Respect the intended use cases for the colors.
+ */
+@import url("//fast.fonts.net/t/1.css?apiType=css&projectid=fcd5ed54-4e22-4c50-9a6a-2fdc2404cec3");
+.text-color-primary-1, .text-blue {
+  color: #00b5ff; }
+
+.text-color-primary-2, .text-gray {
+  color: #36383b; }
+  .text-color-primary-2.text-shade-9, .text-gray.text-shade-9 {
+    color: #36383b; }
+  .text-color-primary-2.text-shade-8, .text-gray.text-shade-8 {
+    color: #4a4a4d; }
+  .text-color-primary-2.text-shade-7, .text-gray.text-shade-7 {
+    color: #5e5e61; }
+  .text-color-primary-2.text-shade-6, .text-gray.text-shade-6 {
+    color: #737375; }
+  .text-color-primary-2.text-shade-5, .text-gray.text-shade-5 {
+    color: #87878a; }
+  .text-color-primary-2.text-shade-4, .text-gray.text-shade-4 {
+    color: #999c9c; }
+  .text-color-primary-2.text-shade-3, .text-gray.text-shade-3 {
+    color: #b0b0b0; }
+  .text-color-primary-2.text-shade-2, .text-gray.text-shade-2 {
+    color: #d6d6d9; }
+  .text-color-primary-2.text-shade-1, .text-gray.text-shade-1 {
+    color: #f3f3f3; }
+
+.text-color-secondary-1, .text-green {
+  color: #14bda6; }
+
+.text-color-secondary-2, .text-green-dark {
+  color: #0a7373; }
+
+.text-color-secondary-3, .text-blue-dark {
+  color: #30384a; }
+
+.text-color-secondary-4, .text-orange {
+  color: #f57326; }
+
+.text-color-secondary-5, .text-red {
+  color: #fa5252; }
+
+.text-white {
+  color: white; }
+
+/* Use these for basic background colors.
+ * Simply add the class to the element.
+ * Respect the intended use cases for the colors.
+ */
+.bg-color-primary-1, .bg-blue {
+  background-color: #00b5ff; }
+
+.bg-color-primary-2, .bg-gray {
+  background-color: #36383b; }
+  .bg-color-primary-2.bg-shade-9, .bg-gray.bg-shade-9 {
+    background-color: #36383b; }
+  .bg-color-primary-2.bg-shade-8, .bg-gray.bg-shade-8 {
+    background-color: #4a4a4d; }
+  .bg-color-primary-2.bg-shade-7, .bg-gray.bg-shade-7 {
+    background-color: #5e5e61; }
+  .bg-color-primary-2.bg-shade-6, .bg-gray.bg-shade-6 {
+    background-color: #737375; }
+  .bg-color-primary-2.bg-shade-5, .bg-gray.bg-shade-5 {
+    background-color: #87878a; }
+  .bg-color-primary-2.bg-shade-4, .bg-gray.bg-shade-4 {
+    background-color: #999c9c; }
+  .bg-color-primary-2.bg-shade-3, .bg-gray.bg-shade-3 {
+    background-color: #b0b0b0; }
+  .bg-color-primary-2.bg-shade-2, .bg-gray.bg-shade-2 {
+    background-color: #d6d6d9; }
+  .bg-color-primary-2.bg-shade-1, .bg-gray.bg-shade-1 {
+    background-color: #f3f3f3; }
+
+.bg-color-secondary-1, .bg-green {
+  background-color: #14bda6; }
+
+.bg-color-secondary-2, .bg-green-dark {
+  background-color: #0a7373; }
+
+.bg-color-secondary-3, .bg-blue-dark {
+  background-color: #30384a; }
+
+.bg-color-secondary-4, .bg-orange {
+  background-color: #f57326; }
+
+.bg-color-secondary-5, .bg-red {
+  background-color: #fa5252; }
+
+.bg-white {
+  background-color: white; }
+
+@font-face {
+  font-family: "Proxima Nova Soft W03 Reg";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/198fa8c4-b0f0-4203-bcfc-0c2b956f6784.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/587b832a-8371-49fe-b902-0adad1aaf3dc.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e28c18e1-aaa4-43ab-96df-94b8bb15cbaa.svg#e28c18e1-aaa4-43ab-96df-94b8bb15cbaa") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Medium";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/b2f276ad-1e77-4185-8b1f-3dd39d9a8290.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/08f55ece-01d7-4e92-86bc-d1f217e8559d.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/c66d5a3f-4b8c-4b93-bb11-926a24104f29.svg#c66d5a3f-4b8c-4b93-bb11-926a24104f29") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Bd";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/2872b823-fc6d-455c-a05e-fe9554da8ba1.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e114d697-9817-4b4a-ac3f-456f1f39a381.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf.svg#b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Smbd";
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix");
+  src: url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix") format("eot"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/1b4cb635-3c1e-49aa-b391-55b5f85708be.woff") format("woff"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/9107c65c-774a-4893-b490-87c1b9932967.ttf") format("truetype"), url("//s3.amazonaws.com/appgyver.assets/global-assets/fonts/global-products/78bc3037-273c-43cb-bb0b-59a7ba5263d8.svg#78bc3037-273c-43cb-bb0b-59a7ba5263d8") format("svg"); }
+/* Typography.css.sass
+ * Details about fonts and font sizes.
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products {
+  /* This is the basic font for every element.
+   * Overwrites are defined below.
+   */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Proxima Nova Soft W03 Reg";
+  color: #4a4a4d;
+  font-size: 16px; }
+  .ag__global__products h3 {
+    font-family: "Proxima Nova Soft W03 Smbd"; }
+  .ag__global__products b {
+    font-family: "Proxima Nova Soft W03 Smbd"; }
+    .ag__global__products b.bolder {
+      font-family: "Proxima Nova Soft W03 Bd"; }
+  .ag__global__products .text-capitalize {
+    text-transform: capitalize; }
+
+/* Components
+ */
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products a:not([disabled]) {
+  cursor: pointer; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products textarea, .ag__global__products select, .ag__global__products .form-control, .ag__global__products input, .ag__global__products input[type="text"], .ag__global__products input[type="password"], .ag__global__products input[type="datetime"], .ag__global__products input[type="datetime-local"], .ag__global__products input[type="date"], .ag__global__products input[type="month"], .ag__global__products input[type="time"], .ag__global__products input[type="week"], .ag__global__products input[type="number"], .ag__global__products input[type="email"], .ag__global__products input[type="url"], .ag__global__products input[type="search"], .ag__global__products input[type="tel"], .ag__global__products input[type="color"], .ag__global__products .uneditable-input {
+  -webkit-box-shadow: inset none, none !important;
+  -moz-box-shadow: inset none, none !important;
+  box-shadow: inset none, none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: 0; }
+  .ag__global__products textarea:focus, .ag__global__products textarea:active, .ag__global__products select:focus, .ag__global__products select:active, .ag__global__products .form-control:focus, .ag__global__products .form-control:active, .ag__global__products input:focus, .ag__global__products input:active, .ag__global__products input[type="text"]:focus, .ag__global__products input[type="text"]:active, .ag__global__products input[type="password"]:focus, .ag__global__products input[type="password"]:active, .ag__global__products input[type="datetime"]:focus, .ag__global__products input[type="datetime"]:active, .ag__global__products input[type="datetime-local"]:focus, .ag__global__products input[type="datetime-local"]:active, .ag__global__products input[type="date"]:focus, .ag__global__products input[type="date"]:active, .ag__global__products input[type="month"]:focus, .ag__global__products input[type="month"]:active, .ag__global__products input[type="time"]:focus, .ag__global__products input[type="time"]:active, .ag__global__products input[type="week"]:focus, .ag__global__products input[type="week"]:active, .ag__global__products input[type="number"]:focus, .ag__global__products input[type="number"]:active, .ag__global__products input[type="email"]:focus, .ag__global__products input[type="email"]:active, .ag__global__products input[type="url"]:focus, .ag__global__products input[type="url"]:active, .ag__global__products input[type="search"]:focus, .ag__global__products input[type="search"]:active, .ag__global__products input[type="tel"]:focus, .ag__global__products input[type="tel"]:active, .ag__global__products input[type="color"]:focus, .ag__global__products input[type="color"]:active, .ag__global__products .uneditable-input:focus, .ag__global__products .uneditable-input:active {
+    -webkit-box-shadow: inset none, none !important;
+    -moz-box-shadow: inset none, none !important;
+    box-shadow: inset none, none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    outline: 0; }
+.ag__global__products .form-control-static, .ag__global__products select, .ag__global__products .form-control {
+  line-height: 17px;
+  font-size: 16px;
+  padding-top: 6px;
+  padding-bottom: 6px; }
+.ag__global__products .form-control, .ag__global__products .form-control-select > select {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  line-height: 17px;
+  font-size: 14px;
+  border-color: #b0b0b0; }
+  .ag__global__products .form-control:hover, .ag__global__products .form-control-select > select:hover {
+    border-color: #36383b; }
+.ag__global__products textarea, .ag__global__products select, .ag__global__products .form-control, .ag__global__products input, .ag__global__products input[type="text"], .ag__global__products input[type="password"], .ag__global__products input[type="datetime"], .ag__global__products input[type="datetime-local"], .ag__global__products input[type="date"], .ag__global__products input[type="month"], .ag__global__products input[type="time"], .ag__global__products input[type="week"], .ag__global__products input[type="number"], .ag__global__products input[type="email"], .ag__global__products input[type="url"], .ag__global__products input[type="search"], .ag__global__products input[type="tel"], .ag__global__products input[type="color"], .ag__global__products .uneditable-input {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  line-height: 17px;
+  font-size: 14px;
+  border-color: #b0b0b0; }
+  .ag__global__products textarea:hover, .ag__global__products select:hover, .ag__global__products .form-control:hover, .ag__global__products input:hover, .ag__global__products input[type="text"]:hover, .ag__global__products input[type="password"]:hover, .ag__global__products input[type="datetime"]:hover, .ag__global__products input[type="datetime-local"]:hover, .ag__global__products input[type="date"]:hover, .ag__global__products input[type="month"]:hover, .ag__global__products input[type="time"]:hover, .ag__global__products input[type="week"]:hover, .ag__global__products input[type="number"]:hover, .ag__global__products input[type="email"]:hover, .ag__global__products input[type="url"]:hover, .ag__global__products input[type="search"]:hover, .ag__global__products input[type="tel"]:hover, .ag__global__products input[type="color"]:hover, .ag__global__products .uneditable-input:hover {
+    border-color: #36383b; }
+.ag__global__products .form-control-select {
+  cursor: pointer; }
+  .ag__global__products .form-control-select select {
+    -webkit-appearance: none;
+    padding-right: 39px;
+    padding-left: 10px; }
+.ag__global__products *:not(.form-inline) .form-control-select select {
+  width: 100%; }
+.ag__global__products .form-control-select {
+  position: relative;
+  cursor: pointer; }
+  .ag__global__products .form-control-select:after {
+    content: "\25BC";
+    position: absolute;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    font-size: 60%;
+    padding-top: 7px;
+    height: 29px;
+    width: 29px;
+    text-align: center;
+    color: white;
+    background: #b0b0b0;
+    border-color: #b0b0b0;
+    border-width: 1px 1px 1px 0px;
+    border-style: solid;
+    pointer-events: none;
+    -webkit-border-radius: 0px 4px 4px 0px;
+    -moz-border-radius: 0px 4px 4px 0px;
+    border-radius: 0px 4px 4px 0px; }
+  .ag__global__products .form-control-select:hover:after {
+    background-color: #36383b;
+    border-color: #36383b; }
+  .ag__global__products .form-control-select:hover input, .ag__global__products .form-control-select:hover select {
+    border-color: #36383b; }
+.ag__global__products .ag__form .form-group {
+  position: relative; }
+  .ag__global__products .ag__form .form-group label {
+    font-family: "Proxima Nova Soft W03 Smbd";
+    letter-spacing: 1px;
+    font-size: 10pt;
+    text-transform: uppercase;
+    margin-bottom: 13px; }
+    .ag__global__products .ag__form .form-group label + small {
+      display: block;
+      margin-top: -13px;
+      margin-bottom: 13px; }
+.ag__global__products .ag__form:not(.form-inline) .form-group + .form-group {
+  margin-top: 40px; }
+.ag__global__products .ag__form:not(.form-inline) .form-group .form-control-select select {
+  width: 100%; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .form-control-select.ag__pill select {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px !important;
+  padding: 6px 20px;
+  font-family: "Proxima Nova Soft W03 Smbd";
+  border-radius: 14px;
+  border: none;
+  -webkit-appearance: none; }
+.ag__global__products .form-control-select.ag__pill:after {
+  background: transparent !important;
+  border-color: transparent !important; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .nav-pills li a {
+  color: #36383b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 6px 20px;
+  font-family: "Proxima Nova Soft W03 Smbd";
+  border-radius: 14px; }
+  .ag__global__products .nav-pills li a:hover {
+    background: #b0b0b0;
+    color: white; }
+.ag__global__products .nav-pills li.active a {
+  background: #00b5ff;
+  color: white; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .alert {
+  font-family: "Proxima Nova Soft W03 Reg";
+  border-radius: 4px;
+  border: none; }
+  .ag__global__products .alert.alert-info {
+    color: white;
+    background-color: #00b5ff; }
+  .ag__global__products .alert.alert-danger {
+    color: white;
+    background-color: #fa5252; }
+  .ag__global__products .alert.alert-success {
+    color: white;
+    background-color: #14bda6; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .btn {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 6px 20px;
+  font-family: "Proxima Nova Soft W03 Smbd";
+  border-radius: 14px;
+  border: none; }
+  .ag__global__products .btn:not([disabled]) {
+    cursor: pointer; }
+  .ag__global__products .btn.btn-default {
+    color: white;
+    background-color: #b0b0b0; }
+    .ag__global__products .btn.btn-default:hover {
+      background-color: #d6d6d9; }
+  .ag__global__products .btn.btn-primary {
+    color: white;
+    background-color: #00b5ff; }
+    .ag__global__products .btn.btn-primary:hover {
+      background-color: #4dccff; }
+  .ag__global__products .btn.btn-danger {
+    color: white;
+    background-color: #fa5252; }
+    .ag__global__products .btn.btn-danger:hover {
+      background-color: #fc8587; }
+  .ag__global__products .btn.btn-success {
+    color: white;
+    background-color: #14bda6; }
+    .ag__global__products .btn.btn-success:hover {
+      background-color: #5cd1bf; }
+  .ag__global__products .btn .glyphicon {
+    font-size: 14px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .modal-backdrop {
+  background: rgba(0, 0, 0, 0.4); }
+.ag__global__products .modal.fade .modal-dialog {
+  -o-transform: translate3d(0, -2%, 0) scale(0.95);
+  -ms-transform: translate3d(0, -2%, 0) scale(0.95);
+  -moz-transform: translate3d(0, -2%, 0) scale(0.95);
+  -webkit-transform: translate3d(0, -2%, 0) scale(0.95);
+  transform: translate3d(0, -2%, 0) scale(0.95); }
+.ag__global__products .modal.fade.in .modal-dialog {
+  -o-transform: translate3d(0, 0, 0) scale(1);
+  -ms-transform: translate3d(0, 0, 0) scale(1);
+  -moz-transform: translate3d(0, 0, 0) scale(1);
+  -webkit-transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1); }
+.ag__global__products .modal .modal-header, .ag__global__products .modal .modal-footer, .ag__global__products .modal .modal-content {
+  position: relative;
+  border: none;
+  border-radius: 0px; }
+.ag__global__products .modal .modal-body {
+  padding: 30px 60px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products table {
+  position: relative;
+  border-collapse: separate;
+  max-width: 100% !important; }
+  .ag__global__products table.keep-compact {
+    table-layout: fixed; }
+    .ag__global__products table.keep-compact tr, .ag__global__products table.keep-compact th {
+      word-wrap: break-word !important; }
+  .ag__global__products table.full-width {
+    width: 100% !important; }
+  .ag__global__products table td.action-button-container, .ag__global__products table th.action-button-container {
+    width: 71px; }
+
+/* Maintained by Tomi Hiltunen
+ */
+/* Import the color scheme.
+ * Do NOT change to "require" -syntax.
+ * This way the shared parameters persist... which is nice.
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+.ag__global__products .text-info {
+  color: #00b5ff; }
+.ag__global__products .text-danger {
+  color: #fa5252; }
+.ag__global__products .text-success {
+  color: #14bda6; }

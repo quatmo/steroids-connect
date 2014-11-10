@@ -1,0 +1,51 @@
+/* Maintained by Tomi Hiltunen
+ */
+/* Import components
+ */
+/* color_scheme.css.sass
+ * Colors according to AppGyver UI guidelines (vol.2)
+ *
+ * Maintained by Tomi Hiltunen
+ */
+/* Main color #1 is the brand color.
+ * Use the color with care.
+ *
+ * Current uses:
+ *   - As brand color.
+ *   - Background for "call-to-action" -elements.
+ */
+/* Keep things nice and scoped!
+ */
+.modal.ag__data-configurator__record-modal .modal-header {
+  background: #00b5ff;
+  color: white; }
+.modal.ag__data-configurator__record-modal .modal-body {
+  padding: 30px 60px; }
+.modal.ag__data-configurator__record-modal .modal-footer {
+  background: #30384a;
+  color: white; }
+
+#ag-data-configurator .provider-details-container {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+  #ag-data-configurator .provider-details-container .provider-list-name {
+    margin-top: 0px;
+    margin-bottom: 4px;
+    font-size: 18px; }
+  #ag-data-configurator .provider-details-container p {
+    font-size: 14px;
+    margin-bottom: 0px; }
+#ag-data-configurator .provider-logo-container {
+  padding: 10px 20px;
+  position: relative; }
+  #ag-data-configurator .provider-logo-container img {
+    display: block;
+    max-width: 100% !important;
+    width: 100%; }
+#ag-data-configurator .provider-chevron {
+  color: #999c9c;
+  margin-top: 20px; }
+#ag-data-configurator .provider-list-item {
+  min-height: 85px; }
+
+/*# sourceMappingURL=ag-data-configurator.css.map */
