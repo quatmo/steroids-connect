@@ -3833,7 +3833,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign\"></span>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text red\"><b>Cannot connect to Steroids!</b> Run Steroids by running ´<b>steroids connect</b>´ in terminal in your project directory.</span></small>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text red\"><b>Cannot connect to Steroids!</b> Start Steroids by running ´<b>steroids connect</b>´ in terminal in your project directory.</small>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
