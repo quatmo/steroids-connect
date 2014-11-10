@@ -34,6 +34,19 @@ module.exports =
             selectedTab
 
           ###
+          State
+          ###
+
+          scope.isConnected = true
+          scope.workingOn = undefined
+
+          scope.startWorkingOn = (what) ->
+            scope.workingOn = what
+
+          scope.finishWorking = () ->
+            scope.workingOn = undefined
+
+          ###
           Events
           ###
 
@@ -54,9 +67,16 @@ module.exports =
 
           angular.forEach syncDataAfterTheseEvents, (eventName) ->
             $rootScope.$on eventName, () ->
+              scope.startWorkingOn "Synchronizing app data configuration..."
               console.log "Syncing data..."
-              BuildServerApi.syncData().then ->
-                console.log "Data synced successfully."
+              BuildServerApi.syncData().then(
+                () ->
+                  console.log "Data synced successfully."
+              ,
+                (error) ->
+                  console.log "Failed to sync data.", error
+              ).finally () ->
+                scope.finishWorking()
 
       }
   ]

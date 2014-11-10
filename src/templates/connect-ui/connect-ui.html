@@ -2,7 +2,7 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-default navbar-static-top ag__steroids-connect__header" role="navigation">
-    <div class="container-fluid">
+    <div class="container">
 
       <!-- Navbar header -->
       <div class="navbar-header">
@@ -23,6 +23,26 @@
 
     </div>
   </nav>
+
+  <!-- Statubar -->
+  <div class="ag__steroids-connect__status-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12" ng-if="isConnected && workingOn">
+          <ag-ui-spinner size="18" color="#999C9C" style="display: inline-block;"></ag-ui-spinner>
+          <small class="ag__steroids-connect__status-bar__status-text">{{workingOn}}</small>
+        </div>
+        <div class="col-xs-12" ng-if="isConnected && !workingOn">
+          <span class="ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok"></span>
+          <small class="ag__steroids-connect__status-bar__status-text">App ready and connected.</small>
+        </div>
+        <div class="col-xs-12" ng-if="!isConnected">
+          <span class="ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign"></span>
+          <small class="ag__steroids-connect__status-bar__status-text text-danger">Cannot connect to Steroids! Run Steroids by running ´steroids connect´ in terminal in your project directory.</small>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Subviews -->
   <div class="container-fluid" ng-switch on="currentTab()">

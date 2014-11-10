@@ -1763,14 +1763,31 @@ module.exports = [
         };
 
         /*
+        State
+         */
+        scope.isConnected = true;
+        scope.workingOn = void 0;
+        scope.startWorkingOn = function(what) {
+          return scope.workingOn = what;
+        };
+        scope.finishWorking = function() {
+          return scope.workingOn = void 0;
+        };
+
+        /*
         Events
          */
         syncDataAfterTheseEvents = ["ag.data-configurator.provider.created", "ag.data-configurator.provider.updated", "ag.data-configurator.provider.destroyed", "ag.data-configurator.resource.created", "ag.data-configurator.resource.updated", "ag.data-configurator.resource.destroyed", "ag.data-configurator.service.created", "ag.data-configurator.service.updated", "ag.data-configurator.service.destroyed"];
         return angular.forEach(syncDataAfterTheseEvents, function(eventName) {
           return $rootScope.$on(eventName, function() {
+            scope.startWorkingOn("Synchronizing app data configuration...");
             console.log("Syncing data...");
             return BuildServerApi.syncData().then(function() {
               return console.log("Data synced successfully.");
+            }, function(error) {
+              return console.log("Failed to sync data.", error);
+            })["finally"](function() {
+              return scope.finishWorking();
             });
           });
         });
@@ -3770,7 +3787,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <!-- Navbar -->\n" +
     "  <nav class=\"navbar navbar-default navbar-static-top ag__steroids-connect__header\" role=\"navigation\">\n" +
-    "    <div class=\"container-fluid\">\n" +
+    "    <div class=\"container\">\n" +
     "\n" +
     "      <!-- Navbar header -->\n" +
     "      <div class=\"navbar-header\">\n" +
@@ -3791,6 +3808,26 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "    </div>\n" +
     "  </nav>\n" +
+    "\n" +
+    "  <!-- Statubar -->\n" +
+    "  <div class=\"ag__steroids-connect__status-bar\">\n" +
+    "    <div class=\"container\">\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-xs-12\" ng-if=\"isConnected && workingOn\">\n" +
+    "          <ag-ui-spinner size=\"18\" color=\"#999C9C\" style=\"display: inline-block;\"></ag-ui-spinner>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text\">{{workingOn}}</small>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\" ng-if=\"isConnected && !workingOn\">\n" +
+    "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok\"></span>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text\">App ready and connected.</small>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
+    "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign\"></span>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text text-danger\">Cannot connect to Steroids! Run Steroids by running ´steroids connect´ in terminal in your project directory.</small>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "\n" +
     "  <!-- Subviews -->\n" +
     "  <div class=\"container-fluid\" ng-switch on=\"currentTab()\">\n" +
