@@ -1936,7 +1936,7 @@ module.exports = [
         /*
         Internal helpers
          */
-        var _deploy, _finishBeforeViewReady, _initializeData;
+        var _deploy, _finishBeforeViewReady, _getCloudConfig, _getDataConfig, _initializeData;
         _deploy = function() {
           return BuildServerApi.deploy().then(function(res) {
             $scope.cloudId = res.data.id;
@@ -1947,12 +1947,20 @@ module.exports = [
           });
         };
         _initializeData = function() {
-          return BuildServerApi.initData().then(function() {
-            return $timeout(function() {
-              return $scope.dataReady = true;
-            }, 500);
-          }, function(err) {
+          return BuildServerApi.initData().then(function() {}, function(err) {
             return $scope.error = "Could not initialize data to your project. " + err.data.error;
+          });
+        };
+        _getCloudConfig = function() {
+          return BuildServerApi.getCloudConfig().then(function(res) {
+            $scope.cloudId = res.data.id;
+            $scope.cloudHash = res.data.identification_hash;
+            return $scope.appDeployed = true;
+          });
+        };
+        _getDataConfig = function() {
+          return BuildServerApi.getDataConfig().then(function(res) {
+            return $scope.dataReady = res.data.initialized;
           });
         };
 
@@ -1971,17 +1979,11 @@ module.exports = [
         View initialization
          */
         _finishBeforeViewReady = [];
-        _finishBeforeViewReady.push(BuildServerApi.getCloudConfig().then(function(res) {
-          $scope.cloudId = res.data.id;
-          $scope.cloudHash = res.data.identification_hash;
-          return $scope.appDeployed = true;
-        }));
+        _finishBeforeViewReady.push(_getCloudConfig());
         _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
           return $scope.accessToken = res.data;
         }));
-        _finishBeforeViewReady.push(BuildServerApi.getDataConfig().then(function(res) {
-          return $scope.dataReady = res.data.initialized;
-        }));
+        _finishBeforeViewReady.push(_getDataConfig());
         $q.all(_finishBeforeViewReady)["finally"](function() {
           return $timeout(function() {
             return $scope.viewReady = true;
@@ -2001,7 +2003,7 @@ module.exports = [
           }
           $scope.isInitializing = true;
           $scope.error = void 0;
-          promise = !$scope.appDeployed ? _deploy().then(_initializeData) : _initializeData();
+          promise = !$scope.appDeployed ? _deploy().then(_initializeData).then(_getCloudConfig).then(_getDataConfig) : _initializeData();
           return promise["finally"](function() {
             return $scope.isInitializing = false;
           });

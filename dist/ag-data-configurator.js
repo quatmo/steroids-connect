@@ -2061,7 +2061,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
-    "            <li class=\"active\"><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
+    "            <li class=\"active\">Providers</li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2075,7 +2075,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
-    "            <li class=\"active\"><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
+    "            <li class=\"active\">{{provider.name}}</li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2090,7 +2090,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\"><a ng-click=\"navigation.showResource()\">{{resource.name}}</a></li>\n" +
+    "            <li class=\"active\">{{resource.name}}</li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2105,7 +2105,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\"><a ng-click=\"navigation.showService()\">{{service.name}}</a></li>\n" +
+    "            <li class=\"active\">{{service.name}}</li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +

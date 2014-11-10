@@ -15,7 +15,7 @@ module.exports = [
       ###
 
       _deploy = ->
-        BuildServerApi.deploy().then (res)->
+        BuildServerApi.deploy().then (res) ->
           $scope.cloudId = res.data.id
           $scope.cloudHash = res.data.identification_hash
           $scope.appDeployed = true
@@ -23,12 +23,21 @@ module.exports = [
           $scope.error = "Could not deploy your project to the cloud. #{err.data.error}"
 
       _initializeData = ->
-        BuildServerApi.initData().then ->
-          $timeout () ->
-            $scope.dataReady = true
-          , 500
+        BuildServerApi.initData()
+          .then ->
+            return
         , (err)->
           $scope.error = "Could not initialize data to your project. #{err.data.error}"
+
+      _getCloudConfig = ->
+        BuildServerApi.getCloudConfig().then (res)->
+          $scope.cloudId = res.data.id
+          $scope.cloudHash = res.data.identification_hash
+          $scope.appDeployed = true
+
+      _getDataConfig = ->
+        BuildServerApi.getDataConfig().then (res)->
+          $scope.dataReady = res.data.initialized
 
       ###
       View initial state
@@ -50,17 +59,13 @@ module.exports = [
       _finishBeforeViewReady = []
 
       # Check if app is deployed
-      _finishBeforeViewReady.push BuildServerApi.getCloudConfig().then (res)->
-        $scope.cloudId = res.data.id
-        $scope.cloudHash = res.data.identification_hash
-        $scope.appDeployed = true
+      _finishBeforeViewReady.push _getCloudConfig()
 
       # Get access token for user
       _finishBeforeViewReady.push BuildServerApi.getAccessToken().then (res)->
         $scope.accessToken = res.data # acually is the token
 
-      _finishBeforeViewReady.push BuildServerApi.getDataConfig().then (res)->
-        $scope.dataReady = res.data.initialized
+      _finishBeforeViewReady.push _getDataConfig()
 
       # After all are resolved, set view ready
       $q.all(_finishBeforeViewReady).finally () ->
@@ -84,7 +89,9 @@ module.exports = [
 
         promise = unless $scope.appDeployed
           _deploy()
-          .then _initializeData
+            .then _initializeData
+            .then _getCloudConfig
+            .then _getDataConfig
         else
           _initializeData()
 
