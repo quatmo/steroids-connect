@@ -347,6 +347,9 @@ module.exports = [
           if (!$scope.canAdd()) {
             return;
           }
+          if (!$scope.columns) {
+            $scope.columns = [];
+          }
           $scope.columns.push($scope.temp);
           return _makeNewTemp();
         };

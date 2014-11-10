@@ -661,6 +661,7 @@ module.exports = [
           });
         }
         resourceActions = steroidsData.resources.raml(resourceName)(schema);
+        console.log("schema", schema);
         resource = void 0;
         for (_i = 0, _len = allResources.length; _i < _len; _i++) {
           candidateResource = allResources[_i];
@@ -876,7 +877,7 @@ module.exports = [
             return;
           }
           $scope.hasError = false;
-          return $scope.connector.resources().get($scope.resourceName).then(function(resource) {
+          $scope.connector.resources().get($scope.resourceName).then(function(resource) {
             $scope.page = 1;
             $scope.pages = 1;
             $scope.records = [];
@@ -886,6 +887,7 @@ module.exports = [
             $scope.hasError = true;
             return $scope.resource = void 0;
           });
+          return console.log("Selected resource", $scope.resource);
         });
       }
     };

@@ -1,6 +1,6 @@
 {
   "name": "steroids-connect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared components for AppGyver Steroids Connect.",
   "main": "index.js",
   "dependencies": {
@@ -39,7 +39,7 @@
     "connect"
   ],
   "author": "Tomi Hiltunen <tomi.hiltunen@appgyver.com>",
-  "license": "MIT",
+  "license": "",
   "bugs": {
     "url": "https://github.com/AppGyver/steroids-connect/issues"
   },

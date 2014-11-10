@@ -1948,7 +1948,9 @@ module.exports = [
         };
         _initializeData = function() {
           return BuildServerApi.initData().then(function() {
-            return $scope.dataReady = true;
+            return $timeout(function() {
+              return $scope.dataReady = true;
+            }, 500);
           }, function(err) {
             return $scope.error = "Could not initialize data to your project. " + err.data.error;
           });

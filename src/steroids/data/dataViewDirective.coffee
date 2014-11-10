@@ -24,7 +24,9 @@ module.exports = [
 
       _initializeData = ->
         BuildServerApi.initData().then ->
-          $scope.dataReady = true
+          $timeout () ->
+            $scope.dataReady = true
+          , 500
         , (err)->
           $scope.error = "Could not initialize data to your project. #{err.data.error}"
 
