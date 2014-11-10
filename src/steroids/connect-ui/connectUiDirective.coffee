@@ -21,7 +21,7 @@ module.exports =
             { name: "qr", label: "Connect" }
             { name: "logs", label: "Logs" }
             { name: "docs", label: "Documentation" }
-            { name: "build-settings", label: "Cloud Settings" }
+            { name: "build-settings", label: "Cloud" }
             { name: "data", label: "Data" }
             # { name: "generators", label: "Generators" }
           ]

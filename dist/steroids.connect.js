@@ -1751,7 +1751,7 @@ module.exports = [
             label: "Documentation"
           }, {
             name: "build-settings",
-            label: "Cloud Settings"
+            label: "Cloud"
           }, {
             name: "data",
             label: "Data"
