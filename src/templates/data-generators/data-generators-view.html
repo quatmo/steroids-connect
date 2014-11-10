@@ -3,7 +3,8 @@
   <!-- View header -->
   <div class="row">
     <div class="col-xs-12 col-sm-8">
-      <h2 style="margin: 0px;">Data Generators:</h2>
+      <h3 style="margin: 0px;">Data Generators:</h3>
+      <small>Generate views and controllers for your data resources.</small>
     </div>
   </div>
 
@@ -12,7 +13,57 @@
   <!-- List of available generators -->
   <div class="row">
 
+
+    <div class="col-xs-12 col-sm-6">
+      <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+          <label for="resourceName" class="col-sm-4 control-label">Data resource</label>
+          <div class="col-sm-8">
+            <select ng-hide="loadingResources" name="resourceSelector" class="form-control" ng-model="selectedResource" ng-options="resource as resource.name for resource in resources"></select>
+            <div ng-show="loadingResources" class="form-control-static" style="vertical-align: center;"><ag-ui-spinner size="22" color="black" style="display: inline-block; float: left;"></ag-ui-spinner> <span style="vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;">Loading resources...</span></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Format</label>
+          <div class="col-sm-8">
+            <div class="radio">
+              <label>
+                <input type="radio" name="format" value="coffee" ng-model="format" checked>
+                CoffeeScript
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="format" value="javascript" ng-model="format">
+                JavaScript
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+            <button type="submit" class="btn btn-primary" ng-click="generate()" ng-disabled="loadingResources || isGenerating || !selectedResource">Generate views</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
     <!-- Individual generators -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in generators">
       <div class="generator-card">
         <div class="generator-name font-proxima">
@@ -23,5 +74,7 @@
         </div>
       </div>
     </div>
+
   </div>
+
 </div>

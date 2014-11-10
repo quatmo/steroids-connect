@@ -1851,21 +1851,17 @@ module.exports = [
         /*
         Initial State
          */
-        $scope.generators = [
-          {
-            humanName: "Coffeescript scaffold",
-            name: "scaffold"
-          }, {
-            humanName: "Javascript scaffold",
-            name: "scaffold"
-          }
-        ];
+        $scope.loadingResources = true;
+        $scope.isGenerating = false;
+        $scope.selectedResource = void 0;
+        $scope.format = "coffee";
         $scope.resources = [];
 
         /*
         View Initialization
          */
         (function() {
+          var promisesForQ;
           Restangular.setBaseUrl($scope.configApiBaseUrl);
           Restangular.setRequestSuffix(".json");
           Restangular.setDefaultHttpFields({
@@ -1879,37 +1875,49 @@ module.exports = [
               Authorization: $scope.authorizationToken
             });
           }
-          return Restangular.one("app", $scope.appId).all("service_providers").getList().then(function(providers) {
-            var provider, _i, _len, _results;
-            _results = [];
+          promisesForQ = [];
+          Restangular.one("app", $scope.appId).all("service_providers").getList().then(function(providers) {
+            var provider, tempPromise, _i, _len;
             for (_i = 0, _len = providers.length; _i < _len; _i++) {
               provider = providers[_i];
-              _results.push(Restangular.one("app", $scope.appId).one("service_providers", provider.uid).all("resources").getList().then(function(resources) {
-                var resource, _j, _len1, _results1;
-                _results1 = [];
+              tempPromise = Restangular.one("app", $scope.appId).one("service_providers", provider.uid).all("resources").getList().then(function(resources) {
+                var resource, _j, _len1, _results;
+                _results = [];
                 for (_j = 0, _len1 = resources.length; _j < _len1; _j++) {
                   resource = resources[_j];
-                  _results1.push($scope.resources.push(resource));
+                  _results.push($scope.resources.push(resource));
                 }
-                return _results1;
-              }));
+                return _results;
+              });
+              promisesForQ.push(tempPromise);
             }
-            return _results;
+          }).then(function() {
+            return $q.all(promisesForQ)["finally"](function() {
+              return $scope.loadingResources = false;
+            });
           });
         })();
 
         /*
         View actions
          */
-        return $scope.generate = function(generator, resource) {
+        return $scope.generate = function() {
+          if ($scope.isGenerating || $scope.loadingResources || !$scope.selectedResource) {
+            return;
+          }
+          $scope.isGenerating = true;
           return BuildServerApi.generate({
-            name: generator.name,
+            name: "scaffold",
             parameters: {
-              name: resource.name,
-              options: []
+              name: $scope.selectedResource.name,
+              options: [$scope.format]
             }
           }).then(function() {
-            return alert("Generated!");
+            return console.log("Data scaffold generation successful!");
+          }, function() {
+            return console.log("Data scaffold generation failed!");
+          })["finally"](function() {
+            return $scope.isGenerating = false;
           });
         };
       }
@@ -3898,7 +3906,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <!-- View header -->\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12 col-sm-8\">\n" +
-    "      <h2 style=\"margin: 0px;\">Data Generators:</h2>\n" +
+    "      <h3 style=\"margin: 0px;\">Data Generators:</h3>\n" +
+    "      <small>Generate views and controllers for your data resources.</small>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -3907,7 +3916,57 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <!-- List of available generators -->\n" +
     "  <div class=\"row\">\n" +
     "\n" +
+    "\n" +
+    "    <div class=\"col-xs-12 col-sm-6\">\n" +
+    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"resourceName\" class=\"col-sm-4 control-label\">Data resource</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <select ng-hide=\"loadingResources\" name=\"resourceSelector\" class=\"form-control\" ng-model=\"selectedResource\" ng-options=\"resource as resource.name for resource in resources\"></select>\n" +
+    "            <div ng-show=\"loadingResources\" class=\"form-control-static\" style=\"vertical-align: center;\"><ag-ui-spinner size=\"22\" color=\"black\" style=\"display: inline-block; float: left;\"></ag-ui-spinner> <span style=\"vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;\">Loading resources...</span></div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-4 control-label\">Format</label>\n" +
+    "          <div class=\"col-sm-8\">\n" +
+    "            <div class=\"radio\">\n" +
+    "              <label>\n" +
+    "                <input type=\"radio\" name=\"format\" value=\"coffee\" ng-model=\"format\" checked>\n" +
+    "                CoffeeScript\n" +
+    "              </label>\n" +
+    "            </div>\n" +
+    "            <div class=\"radio\">\n" +
+    "              <label>\n" +
+    "                <input type=\"radio\" name=\"format\" value=\"javascript\" ng-model=\"format\">\n" +
+    "                JavaScript\n" +
+    "              </label>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"col-sm-offset-4 col-sm-8\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"generate()\" ng-disabled=\"loadingResources || isGenerating || !selectedResource\">Generate views</button>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
     "    <!-- Individual generators -->\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
+    "    <br>\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in generators\">\n" +
     "      <div class=\"generator-card\">\n" +
     "        <div class=\"generator-name font-proxima\">\n" +
@@ -3918,7 +3977,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    "\n" +
     "  </div>\n" +
+    "\n" +
     "</div>\n"
   );
 
