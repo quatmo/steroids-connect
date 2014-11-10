@@ -51,6 +51,7 @@ module.exports =
             BuildServerApi.ping().then(
               ->
                 scope.isConnected = true
+            ,
               ->
                 scope.isConnected = false
             )
