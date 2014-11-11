@@ -69,6 +69,7 @@ module.exports = [
           .then () ->
             $q.all promisesForQ
               .finally ->
+                $scope.selectedResource = $scope.resources[0] if $scope.resources.length >= 1
                 $scope.loadingResources = false
           return
 
@@ -79,8 +80,12 @@ module.exports = [
       View actions
       ###
 
+      $scope.generatorError = false
+      $scope.generatorErrorMessage = ""
+
       $scope.generate = () ->
         return if $scope.isGenerating or $scope.loadingResources or not $scope.selectedResource
+        $scope.generatorError = false
         $scope.isGenerating = true
         BuildServerApi
           .generate
@@ -91,8 +96,11 @@ module.exports = [
           .then(
             ->
               console.log "Data scaffold generation successful!"
-            ->
-              console.log "Data scaffold generation failed!"
+            (e) ->
+              console.log "Data scaffold generation failed!", e
+              $scope.generatorError = true
+              $scope.generatorErrorMessage = ""
+
           ).finally ->
             $scope.isGenerating = false
 

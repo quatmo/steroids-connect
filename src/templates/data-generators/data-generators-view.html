@@ -13,7 +13,6 @@
   <!-- List of available generators -->
   <div class="row">
 
-
     <div class="col-xs-12 col-sm-6">
       <form class="form-horizontal" role="form">
 
@@ -45,34 +44,20 @@
 
         <div class="form-group">
           <div class="col-sm-offset-4 col-sm-8">
-            <button type="submit" class="btn btn-primary" ng-click="generate()" ng-disabled="loadingResources || isGenerating || !selectedResource">Generate views</button>
+
+            <div class="clearfix">
+              <button type="button" class="btn btn-lg btn-primary" ng-click="generate()" ng-disabled="loadingResources || isGenerating || !selectedResource" style="display: inline-block; float: left;">
+                Generate views
+              </button>
+              <ag-ui-spinner size="29" color="black" ng-show="isGenerating" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
+            </div>
+
+            <p ng-if="generatorError" class="text-danger" style="margin-top: 6px;"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</small></p>
+
           </div>
         </div>
 
       </form>
-    </div>
-
-
-    <!-- Individual generators -->
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="col-xs-12 col-sm-6 col-md-3" ng-repeat="generator in generators">
-      <div class="generator-card">
-        <div class="generator-name font-proxima">
-          <b>{{generator.humanName}}</b>
-        </div>
-        <div ng-repeat="resource in resources">
-          <button ng-click="generate(generator, resource)">Generate for {{resource.name}}</button>
-        </div>
-      </div>
     </div>
 
   </div>

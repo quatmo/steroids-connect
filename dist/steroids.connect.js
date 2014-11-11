@@ -1893,6 +1893,9 @@ module.exports = [
             }
           }).then(function() {
             return $q.all(promisesForQ)["finally"](function() {
+              if ($scope.resources.length >= 1) {
+                $scope.selectedResource = $scope.resources[0];
+              }
               return $scope.loadingResources = false;
             });
           });
@@ -1901,10 +1904,13 @@ module.exports = [
         /*
         View actions
          */
+        $scope.generatorError = false;
+        $scope.generatorErrorMessage = "";
         return $scope.generate = function() {
           if ($scope.isGenerating || $scope.loadingResources || !$scope.selectedResource) {
             return;
           }
+          $scope.generatorError = false;
           $scope.isGenerating = true;
           return BuildServerApi.generate({
             name: "scaffold",
@@ -1914,8 +1920,10 @@ module.exports = [
             }
           }).then(function() {
             return console.log("Data scaffold generation successful!");
-          }, function() {
-            return console.log("Data scaffold generation failed!");
+          }, function(e) {
+            console.log("Data scaffold generation failed!", e);
+            $scope.generatorError = true;
+            return $scope.generatorErrorMessage = "";
           })["finally"](function() {
             return $scope.isGenerating = false;
           });
@@ -3916,7 +3924,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <!-- List of available generators -->\n" +
     "  <div class=\"row\">\n" +
     "\n" +
-    "\n" +
     "    <div class=\"col-xs-12 col-sm-6\">\n" +
     "      <form class=\"form-horizontal\" role=\"form\">\n" +
     "\n" +
@@ -3948,34 +3955,20 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "        <div class=\"form-group\">\n" +
     "          <div class=\"col-sm-offset-4 col-sm-8\">\n" +
-    "            <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"generate()\" ng-disabled=\"loadingResources || isGenerating || !selectedResource\">Generate views</button>\n" +
+    "\n" +
+    "            <div class=\"clearfix\">\n" +
+    "              <button type=\"button\" class=\"btn btn-lg btn-primary\" ng-click=\"generate()\" ng-disabled=\"loadingResources || isGenerating || !selectedResource\" style=\"display: inline-block; float: left;\">\n" +
+    "                Generate views\n" +
+    "              </button>\n" +
+    "              <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isGenerating\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <p ng-if=\"generatorError\" class=\"text-danger\" style=\"margin-top: 6px;\"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</small></p>\n" +
+    "\n" +
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
     "      </form>\n" +
-    "    </div>\n" +
-    "\n" +
-    "\n" +
-    "    <!-- Individual generators -->\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <br>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 col-md-3\" ng-repeat=\"generator in generators\">\n" +
-    "      <div class=\"generator-card\">\n" +
-    "        <div class=\"generator-name font-proxima\">\n" +
-    "          <b>{{generator.humanName}}</b>\n" +
-    "        </div>\n" +
-    "        <div ng-repeat=\"resource in resources\">\n" +
-    "          <button ng-click=\"generate(generator, resource)\">Generate for {{resource.name}}</button>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
