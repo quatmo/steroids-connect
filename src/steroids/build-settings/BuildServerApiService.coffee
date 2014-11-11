@@ -13,6 +13,9 @@ module.exports = [
     @getCloudConfig = ->
       $http.get "#{_apiBase}/cloud_config"
 
+    @getAppConfig = ->
+      $http.get "#{_apiBase}/app_config"
+
     @getAccessToken = ->
       $http.get "#{_apiBase}/access_token"
 

@@ -19,10 +19,10 @@ module.exports =
 
           scope.tabs = [
             { name: "qr", label: "Connect" }
-            { name: "logs", label: "Logs" }
+            { name: "logs", label: "Logs", legacyAppIncompatible: true }
             { name: "docs", label: "Documentation" }
             { name: "build-settings", label: "Cloud" }
-            { name: "data", label: "Data" }
+            { name: "data", label: "Data", legacyAppIncompatible: true }
             # { name: "generators", label: "Generators" }
           ]
 
@@ -33,6 +33,23 @@ module.exports =
 
           scope.currentTab = () ->
             selectedTab
+
+          ###
+          Legacy app logic
+          ###
+
+          scope.getAppConfig = ->
+            BuildServerApi.getAppConfig().then(
+              (res) ->
+                if res.status == 204
+                  newTabs = []
+                  angular.forEach scope.tabs, (tab) ->
+                    @.push tab unless tab.legacyAppIncompatible?
+                  , newTabs
+                  scope.tabs = newTabs
+            )
+
+          scope.getAppConfig()
 
           ###
           State
