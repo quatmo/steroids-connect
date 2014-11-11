@@ -412,7 +412,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            <tr>\n" +
     "              <td colspan=\"{{countColumns() + 1}}\">\n" +
     "                <h3 class=\"text-danger\">\n" +
-    "                  No more content.\n" +
+    "                  {{page > 1 ? \"No more content.\" : \"No content.\"}}\n" +
     "                </h3>\n" +
     "              </td>\n" +
     "            </tr>\n" +
@@ -661,7 +661,6 @@ module.exports = [
           });
         }
         resourceActions = steroidsData.resources.raml(resourceName)(schema);
-        console.log("schema", schema);
         resource = void 0;
         for (_i = 0, _len = allResources.length; _i < _len; _i++) {
           candidateResource = allResources[_i];
@@ -788,12 +787,10 @@ module.exports = [
           }
           $scope.pageLoading = true;
           $scope.page = pageNum;
-          console.log("Loading page", $scope.page);
           return $scope.resource.findAll({
             limit: $scope.perPage,
             skip: ($scope.perPage * $scope.page) - $scope.perPage
           }).then(function(data) {
-            console.log("Got page:", data);
             return $scope.records = data;
           }, function(err) {
             return $scope.records = [];
@@ -877,7 +874,7 @@ module.exports = [
             return;
           }
           $scope.hasError = false;
-          $scope.connector.resources().get($scope.resourceName).then(function(resource) {
+          return $scope.connector.resources().get($scope.resourceName).then(function(resource) {
             $scope.page = 1;
             $scope.pages = 1;
             $scope.records = [];
@@ -887,7 +884,6 @@ module.exports = [
             $scope.hasError = true;
             return $scope.resource = void 0;
           });
-          return console.log("Selected resource", $scope.resource);
         });
       }
     };

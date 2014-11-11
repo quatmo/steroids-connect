@@ -35,7 +35,7 @@
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="format" value="javascript" ng-model="format">
+                <input type="radio" name="format" value="js" ng-model="format">
                 JavaScript
               </label>
             </div>
@@ -53,6 +53,7 @@
             </div>
 
             <p ng-if="generatorError" class="text-danger" style="margin-top: 6px;"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</small></p>
+            <p ng-if="generatorSuccess" class="text-success" style="margin-top: 6px;"><small ng-bind-html="generatorSuccessMessage"></small></p>
 
           </div>
         </div>

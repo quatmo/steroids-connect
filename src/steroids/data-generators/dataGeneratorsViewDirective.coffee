@@ -3,9 +3,10 @@
 module.exports = [
   "$q"
   "$timeout"
+  "$sce"
   "Restangular"
   "BuildServerApi"
-  ($q, $timeout, Restangular, BuildServerApi) ->
+  ($q, $timeout, $sce, Restangular, BuildServerApi) ->
     restrict: "EA"
     replace: true
     templateUrl: "/steroids-connect/data-generators/data-generators-view.html"
@@ -82,25 +83,30 @@ module.exports = [
 
       $scope.generatorError = false
       $scope.generatorErrorMessage = ""
+      $scope.generatorSuccess = false
+      $scope.generatorSuccessMessage = ""
 
       $scope.generate = () ->
         return if $scope.isGenerating or $scope.loadingResources or not $scope.selectedResource
         $scope.generatorError = false
+        $scope.generatorSuccess = false
         $scope.isGenerating = true
+        $scope.generatorSuccessMessage = $sce.trustAsHtml("""You can access your new data views with "<b>#{$scope.selectedResource.name}#index</b>" in your application.""")
         BuildServerApi
           .generate
             name: "scaffold",
             parameters:
               name: $scope.selectedResource.name
-              options: [$scope.format]
+              options:
+                scriptExt: $scope.format
           .then(
             ->
               console.log "Data scaffold generation successful!"
+              $scope.generatorSuccess = true
             (e) ->
               console.log "Data scaffold generation failed!", e
               $scope.generatorError = true
-              $scope.generatorErrorMessage = ""
-
+              $scope.generatorErrorMessage = e.statusText
           ).finally ->
             $scope.isGenerating = false
 

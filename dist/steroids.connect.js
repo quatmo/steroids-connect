@@ -1836,7 +1836,7 @@ steroidsConnectModules.run([
 },{"../templates/SteroidsConnectTemplates":48,"./build-settings":4,"./connect-ui":6,"./data":11,"./data-generators":9,"./docs":13,"./generators":16,"./logs":21,"./navigation-and-themes":34,"./preview":46}],8:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$q", "$timeout", "Restangular", "BuildServerApi", function($q, $timeout, Restangular, BuildServerApi) {
+  "$q", "$timeout", "$sce", "Restangular", "BuildServerApi", function($q, $timeout, $sce, Restangular, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1906,24 +1906,31 @@ module.exports = [
          */
         $scope.generatorError = false;
         $scope.generatorErrorMessage = "";
+        $scope.generatorSuccess = false;
+        $scope.generatorSuccessMessage = "";
         return $scope.generate = function() {
           if ($scope.isGenerating || $scope.loadingResources || !$scope.selectedResource) {
             return;
           }
           $scope.generatorError = false;
+          $scope.generatorSuccess = false;
           $scope.isGenerating = true;
+          $scope.generatorSuccessMessage = $sce.trustAsHtml("You can access your new data views with \"<b>" + $scope.selectedResource.name + "#index</b>\" in your application.");
           return BuildServerApi.generate({
             name: "scaffold",
             parameters: {
               name: $scope.selectedResource.name,
-              options: [$scope.format]
+              options: {
+                scriptExt: $scope.format
+              }
             }
           }).then(function() {
-            return console.log("Data scaffold generation successful!");
+            console.log("Data scaffold generation successful!");
+            return $scope.generatorSuccess = true;
           }, function(e) {
             console.log("Data scaffold generation failed!", e);
             $scope.generatorError = true;
-            return $scope.generatorErrorMessage = "";
+            return $scope.generatorErrorMessage = e.statusText;
           })["finally"](function() {
             return $scope.isGenerating = false;
           });
@@ -3946,7 +3953,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            </div>\n" +
     "            <div class=\"radio\">\n" +
     "              <label>\n" +
-    "                <input type=\"radio\" name=\"format\" value=\"javascript\" ng-model=\"format\">\n" +
+    "                <input type=\"radio\" name=\"format\" value=\"js\" ng-model=\"format\">\n" +
     "                JavaScript\n" +
     "              </label>\n" +
     "            </div>\n" +
@@ -3964,6 +3971,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            </div>\n" +
     "\n" +
     "            <p ng-if=\"generatorError\" class=\"text-danger\" style=\"margin-top: 6px;\"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</small></p>\n" +
+    "            <p ng-if=\"generatorSuccess\" class=\"text-success\" style=\"margin-top: 6px;\"><small ng-bind-html=\"generatorSuccessMessage\"></small></p>\n" +
     "\n" +
     "          </div>\n" +
     "        </div>\n" +
