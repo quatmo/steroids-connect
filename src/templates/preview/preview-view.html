@@ -11,8 +11,8 @@
         <div class="col-xs-12">
           <h3>AppGyver Scanner</h3>
           <p>
-            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.
-            Download scanner from App Store or Google Play.
+            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.<br>
+            Download Scanner from App Store or Google Play.
           </p>
           <br>
         </div>
@@ -33,7 +33,6 @@
     <div class="col-xs-12 col-md-6 col-md-offset-1">
       <br class="visible-xs"><br class="visible-xs">
       <h2 class="no-margin">Connected devices:</h2>
-      <br><br>
       <ul class="devices-list">
 
         <li ng-repeat="device in DevicesAPI.devices">
@@ -57,6 +56,14 @@
         </button>
         <ag-ui-spinner size="29" color="black" ng-show="simulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
         <p class="text-danger" ng-show="simulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{simulatorLaunchError}}</small></p>
+      </div>
+      <br>
+      <div class="clearfix">
+        <button class="btn btn-lg btn-primary" ng-click="launchEmulator()" ng-disabled="emulatorIsLaunching" style="display: inline-block; float: left;">
+          <span class="glyphicon glyphicon-phone"></span> {{emulatorIsLaunching? "Launching Emulator..." : "Launch Emulator"}}
+        </button>
+        <ag-ui-spinner size="29" color="black" ng-show="emulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
+        <p class="text-danger" ng-show="emulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{emulatorLaunchError}}</small></p>
       </div>
 
     </div>

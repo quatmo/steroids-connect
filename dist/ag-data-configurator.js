@@ -347,9 +347,6 @@ module.exports = [
           if (!$scope.canAdd()) {
             return;
           }
-          if (!$scope.columns) {
-            $scope.columns = [];
-          }
           $scope.columns.push($scope.temp);
           return _makeNewTemp();
         };
@@ -1491,7 +1488,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <!-- Services -->\n" +
     "\n" +
-    "    <div class=\"row\" ng-if=\"providerTemplate && providerTemplate.uid==1\">\n" +
+    "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12\">\n" +
     "        <br><br>\n" +
     "        <h3 style=\"margin-bottom: 0px;\">Services</h3>\n" +
@@ -2061,7 +2058,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
-    "            <li class=\"active\">Providers</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2075,7 +2072,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
-    "            <li class=\"active\">{{provider.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2090,7 +2087,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\">{{resource.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showResource()\">{{resource.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2105,7 +2102,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\">{{service.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showService()\">{{service.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +

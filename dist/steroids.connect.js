@@ -1647,6 +1647,9 @@ module.exports = [
     this.getCloudConfig = function() {
       return $http.get("" + _apiBase + "/cloud_config");
     };
+    this.getAppConfig = function() {
+      return $http.get("" + _apiBase + "/app_config");
+    };
     this.getAccessToken = function() {
       return $http.get("" + _apiBase + "/access_token");
     };
@@ -1655,6 +1658,9 @@ module.exports = [
     };
     this.launchSimulator = function() {
       return $http.get("" + _apiBase + "/launch_simulator");
+    };
+    this.launchEmulator = function() {
+      return $http.get("" + _apiBase + "/launch_emulator");
     };
     this.getDataConfig = function() {
       return $http.get("" + _apiBase + "/data/config");
@@ -1745,7 +1751,8 @@ module.exports = [
             label: "Connect"
           }, {
             name: "logs",
-            label: "Logs"
+            label: "Logs",
+            legacyAppIncompatible: true
           }, {
             name: "docs",
             label: "Documentation"
@@ -1754,7 +1761,8 @@ module.exports = [
             label: "Cloud"
           }, {
             name: "data",
-            label: "Data"
+            label: "Data",
+            legacyAppIncompatible: true
           }
         ];
         selectedTab = scope.tabs[0].name;
@@ -1764,6 +1772,25 @@ module.exports = [
         scope.currentTab = function() {
           return selectedTab;
         };
+
+        /*
+        Legacy app logic
+         */
+        scope.getAppConfig = function() {
+          return BuildServerApi.getAppConfig().then(function(res) {
+            var newTabs;
+            if (res.status === 204) {
+              newTabs = [];
+              angular.forEach(scope.tabs, function(tab) {
+                if (tab.legacyAppIncompatible == null) {
+                  return this.push(tab);
+                }
+              }, newTabs);
+              return scope.tabs = newTabs;
+            }
+          });
+        };
+        scope.getAppConfig();
 
         /*
         State
@@ -3702,9 +3729,10 @@ module.exports = [
       replace: true,
       templateUrl: "/steroids-connect/preview/preview-view.html",
       link: function($scope, element, attrs) {
-        var decodedQrCode, parseQueryParams, qrCode, _simulatorTimeout;
+        var decodedQrCode, parseQueryParams, qrCode, _emulatorTimeout, _simulatorTimeout;
         $scope.DevicesAPI = DevicesAPI;
         $scope.simulatorLaunchError = void 0;
+        $scope.emulatorLaunchError = void 0;
         parseQueryParams = function() {
           var param, paramObj, params, _i, _len;
           params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
@@ -3723,6 +3751,27 @@ module.exports = [
         qrCode = parseQueryParams()["qrcode"];
         decodedQrCode = decodeURIComponent(qrCode);
         $scope.qrCode = decodedQrCode;
+
+        /*
+        EMULATOR
+         */
+        $scope.emulatorIsLaunching = false;
+        _emulatorTimeout = void 0;
+        $scope.launchEmulator = function() {
+          if ($scope.emulatorIsLaunching) {
+            return;
+          }
+          $scope.emulatorIsLaunching = true;
+          BuildServerApi.launchEmulator().then(function(res) {
+            return $scope.emulatorLaunchError = void 0;
+          }, function(error) {
+            $scope.emulatorIsLaunching = false;
+            return $scope.emulatorLaunchError = error.data.error;
+          })["finally"](function() {});
+          return $timeout(function() {
+            return $scope.emulatorIsLaunching = false;
+          }, 2000);
+        };
 
         /*
         SIMULATOR
@@ -4624,8 +4673,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <div class=\"col-xs-12\">\n" +
     "          <h3>AppGyver Scanner</h3>\n" +
     "          <p>\n" +
-    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.\n" +
-    "            Download scanner from App Store or Google Play.\n" +
+    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.<br>\n" +
+    "            Download Scanner from App Store or Google Play.\n" +
     "          </p>\n" +
     "          <br>\n" +
     "        </div>\n" +
@@ -4646,7 +4695,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
     "      <br class=\"visible-xs\"><br class=\"visible-xs\">\n" +
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
-    "      <br><br>\n" +
     "      <ul class=\"devices-list\">\n" +
     "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
@@ -4670,6 +4718,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </button>\n" +
     "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"simulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "        <p class=\"text-danger\" ng-show=\"simulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{simulatorLaunchError}}</small></p>\n" +
+    "      </div>\n" +
+    "      <br>\n" +
+    "      <div class=\"clearfix\">\n" +
+    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchEmulator()\" ng-disabled=\"emulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
+    "          <span class=\"glyphicon glyphicon-phone\"></span> {{emulatorIsLaunching? \"Launching Emulator...\" : \"Launch Emulator\"}}\n" +
+    "        </button>\n" +
+    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"emulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
+    "        <p class=\"text-danger\" ng-show=\"emulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{emulatorLaunchError}}</small></p>\n" +
     "      </div>\n" +
     "\n" +
     "    </div>\n" +

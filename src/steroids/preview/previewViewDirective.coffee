@@ -16,6 +16,7 @@ module.exports =
 
           $scope.DevicesAPI = DevicesAPI
           $scope.simulatorLaunchError = undefined
+          $scope.emulatorLaunchError = undefined
 
           parseQueryParams = () ->
             params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec $location.absUrl()
@@ -32,6 +33,29 @@ module.exports =
           decodedQrCode = decodeURIComponent(qrCode)
 
           $scope.qrCode = decodedQrCode
+
+          ###
+          EMULATOR
+          ###
+
+          $scope.emulatorIsLaunching = false
+          _emulatorTimeout = undefined
+
+          $scope.launchEmulator = ->
+            # Only one at time
+            return if $scope.emulatorIsLaunching
+            $scope.emulatorIsLaunching = true
+            BuildServerApi.launchEmulator().then(
+              (res) ->
+                $scope.emulatorLaunchError = undefined
+              (error) ->
+                $scope.emulatorIsLaunching = false
+                $scope.emulatorLaunchError = error.data.error
+            ).finally () ->
+            $timeout ->
+              $scope.emulatorIsLaunching = false
+            , 2000
+
 
           ###
           SIMULATOR

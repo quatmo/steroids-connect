@@ -25,6 +25,9 @@ module.exports = [
     @launchSimulator = ->
       $http.get "#{_apiBase}/launch_simulator"
 
+    @launchEmulator = ->
+      $http.get "#{_apiBase}/launch_emulator"
+
     @getDataConfig = ->
       $http.get "#{_apiBase}/data/config"
 
