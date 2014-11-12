@@ -412,7 +412,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            <tr>\n" +
     "              <td colspan=\"{{countColumns() + 1}}\">\n" +
     "                <h3 class=\"text-danger\">\n" +
-    "                  No more content.\n" +
+    "                  {{page > 1 ? \"No more content.\" : \"No content.\"}}\n" +
     "                </h3>\n" +
     "              </td>\n" +
     "            </tr>\n" +
@@ -787,12 +787,10 @@ module.exports = [
           }
           $scope.pageLoading = true;
           $scope.page = pageNum;
-          console.log("Loading page", $scope.page);
           return $scope.resource.findAll({
             limit: $scope.perPage,
             skip: ($scope.perPage * $scope.page) - $scope.perPage
           }).then(function(data) {
-            console.log("Got page:", data);
             return $scope.records = data;
           }, function(err) {
             return $scope.records = [];

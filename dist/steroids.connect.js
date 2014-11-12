@@ -3905,7 +3905,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"isConnected && !workingOn\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok\"></span>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text\">App ready and connected.</small>\n" +
+    "          <small class=\"ag__steroids-connect__status-bar__status-text\">Steroids connected &amp; ready.</small>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign\"></span>\n" +
