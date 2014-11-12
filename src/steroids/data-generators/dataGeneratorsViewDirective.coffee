@@ -106,7 +106,7 @@ module.exports = [
             (e) ->
               console.log "Data scaffold generation failed!", e
               $scope.generatorError = true
-              $scope.generatorErrorMessage = e.statusText
+              $scope.generatorErrorMessage = e.data.error
           ).finally ->
             $scope.isGenerating = false
 

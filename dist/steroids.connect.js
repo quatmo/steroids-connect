@@ -2030,7 +2030,7 @@ module.exports = [
           }, function(e) {
             console.log("Data scaffold generation failed!", e);
             $scope.generatorError = true;
-            return $scope.generatorErrorMessage = e.statusText;
+            return $scope.generatorErrorMessage = e.data.error;
           })["finally"](function() {
             return $scope.isGenerating = false;
           });
