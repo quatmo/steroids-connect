@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-8">
       <h3 style="margin: 0px;">Data Generators:</h3>
-      <small>Generate views and controllers for your data resources.</small>
+      <p>Generate an AngularJS-based CRUD scaffold from your data resources.</p>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
       <form class="form-horizontal" role="form">
 
         <div class="form-group">
-          <label for="resourceName" class="col-sm-4 control-label">Data resource</label>
+          <label for="resourceName" class="col-sm-4 control-label">Data Resource</label>
           <div class="col-sm-8">
             <select ng-hide="loadingResources" name="resourceSelector" class="form-control" ng-model="selectedResource" ng-options="resource as resource.name for resource in resources"></select>
             <div ng-show="loadingResources" class="form-control-static" style="vertical-align: center;"><ag-ui-spinner size="22" color="black" style="display: inline-block; float: left;"></ag-ui-spinner> <span style="vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;">Loading resources...</span></div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group">
-          <label class="col-sm-4 control-label">Format</label>
+          <label class="col-sm-4 control-label">Script Format</label>
           <div class="col-sm-8">
             <div class="radio">
               <label>
@@ -47,12 +47,12 @@
 
             <div class="clearfix">
               <button type="button" class="btn btn-lg btn-primary" ng-click="generate()" ng-disabled="loadingResources || isGenerating || !selectedResource" style="display: inline-block; float: left;">
-                Generate views
+                Generate CRUD Scaffold
               </button>
               <ag-ui-spinner size="29" color="black" ng-show="isGenerating" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
             </div>
 
-            <p ng-if="generatorError" class="text-danger" style="margin-top: 6px;"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</small></p>
+            <p ng-if="generatorError" class="text-danger" style="margin-top: 6px;"><small>Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</small></p>
             <p ng-if="generatorSuccess" class="text-success" style="margin-top: 6px;"><small ng-bind-html="generatorSuccessMessage"></small></p>
 
           </div>

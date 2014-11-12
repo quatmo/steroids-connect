@@ -7,11 +7,13 @@
       <div class="row">
 
         <!-- App actions -->
-        <div class="col-sm-7">
+        <div class="col-sm-12">
 
-          <h2 class="no-margin">App cloud settings</h2>
-          <br><br>
-          <p>App ID: <b>{{hasCloudJson ? cloudId : "&laquo;App hasn't been deployed&raquo;"}}</b></p>
+          <h2>App Cloud Settings</h2>
+          <p>On this page, you can deploy your app to the AppGyver Cloud and manage your app's cloud settings, including online sharing and Build Service settings.</p>
+
+          <h3>App Details</h3>
+          <p>App Cloud ID: <b>{{hasCloudJson ? cloudId : "&laquo;Your app hasn't been deployed to AppGyver Cloud yet.&raquo;"}}</b></p>
           <br>
 
           <!-- Deploy button -->
@@ -22,35 +24,29 @@
             <ag-ui-spinner size="29" color="black" ng-show="isDeploying" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
           </div>
 
-          <p class="text-muted" ng-hide="hasCloudJson || deployError" style="padding-top: 6px;"><small>Deploy the app to AppGyver cloud to use build service, <br class="hidden-xs hidden-sm">data and to share your app with your peers and clients.</small></p>
+          <p class="text-muted" ng-hide="hasCloudJson || deployError" style="padding-top: 6px;"><small>Deploy the app to AppGyver Cloud to use the Build Service <br class="hidden-xs hidden-sm">and to share your app online.</small></p>
 
           <p class="text-danger" ng-show="deployError" style="margin-top: 6px;"><small>{{deployError}}</small></p>
 
-          <!-- Configure build settings -->
-          <div ng-show="hasCloudJson">
-            <br>
-            <a class="btn btn-lg btn-primary" ng-href="http://cloud.appgyver.com/applications/{{cloudId}}" target="_blank">
-              <span class="glyphicon glyphicon-cog"></span> Configure build settings in cloud
-            </a>
-          </div>
-
+        </div>
+      </div>
+      <div class="row" ng-show="hasCloudJson">
+        <div class="col-sm-6">
+          <h2>Build Service</h2>
+          <p>The Build Service allows you to configure your app's build settings and create stand-alone builds.</p>
+          <br>
+          <a class="btn btn-lg btn-primary" ng-href="http://cloud.appgyver.com/applications/{{cloudId}}" target="_blank">
+            <span class="glyphicon glyphicon-cog"></span> Open Build Service
+          </a>
         </div>
 
-        <!-- App details -->
-        <div class="col-sm-4 col-sm-offset-1">
-          <div ng-if="hasCloudJson">
-            <h2 class="no-margin">Share app</h2>
-            <br>
-            <br>
-            <a class="btn btn-primary" ng-href="https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}" target="_blank">Open cloud share page</a>
-            <br><br>
-          </div>
-
-          <div ng-hide="hasCloudJson">
-            <h2 class="no-margin">Share app</h2>
-            <br>
-            <p>To share your application it has to be deployed first.</p>
-          </div>
+        <div class="col-sm-6">
+          <h2>Share App</h2>
+          <p>The cloud-deployed version of your app can be shared online. The QR code at the link above can be scanned by anyone with an AppGyver Scanner, allowing you to easily share your app with whomever you want. Note that the share page will always serve the latest cloud-deployed version of your app.</p>
+          <br>
+          <a class="btn btn-primary" ng-href="https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}" target="_blank">
+            <span class="glyphicon glyphicon-qrcode"></span> Open cloud share page
+          </a>
         </div>
 
       </div>

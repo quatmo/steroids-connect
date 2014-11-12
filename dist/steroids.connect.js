@@ -1942,7 +1942,7 @@ module.exports = [
           $scope.generatorError = false;
           $scope.generatorSuccess = false;
           $scope.isGenerating = true;
-          $scope.generatorSuccessMessage = $sce.trustAsHtml("You can access your new data views with \"<b>" + $scope.selectedResource.name + "#index</b>\" in your application.");
+          $scope.generatorSuccessMessage = $sce.trustAsHtml("To access your new data scaffold, open <code>app/structure.coffee</code> and change the location of the root view (or a tab) to \"<b>" + ($scope.selectedResource.name.toLowerCase()) + "#index</b>\" ");
           return BuildServerApi.generate({
             name: "scaffold",
             parameters: {
@@ -3813,11 +3813,13 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <div class=\"row\">\n" +
     "\n" +
     "        <!-- App actions -->\n" +
-    "        <div class=\"col-sm-7\">\n" +
+    "        <div class=\"col-sm-12\">\n" +
     "\n" +
-    "          <h2 class=\"no-margin\">App cloud settings</h2>\n" +
-    "          <br><br>\n" +
-    "          <p>App ID: <b>{{hasCloudJson ? cloudId : \"&laquo;App hasn't been deployed&raquo;\"}}</b></p>\n" +
+    "          <h2>App Cloud Settings</h2>\n" +
+    "          <p>On this page, you can deploy your app to the AppGyver Cloud and manage your app's cloud settings, including online sharing and Build Service settings.</p>\n" +
+    "\n" +
+    "          <h3>App Details</h3>\n" +
+    "          <p>App Cloud ID: <b>{{hasCloudJson ? cloudId : \"&laquo;Your app hasn't been deployed to AppGyver Cloud yet.&raquo;\"}}</b></p>\n" +
     "          <br>\n" +
     "\n" +
     "          <!-- Deploy button -->\n" +
@@ -3828,35 +3830,29 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isDeploying\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "          </div>\n" +
     "\n" +
-    "          <p class=\"text-muted\" ng-hide=\"hasCloudJson || deployError\" style=\"padding-top: 6px;\"><small>Deploy the app to AppGyver cloud to use build service, <br class=\"hidden-xs hidden-sm\">data and to share your app with your peers and clients.</small></p>\n" +
+    "          <p class=\"text-muted\" ng-hide=\"hasCloudJson || deployError\" style=\"padding-top: 6px;\"><small>Deploy the app to AppGyver Cloud to use the Build Service <br class=\"hidden-xs hidden-sm\">and to share your app online.</small></p>\n" +
     "\n" +
     "          <p class=\"text-danger\" ng-show=\"deployError\" style=\"margin-top: 6px;\"><small>{{deployError}}</small></p>\n" +
     "\n" +
-    "          <!-- Configure build settings -->\n" +
-    "          <div ng-show=\"hasCloudJson\">\n" +
-    "            <br>\n" +
-    "            <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
-    "              <span class=\"glyphicon glyphicon-cog\"></span> Configure build settings in cloud\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"row\" ng-show=\"hasCloudJson\">\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <h2>Build Service</h2>\n" +
+    "          <p>The Build Service allows you to configure your app's build settings and create stand-alone builds.</p>\n" +
+    "          <br>\n" +
+    "          <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
+    "            <span class=\"glyphicon glyphicon-cog\"></span> Open Build Service\n" +
+    "          </a>\n" +
     "        </div>\n" +
     "\n" +
-    "        <!-- App details -->\n" +
-    "        <div class=\"col-sm-4 col-sm-offset-1\">\n" +
-    "          <div ng-if=\"hasCloudJson\">\n" +
-    "            <h2 class=\"no-margin\">Share app</h2>\n" +
-    "            <br>\n" +
-    "            <br>\n" +
-    "            <a class=\"btn btn-primary\" ng-href=\"https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}\" target=\"_blank\">Open cloud share page</a>\n" +
-    "            <br><br>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div ng-hide=\"hasCloudJson\">\n" +
-    "            <h2 class=\"no-margin\">Share app</h2>\n" +
-    "            <br>\n" +
-    "            <p>To share your application it has to be deployed first.</p>\n" +
-    "          </div>\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <h2>Share App</h2>\n" +
+    "          <p>The cloud-deployed version of your app can be shared online. The QR code at the link above can be scanned by anyone with an AppGyver Scanner, allowing you to easily share your app with whomever you want. Note that the share page will always serve the latest cloud-deployed version of your app.</p>\n" +
+    "          <br>\n" +
+    "          <a class=\"btn btn-primary\" ng-href=\"https://share.appgyver.com/?id={{cloudId}}&hash={{cloudHash}}\" target=\"_blank\">\n" +
+    "            <span class=\"glyphicon glyphicon-qrcode\"></span> Open cloud share page\n" +
+    "          </a>\n" +
     "        </div>\n" +
     "\n" +
     "      </div>\n" +
@@ -3901,15 +3897,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\" ng-if=\"isConnected && workingOn\">\n" +
     "          <ag-ui-spinner size=\"18\" color=\"#999C9C\" style=\"display: inline-block;\"></ag-ui-spinner>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text\">{{workingOn}}</small>\n" +
+    "          <p class=\"ag__steroids-connect__status-bar__status-text\">{{workingOn}}</p>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"isConnected && !workingOn\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok\"></span>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text\">Steroids connected &amp; ready.</small>\n" +
+    "          <p class=\"ag__steroids-connect__status-bar__status-text\">Connection established with the Steroids Development Server, all good!</p>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign\"></span>\n" +
-    "          <small class=\"ag__steroids-connect__status-bar__status-text red\"><b>Cannot connect to Steroids!</b> Start Steroids by running ´<b>steroids connect</b>´ in terminal in your project directory.</small>\n" +
+    "          <p class=\"ag__steroids-connect__status-bar__status-text red\"><b>Cannot connect to the Steroids Development Server!</b> Start the Steroids Development Server by running <code>steroids connect</code> in Terminal in your project directory.</p>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -3971,7 +3967,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12 col-sm-8\">\n" +
     "      <h3 style=\"margin: 0px;\">Data Generators:</h3>\n" +
-    "      <small>Generate views and controllers for your data resources.</small>\n" +
+    "      <p>Generate an AngularJS-based CRUD scaffold from your data resources.</p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -3984,7 +3980,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <form class=\"form-horizontal\" role=\"form\">\n" +
     "\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label for=\"resourceName\" class=\"col-sm-4 control-label\">Data resource</label>\n" +
+    "          <label for=\"resourceName\" class=\"col-sm-4 control-label\">Data Resource</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
     "            <select ng-hide=\"loadingResources\" name=\"resourceSelector\" class=\"form-control\" ng-model=\"selectedResource\" ng-options=\"resource as resource.name for resource in resources\"></select>\n" +
     "            <div ng-show=\"loadingResources\" class=\"form-control-static\" style=\"vertical-align: center;\"><ag-ui-spinner size=\"22\" color=\"black\" style=\"display: inline-block; float: left;\"></ag-ui-spinner> <span style=\"vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;\">Loading resources...</span></div>\n" +
@@ -3992,7 +3988,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "\n" +
     "        <div class=\"form-group\">\n" +
-    "          <label class=\"col-sm-4 control-label\">Format</label>\n" +
+    "          <label class=\"col-sm-4 control-label\">Script Format</label>\n" +
     "          <div class=\"col-sm-8\">\n" +
     "            <div class=\"radio\">\n" +
     "              <label>\n" +
@@ -4014,12 +4010,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "            <div class=\"clearfix\">\n" +
     "              <button type=\"button\" class=\"btn btn-lg btn-primary\" ng-click=\"generate()\" ng-disabled=\"loadingResources || isGenerating || !selectedResource\" style=\"display: inline-block; float: left;\">\n" +
-    "                Generate views\n" +
+    "                Generate CRUD Scaffold\n" +
     "              </button>\n" +
     "              <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isGenerating\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "            </div>\n" +
     "\n" +
-    "            <p ng-if=\"generatorError\" class=\"text-danger\" style=\"margin-top: 6px;\"><small>Failed to generate views. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</small></p>\n" +
+    "            <p ng-if=\"generatorError\" class=\"text-danger\" style=\"margin-top: 6px;\"><small>Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</small></p>\n" +
     "            <p ng-if=\"generatorSuccess\" class=\"text-success\" style=\"margin-top: 6px;\"><small ng-bind-html=\"generatorSuccessMessage\"></small></p>\n" +
     "\n" +
     "          </div>\n" +
@@ -4054,7 +4050,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </li>\n" +
     "      </ul>\n" +
     "      <h1 class=\"no-margin\">Data</h1>\n" +
-    "      <p>On this tab, you can configure Steroids Data for your app.</p>\n" +
+    "      <p>Configure Supersonic Data for your app.</p>\n" +
     "      <br><br>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -4073,7 +4069,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isInitializing\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "      </div>\n" +
     "\n" +
-    "      <p ng-class=\"{'text-muted': !error, 'text-danger': error}\" style=\"margin-top: 6px;\"><small>{{error ? error : \"Click above to initialize data for your application.\"}}</small></p>\n" +
+    "      <p ng-class=\"{'text-muted': !error, 'text-danger': error}\" style=\"margin-top: 6px;\">{{error ? error : \"Your application will be deployed to AppGyver Cloud, and we'll also provision an AppGyver Sandbox Database for you so you can get going straight away.\"}}</p>\n" +
     "\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -4116,20 +4112,29 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <div class=\"col-sm-12\">\n" +
-    "      <h1 class=\"no-margin\">Documentation and Tutorials</h1>\n" +
-    "      <br><br>\n" +
-    "      <a\n" +
-    "        class=\"btn btn-lrg btn-primary\"\n" +
-    "        href=\"https://academy.appgyver.com\"\n" +
-    "        target=\"_blank\">\n" +
-    "        Tutorials and Guides in Academy &raquo;\n" +
-    "      </a>\n" +
-    "      <br><br>\n" +
+    "      <h2>Documentation and Tutorials</h2>\n" +
+    "      <p>We've got a bunch of great learning material available for you in the Supersonic docs. Click the link below to open our documentation or jump straight to the API reference.</p>\n" +
     "      <a\n" +
     "        class=\"btn btn-lrg btn-primary\"\n" +
     "        href=\"http://docs.appgyver.com\"\n" +
     "        target=\"_blank\">\n" +
-    "        API documentation &raquo;\n" +
+    "        Supersonic Documentation &raquo;\n" +
+    "      </a>\n" +
+    "      <a\n" +
+    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        href=\"http://docs.appgyver.com\"\n" +
+    "        target=\"_blank\">\n" +
+    "        Supersonic API Reference &raquo;\n" +
+    "      </a>\n" +
+    "\n" +
+    "      <h2>Forums</h2>\n" +
+    "      <p>Struggling with something Supersonic, or just want to share an awesome thing you created? Join the discussion on our forums – we've got a great community, and the AppGyver team is very active there!</p>\n" +
+    "      <p>As always, feel free to mail us at <a href=\"mailto:contact@appgyver.com\">contact@appgyver.com</a> with any questions or feedback!</p>\n" +
+    "      <a\n" +
+    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        href=\"http://forums.appgyver.com\"\n" +
+    "        target=\"_blank\">\n" +
+    "        AppGyver Forums &raquo;\n" +
     "      </a>\n" +
     "    </div>\n" +
     "\n" +
@@ -4672,9 +4677,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <h3>AppGyver Scanner</h3>\n" +
-    "          <p>\n" +
-    "            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.<br>\n" +
-    "            Download Scanner from App Store or Google Play.\n" +
+    "          <p>To connect your device with the Steroids Development Server and start developing your app, please scan the QR code above with the AppGyver Scanner app.</p>\n" +
+    "          <p>Download AppGyver Scanner from App Store or Google Play.</p>\n" +
     "          </p>\n" +
     "          <br>\n" +
     "        </div>\n" +
@@ -4698,23 +4702,16 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <ul class=\"devices-list\">\n" +
     "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
-    "          <!-- Status indicator -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
-    "          <!-- Device name -->\n" +
     "          <h2 class=\"no-margin\"><b>{{device.ipAddress}}</b></h2>\n" +
-    "          <!-- Connection status -->\n" +
-    "          <!-- <span ng-if=\"device.connected\">Connected: </span>\n" +
-    "          <span ng-if=\"!device.connected\">Not connected: </span> -->\n" +
-    "          <!-- Connection status explained -->\n" +
-    "          <span ng-if=\"device.ipAddress\">{{device.lastSeen}}</span>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
-    "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected.<br><br></p>\n" +
+    "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>\n" +
     "\n" +
     "      <div class=\"clearfix\">\n" +
     "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchSimulator()\" ng-disabled=\"simulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
-    "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching simulator...\" : \"Launch simulator\"}}\n" +
+    "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching iOS Simulator...\" : \"Launch iOS Simulator\"}}\n" +
     "        </button>\n" +
     "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"simulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "        <p class=\"text-danger\" ng-show=\"simulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{simulatorLaunchError}}</small></p>\n" +
@@ -4722,7 +4719,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <br>\n" +
     "      <div class=\"clearfix\">\n" +
     "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchEmulator()\" ng-disabled=\"emulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
-    "          <span class=\"glyphicon glyphicon-phone\"></span> {{emulatorIsLaunching? \"Launching Emulator...\" : \"Launch Emulator\"}}\n" +
+    "          <span class=\"glyphicon glyphicon-phone\"></span> {{emulatorIsLaunching? \"Launching Android Emulator...\" : \"Launch Android Emulator\"}}\n" +
     "        </button>\n" +
     "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"emulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "        <p class=\"text-danger\" ng-show=\"emulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{emulatorLaunchError}}</small></p>\n" +
