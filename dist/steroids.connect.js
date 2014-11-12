@@ -4063,6 +4063,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <h2>App Cloud Settings</h2>\n" +
     "          <p>On this page, you can deploy your app to the AppGyver Cloud and manage your app's cloud settings, including online sharing and Build Service settings.</p>\n" +
     "\n" +
+    "          <br>\n" +
+    "\n" +
     "          <h3>App Details</h3>\n" +
     "          <p>App Cloud ID: <b>{{hasCloudJson ? cloudId : \"&laquo;Your app hasn't been deployed to AppGyver Cloud yet.&raquo;\"}}</b></p>\n" +
     "          <br>\n" +
@@ -4081,8 +4083,11 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "        </div>\n" +
     "      </div>\n" +
+    "\n" +
     "      <div class=\"row\" ng-show=\"hasCloudJson\">\n" +
     "        <div class=\"col-sm-6\">\n" +
+    "          <br>\n" +
+    "          <br class=\"hidden-xs hidden-sm\">\n" +
     "          <h2>Build Service</h2>\n" +
     "          <p>The Build Service allows you to configure your app's build settings and create stand-alone builds.</p>\n" +
     "          <br>\n" +
@@ -4092,6 +4097,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-6\">\n" +
+    "          <br>\n" +
+    "          <br class=\"hidden-xs hidden-sm\">\n" +
     "          <h2>Share App</h2>\n" +
     "          <p>The cloud-deployed version of your app can be shared online. The QR code at the link above can be scanned by anyone with an AppGyver Scanner, allowing you to easily share your app with whomever you want. Note that the share page will always serve the latest cloud-deployed version of your app.</p>\n" +
     "          <br>\n" +
@@ -4873,7 +4880,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "\n" +
     "    <!-- QR code -->\n" +
-    "    <div class=\"col-xs-12 col-md-5\">\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-5\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <qrcode version=\"8\" error-correction-level=\"M\" size=\"100%\" data=\"{{qrCode}}\" class=\"img-responsive\"></qrcode>\n" +
@@ -4900,7 +4907,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "\n" +
     "    <!-- Connected devices -->\n" +
-    "    <div class=\"col-xs-12 col-md-6 col-md-offset-1\">\n" +
+    "    <div class=\"col-xs-12 col-sm-6 col-md-6 col-md-offset-1\">\n" +
     "      <br class=\"visible-xs\"><br class=\"visible-xs\">\n" +
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
     "      <ul class=\"devices-list\">\n" +
