@@ -1930,7 +1930,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":52,"./build-settings":5,"./connect-ui":7,"./data":13,"./data-generators":10,"./docs":15,"./generators":18,"./logs":24,"./navigation-and-themes":37,"./preview":50}],9:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":53,"./build-settings":5,"./connect-ui":7,"./data":13,"./data-generators":10,"./docs":15,"./generators":18,"./logs":24,"./navigation-and-themes":38,"./preview":51}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$q", "$timeout", "$sce", "Restangular", "BuildServerApi", function($q, $timeout, $sce, Restangular, BuildServerApi) {
@@ -2398,7 +2398,7 @@ module.exports = [
         }
       },
       availableDeviceNameFilters: function(includeAll) {
-        var availableForFiltering, device, _i, _len, _ref;
+        var availableForFiltering, device, devicesNow, ip;
         if (includeAll == null) {
           includeAll = true;
         }
@@ -2409,13 +2409,16 @@ module.exports = [
             filterBy: ""
           });
         }
-        _ref = DevicesAPI.devices;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          device = _ref[_i];
-          availableForFiltering.push({
-            label: device.name,
-            filterBy: device.name
-          });
+        devicesNow = DevicesAPI.devices;
+        console.log(devicesNow);
+        if (devicesNow) {
+          for (ip in devicesNow) {
+            device = devicesNow[ip];
+            availableForFiltering.push({
+              label: device.device,
+              filterBy: device.ipAddress
+            });
+          }
         }
         return availableForFiltering;
       },
@@ -2442,7 +2445,7 @@ module.exports = [
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           logMsg = _ref[_i];
           availableForFiltering.push({
-            label: logMsg.view,
+            label: $filter("viewUrlToRouteName")(logMsg.view),
             filterBy: logMsg.view
           });
         }
@@ -2528,10 +2531,10 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 
 },{}],24:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService")).controller("LogViewCtrl", _dereq_("./LogViewCtrl"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).filter("viewUrlToRouteName", _dereq_("./viewUrlToRouteNameFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService")).controller("LogViewCtrl", _dereq_("./LogViewCtrl"));
 
 
-},{"./../preview":50,"./LogCloudConnectorService":19,"./LogViewCtrl":20,"./LogsAPI":21,"./LogsFilterAPI":22,"./filterUnique":23,"./logDateFormatFilter":25,"./logFiltersViewDirective":26,"./logMessageDirective":27,"./logTimeFormatFilter":28,"./logTimeMillisecondsFormatFilter":29,"./logViewDirective":30}],25:[function(_dereq_,module,exports){
+},{"./../preview":51,"./LogCloudConnectorService":19,"./LogViewCtrl":20,"./LogsAPI":21,"./LogsFilterAPI":22,"./filterUnique":23,"./logDateFormatFilter":25,"./logFiltersViewDirective":26,"./logMessageDirective":27,"./logTimeFormatFilter":28,"./logTimeMillisecondsFormatFilter":29,"./logViewDirective":30,"./viewUrlToRouteNameFilter":31}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2664,6 +2667,17 @@ module.exports = [
 },{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  function() {
+    return function(input) {
+      return input.replace("http://localhost/app/", "").replace(".html", "").replace("/", "#");
+    };
+  }
+];
+
+
+},{}],32:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   "$http", function($http) {
     return {
 
@@ -2692,7 +2706,7 @@ module.exports = [
 ];
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
@@ -2728,7 +2742,7 @@ module.exports = [
 ];
 
 
-},{}],33:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2745,7 +2759,7 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -3185,7 +3199,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],35:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3203,7 +3217,7 @@ module.exports = [
 ];
 
 
-},{}],36:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3221,12 +3235,12 @@ module.exports = [
 ];
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":31,"./TabModalCtrl":32,"./colorInputDirective":33,"./colorpicker":34,"./drawerConfiguratorViewDirective":35,"./generalSettingsConfiguratorViewDirective":36,"./navigationAndThemesViewDirective":38,"./navigationBarConfiguratorViewDirective":39,"./statusBarConfiguratorViewDirective":40,"./stickyScrollDirective":41,"./tabEditorDirective":42,"./tabsConfiguratorViewDirective":43,"./ui-sortable":44,"./viewSelectorDirective":45}],38:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":32,"./TabModalCtrl":33,"./colorInputDirective":34,"./colorpicker":35,"./drawerConfiguratorViewDirective":36,"./generalSettingsConfiguratorViewDirective":37,"./navigationAndThemesViewDirective":39,"./navigationBarConfiguratorViewDirective":40,"./statusBarConfiguratorViewDirective":41,"./stickyScrollDirective":42,"./tabEditorDirective":43,"./tabsConfiguratorViewDirective":44,"./ui-sortable":45,"./viewSelectorDirective":46}],39:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -3280,7 +3294,7 @@ module.exports = [
 ];
 
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3297,7 +3311,7 @@ module.exports = [
 ];
 
 
-},{}],40:[function(_dereq_,module,exports){
+},{}],41:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3352,7 +3366,7 @@ module.exports = [
 ];
 
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -3394,7 +3408,7 @@ module.exports = [
 ];
 
 
-},{}],42:[function(_dereq_,module,exports){
+},{}],43:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$modal", function($modal) {
@@ -3450,7 +3464,7 @@ module.exports = [
 ];
 
 
-},{}],43:[function(_dereq_,module,exports){
+},{}],44:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -3488,7 +3502,7 @@ module.exports = [
 ];
 
 
-},{}],44:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
   "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
     return {
@@ -3645,7 +3659,7 @@ module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {})
 ]);
 
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],46:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3680,7 +3694,7 @@ module.exports = [
 ];
 
 
-},{}],46:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, DevicesAPI, BuildServerApi) {
@@ -3752,7 +3766,7 @@ module.exports = [
 ];
 
 
-},{}],47:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "DevicesAPI", function($interval, $http, DevicesAPI) {
@@ -3773,7 +3787,7 @@ module.exports = [
 ];
 
 
-},{}],48:[function(_dereq_,module,exports){
+},{}],49:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3785,27 +3799,13 @@ module.exports = [
       setDevices: function(devices) {
         return this.devices = devices;
       },
-      devices: [
-        {
-          name: "Tomi's iPhone",
-          type: "iphone",
-          connected: true,
-          error: null,
-          lastSeen: 1404217782263
-        }, {
-          name: "Simulator",
-          type: "simulator",
-          connected: false,
-          error: null,
-          lastAppLoad: 0
-        }
-      ]
+      devices: {}
     };
   }
 ];
 
 
-},{}],49:[function(_dereq_,module,exports){
+},{}],50:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3960,12 +3960,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],50:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],51:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService")).controller("ConnectViewCtrl", _dereq_("./ConnectViewCtrl"));
 
 
-},{"./ConnectViewCtrl":46,"./DeviceCloudConnectorService":47,"./DevicesAPI":48,"./angular-qrcode":49,"./previewViewDirective":51}],51:[function(_dereq_,module,exports){
+},{"./ConnectViewCtrl":47,"./DeviceCloudConnectorService":48,"./DevicesAPI":49,"./angular-qrcode":50,"./previewViewDirective":52}],52:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($location, $timeout, DevicesAPI, BuildServerApi) {
@@ -4044,7 +4044,7 @@ module.exports = [
 ];
 
 
-},{}],52:[function(_dereq_,module,exports){
+},{}],53:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -4413,7 +4413,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <!-- Filter for device name -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <div class=\"form-control-select ag__pill\">\n" +
-    "        <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters()\"></select>\n" +
+    "        <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters(true)\"></select>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
@@ -4448,7 +4448,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </td>\n" +
     "  <td class=\"text-muted logMsg-view-name\">\n" +
     "    <span class=\"glyphicon glyphicon-list-alt\"></span>\n" +
-    "    <a ng-click=\"LogsFilterAPI.filterByViewName(logMessage.view)\">{{logMessage.view}}</a>\n" +
+    "    <a ng-click=\"LogsFilterAPI.filterByViewName(logMessage.view)\">{{logMessage.view | viewUrlToRouteName}}</a>\n" +
     "  </td>\n" +
     "  <td class=\"text-muted logMsg-time\">\n" +
     "    <span class=\"glyphicon glyphicon-time\"></span>\n" +

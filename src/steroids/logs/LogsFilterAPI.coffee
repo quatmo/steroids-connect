@@ -38,14 +38,18 @@ module.exports =
           # Set the base for the filter
           availableForFiltering = []
           # If option "All" should be included:
-          if includeAll is true then availableForFiltering.push
-            label: "All devices"
-            filterBy: ""
-          # Include available devices
-          for device in DevicesAPI.devices
+          if includeAll is true
             availableForFiltering.push
-              label: device.name
-              filterBy: device.name
+              label: "All devices"
+              filterBy: ""
+          # Include available devices
+          devicesNow = DevicesAPI.devices
+          console.log devicesNow
+          if devicesNow
+            for ip, device of devicesNow
+              availableForFiltering.push
+                label: device.device
+                filterBy: device.ipAddress
           # Return the composed list of filterable devices
           availableForFiltering
 
@@ -64,7 +68,7 @@ module.exports =
           # Include available devices
           for logMsg in $filter("unique")(LogsAPI.logs, "view")
             availableForFiltering.push
-              label: logMsg.view
+              label: $filter("viewUrlToRouteName")(logMsg.view)
               filterBy: logMsg.view
           # Return the composed list of filterable devices
           availableForFiltering

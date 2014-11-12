@@ -5,7 +5,7 @@
   </td>
   <td class="text-muted logMsg-view-name">
     <span class="glyphicon glyphicon-list-alt"></span>
-    <a ng-click="LogsFilterAPI.filterByViewName(logMessage.view)">{{logMessage.view}}</a>
+    <a ng-click="LogsFilterAPI.filterByViewName(logMessage.view)">{{logMessage.view | viewUrlToRouteName}}</a>
   </td>
   <td class="text-muted logMsg-time">
     <span class="glyphicon glyphicon-time"></span>
