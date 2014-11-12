@@ -434,6 +434,8 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            </div>\n" +
     "          </div>\n" +
     "\n" +
+    "          <button type=\"button\" ng-click=\"reloadPage()\" class=\"btn btn-primary\" ng-disabled=\"pageLoading\" style=\"margin-right: 10px;\" tooltip=\"Refresh page\" tooltip-placement=\"bottom\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\n" +
+    "\n" +
     "          <div class=\"form-group clearfix\">\n" +
     "            <div class=\"btn-group pull-left\" style=\"margin-right: 10px;\">\n" +
     "              <button type=\"button\" ng-click=\"prevPage()\" class=\"btn btn-primary\" ng-disabled=\"page <= 1 || pageLoading\"><span class=\"glyphicon glyphicon-chevron-left\"></span></button>\n" +
@@ -490,7 +492,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            </div>\n" +
     "\n" +
     "            <div class=\"form-group\">\n" +
-    "              <div class=\"form-control-select\">\n" +
+    "              <div class=\"form-control-select\" tooltip=\"Choose resource for browsing\" tooltip-placement=\"right\" tooltip-append-to-body=\"true\">\n" +
     "                <select ng-model=\"selectedResourceName\" ng-options=\"x for x in namesOfAvailableResources\" id=\"resourceSelectorInput\"></select>\n" +
     "              </div>\n" +
     "            </div>\n" +
@@ -809,6 +811,9 @@ module.exports = [
             return;
           }
           return $scope.loadPage($scope.page - 1);
+        };
+        $scope.reloadPage = function() {
+          return $scope.loadPage($scope.page);
         };
         $scope.setPerPage = function(amount) {
           $scope.perPage = amount;

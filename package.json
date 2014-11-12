@@ -1,6 +1,6 @@
 {
   "name": "steroids-connect",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Shared components for AppGyver Steroids Connect.",
   "main": "index.js",
   "dependencies": {
