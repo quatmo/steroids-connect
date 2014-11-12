@@ -32,16 +32,17 @@
     <div class="col-xs-12 col-sm-6 col-md-6 col-md-offset-1">
       <br class="visible-xs"><br class="visible-xs">
       <h2 class="no-margin">Connected devices:</h2>
+      <br>
       <ul class="devices-list">
 
         <li ng-repeat="device in DevicesAPI.devices">
           <div class="status-indicator" ng-class="{'yellow': false, 'green': true}"></div>
-          <h2 class="no-margin"><b>{{device.ipAddress}}</b></h2>
+          <h2 class="no-margin"><b>{{device.device}}{{device.simulator? " simulator" : ""}}</b></h2>
           <span ng-if="!device.connected && device.error"><a href="">{{device.error.message}}</a></span>
         </li>
       </ul>
       <p ng-hide="DevicesAPI.devices">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>
-
+      <br>
       <div class="clearfix">
         <button class="btn btn-lg btn-primary" ng-click="launchSimulator()" ng-disabled="simulatorIsLaunching" style="display: inline-block; float: left;">
           <span class="glyphicon glyphicon-phone"></span> {{simulatorIsLaunching? "Launching iOS Simulator..." : "Launch iOS Simulator"}}

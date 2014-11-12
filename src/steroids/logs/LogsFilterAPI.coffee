@@ -44,11 +44,10 @@ module.exports =
               filterBy: ""
           # Include available devices
           devicesNow = DevicesAPI.devices
-          console.log devicesNow
           if devicesNow
             for ip, device of devicesNow
               availableForFiltering.push
-                label: device.device
+                label: if device.simulator then "#{device.device} simulator" else device.device
                 filterBy: device.ipAddress
           # Return the composed list of filterable devices
           availableForFiltering

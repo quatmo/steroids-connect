@@ -2410,12 +2410,11 @@ module.exports = [
           });
         }
         devicesNow = DevicesAPI.devices;
-        console.log(devicesNow);
         if (devicesNow) {
           for (ip in devicesNow) {
             device = devicesNow[ip];
             availableForFiltering.push({
-              label: device.device,
+              label: device.simulator ? "" + device.device + " simulator" : device.device,
               filterBy: device.ipAddress
             });
           }
@@ -4914,16 +4913,17 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-xs-12 col-sm-6 col-md-6 col-md-offset-1\">\n" +
     "      <br class=\"visible-xs\"><br class=\"visible-xs\">\n" +
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
+    "      <br>\n" +
     "      <ul class=\"devices-list\">\n" +
     "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
-    "          <h2 class=\"no-margin\"><b>{{device.ipAddress}}</b></h2>\n" +
+    "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
     "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>\n" +
-    "\n" +
+    "      <br>\n" +
     "      <div class=\"clearfix\">\n" +
     "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchSimulator()\" ng-disabled=\"simulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
     "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching iOS Simulator...\" : \"Launch iOS Simulator\"}}\n" +
