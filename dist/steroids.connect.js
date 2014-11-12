@@ -4146,14 +4146,14 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </nav>\n" +
     "\n" +
     "  <!-- Statubar -->\n" +
-    "  <div class=\"ag__steroids-connect__status-bar\">\n" +
+    "  <div class=\"ag__steroids-connect__status-bar\" ng-if=\"isConnected\">\n" +
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-12\" ng-if=\"isConnected && workingOn\">\n" +
+    "        <div class=\"col-xs-12\" ng-if=\"workingOn\">\n" +
     "          <ag-ui-spinner size=\"18\" color=\"#999C9C\" style=\"display: inline-block;\"></ag-ui-spinner>\n" +
     "          <p class=\"ag__steroids-connect__status-bar__status-text\">{{workingOn}}</p>\n" +
     "        </div>\n" +
-    "        <div class=\"col-xs-12\" ng-if=\"isConnected && !workingOn\">\n" +
+    "        <div class=\"col-xs-12\" ng-if=\"!workingOn\">\n" +
     "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok\"></span>\n" +
     "          <p class=\"ag__steroids-connect__status-bar__status-text\">Connection established with the Steroids Development Server, all good!</p>\n" +
     "        </div>\n" +
@@ -4166,7 +4166,18 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </div>\n" +
     "\n" +
     "  <!-- ui-router views -->\n" +
-    "  <div class=\"container-fluid\" ui-view></div>\n" +
+    "  <div class=\"container-fluid\" ui-view ng-if=\"isConnected\"></div>\n" +
+    "\n" +
+    "  <!-- Really bad stuff! -->\n" +
+    "  <div class=\"container error-container\" ng-class=\"{'error-active': !isConnected}\">\n" +
+    "\n" +
+    "    <div class=\"not-connected-error\" ng-class=\"{'error-active': !isConnected}\">\n" +
+    "      <h1>Connection lost!</h1>\n" +
+    "      <br>\n" +
+    "      <p><b>Cannot connect to the Steroids Development Server!</b> Start the Steroids Development Server by running <code>steroids connect</code> in Terminal in your project directory.</p>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n"
   );

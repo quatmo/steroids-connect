@@ -664,6 +664,35 @@ colorpicker-preview {
     font-size: 12px;
     margin: 0px;
     padding: 0px; }
+.ag__steroids-connect .error-container {
+  opacity: 0;
+  max-height: 0px; }
+  .ag__steroids-connect .error-container.error-active {
+    opacity: 1;
+    max-height: auto; }
+.ag__steroids-connect .not-connected-error {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border: 4px #fa5252 solid;
+  color: #fa5252;
+  padding: 30px;
+  margin: 60px auto;
+  -ms-transform: translate3d(0, -2%, 0) scale(0.9);
+  -moz-transform: translate3d(0, -2%, 0) scale(0.9);
+  -webkit-transform: translate3d(0, -2%, 0) scale(0.9);
+  transform: translate3d(0, -2%, 0) scale(0.9);
+  -ms-transition: 200ms ease-in-out;
+  -moz-transition: 200ms ease-in-out;
+  -webkit-transition: 200ms ease-in-out;
+  transition: 200ms ease-in-out; }
+  .ag__steroids-connect .not-connected-error.error-active {
+    -ms-transform: translate3d(0, 0, 0) scale(1);
+    -moz-transform: translate3d(0, 0, 0) scale(1);
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1); }
+  .ag__steroids-connect .not-connected-error h1, .ag__steroids-connect .not-connected-error h2 {
+    margin-top: 0px; }
 
 .no-margin {
   margin: 0px; }
