@@ -23,10 +23,13 @@ module.exports = [
       $http.get "#{_apiBase}/deploy"
 
     @launchSimulator = ->
-      $http.get "#{_apiBase}/launch_simulator"
+      $http.get "#{_apiBase}/emulators/simulator/start"
 
     @launchEmulator = ->
-      $http.get "#{_apiBase}/launch_emulator"
+      $http.get "#{_apiBase}/emulators/android/start"
+
+    @launchGenymotion = ->
+      $http.get "#{_apiBase}/emulators/genymotion/start"
 
     @getDataConfig = ->
       $http.get "#{_apiBase}/data/config"
