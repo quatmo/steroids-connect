@@ -30,15 +30,15 @@
       <div class="row">
         <div class="col-xs-12" ng-if="isConnected && workingOn">
           <ag-ui-spinner size="18" color="#999C9C" style="display: inline-block;"></ag-ui-spinner>
-          <small class="ag__steroids-connect__status-bar__status-text">{{workingOn}}</small>
+          <p class="ag__steroids-connect__status-bar__status-text">{{workingOn}}</p>
         </div>
         <div class="col-xs-12" ng-if="isConnected && !workingOn">
           <span class="ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok"></span>
-          <small class="ag__steroids-connect__status-bar__status-text">Steroids connected &amp; ready.</small>
+          <p class="ag__steroids-connect__status-bar__status-text">Connection established with the Steroids Development Server, all good!</p>
         </div>
         <div class="col-xs-12" ng-if="!isConnected">
           <span class="ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-warning-sign"></span>
-          <small class="ag__steroids-connect__status-bar__status-text red"><b>Cannot connect to Steroids!</b> Start Steroids by running ´<b>steroids connect</b>´ in terminal in your project directory.</small>
+          <p class="ag__steroids-connect__status-bar__status-text red"><b>Cannot connect to the Steroids Development Server!</b> Start the Steroids Development Server by running <code>steroids connect</code> in Terminal in your project directory.</p>
         </div>
       </div>
     </div>

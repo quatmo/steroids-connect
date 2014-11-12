@@ -10,9 +10,8 @@
         </div>
         <div class="col-xs-12">
           <h3>AppGyver Scanner</h3>
-          <p>
-            The QR code above must be scanned with AppGyver Scanner app in order to test this app in your device.<br>
-            Download Scanner from App Store or Google Play.
+          <p>To connect your device with the Steroids Development Server and start developing your app, please scan the QR code above with the AppGyver Scanner app.</p>
+          <p>Download AppGyver Scanner from App Store or Google Play.</p>
           </p>
           <br>
         </div>
@@ -36,23 +35,16 @@
       <ul class="devices-list">
 
         <li ng-repeat="device in DevicesAPI.devices">
-          <!-- Status indicator -->
           <div class="status-indicator" ng-class="{'yellow': false, 'green': true}"></div>
-          <!-- Device name -->
           <h2 class="no-margin"><b>{{device.ipAddress}}</b></h2>
-          <!-- Connection status -->
-          <!-- <span ng-if="device.connected">Connected: </span>
-          <span ng-if="!device.connected">Not connected: </span> -->
-          <!-- Connection status explained -->
-          <span ng-if="device.ipAddress">{{device.lastSeen}}</span>
           <span ng-if="!device.connected && device.error"><a href="">{{device.error.message}}</a></span>
         </li>
       </ul>
-      <p ng-hide="DevicesAPI.devices">No connected devices detected.<br><br></p>
+      <p ng-hide="DevicesAPI.devices">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>
 
       <div class="clearfix">
         <button class="btn btn-lg btn-primary" ng-click="launchSimulator()" ng-disabled="simulatorIsLaunching" style="display: inline-block; float: left;">
-          <span class="glyphicon glyphicon-phone"></span> {{simulatorIsLaunching? "Launching simulator..." : "Launch simulator"}}
+          <span class="glyphicon glyphicon-phone"></span> {{simulatorIsLaunching? "Launching iOS Simulator..." : "Launch iOS Simulator"}}
         </button>
         <ag-ui-spinner size="29" color="black" ng-show="simulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
         <p class="text-danger" ng-show="simulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{simulatorLaunchError}}</small></p>
@@ -60,7 +52,7 @@
       <br>
       <div class="clearfix">
         <button class="btn btn-lg btn-primary" ng-click="launchEmulator()" ng-disabled="emulatorIsLaunching" style="display: inline-block; float: left;">
-          <span class="glyphicon glyphicon-phone"></span> {{emulatorIsLaunching? "Launching Emulator..." : "Launch Emulator"}}
+          <span class="glyphicon glyphicon-phone"></span> {{emulatorIsLaunching? "Launching Android Emulator..." : "Launch Android Emulator"}}
         </button>
         <ag-ui-spinner size="29" color="black" ng-show="emulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
         <p class="text-danger" ng-show="emulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{emulatorLaunchError}}</small></p>
