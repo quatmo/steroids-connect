@@ -1788,7 +1788,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <br>\n" +
     "        <div class=\"clearfix\">\n" +
     "          <div class=\"pull-right\" style=\"margin-top: 26px;\">\n" +
-    "            <button type=\"button\" class=\"btn btn-primary\" ng-click=\"fetchColumns()\" ng-disabled=\"columnsMeta.loading || columnsSaving\" style=\"margin-right: 10px;\">Reload model from API</button>\n" +
+    "            <button type=\"button\" class=\"btn btn-primary\" ng-click=\"fetchColumns()\" ng-if=\"providerTemplate.uid != 6\" ng-disabled=\"columnsMeta.loading || columnsSaving\" style=\"margin-right: 10px;\">Reload model from API</button>\n" +
     "            <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveColumns()\" ng-if=\"(providerTemplate | agCanManage:'resource_columns_edit')\" ng-disabled=\"columnsMeta.loading || columnsSaving\">Save changes to data model</button>\n" +
     "          </div>\n" +
     "          <h3 style=\"margin-bottom: 0px;\">Data model</h3>\n" +
