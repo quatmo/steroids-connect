@@ -18,7 +18,7 @@
 
       <!-- Navbar links -->
       <ul class="nav navbar-nav navbar-right">
-        <li ng-repeat="tab in tabs" ng-class="{'active': currentTab() == tab.name}"><a ng-click="setTab(tab.name)">{{tab.label}}</a></li>
+        <li ng-repeat="tab in tabs" ng-class="{'active': $state.includes(tab.stateHref)}"><a ui-sref="{{tab.stateHref}}">{{tab.label}}</a></li>
       </ul>
 
     </div>
@@ -44,49 +44,7 @@
     </div>
   </div>
 
-  <!-- Subviews -->
-  <div class="container-fluid" ng-switch on="currentTab()">
-
-    <!-- Preview -->
-    <div ng-switch-when="qr">
-      <preview-view></preview-view>
-    </div>
-
-    <!-- Navigation -->
-    <div ng-switch-when="navigation">
-      <navigation-and-themes-view></navigation-and-themes-view>
-    </div>
-
-    <!-- Backend -->
-    <div ng-switch-when="backend">
-      <iframe src="http://composer.testgyver.com/wizard_iframe_providers/592" id="provider-wizard" frameborder="0" width="100%" scrolling="no" style="overflow: hidden; height: 181px;"></iframe>
-    </div>
-
-    <!-- Logs -->
-    <div ng-switch-when="logs">
-      <log-view></log-view>
-    </div>
-
-    <!-- Documentation -->
-    <div ng-switch-when="docs">
-      <docs-view></docs-view>
-    </div>
-
-    <!-- Build Settings -->
-    <div ng-switch-when="build-settings">
-      <build-settings-view></build-settings-view>
-    </div>
-
-    <!-- Data -->
-    <div ng-switch-when="data">
-      <cloud-data-view></cloud-data-view>
-    </div>
-
-    <!-- Generators -->
-    <div ng-switch-when="generators">
-      <generators-view></generators-view>
-    </div>
-
-  </div>
+  <!-- ui-router views -->
+  <div class="container-fluid" ui-view></div>
 
 </div>

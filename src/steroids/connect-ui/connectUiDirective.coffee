@@ -4,9 +4,10 @@
 module.exports =
   [
     "$rootScope"
+    "$state"
     "$interval"
     "BuildServerApi"
-    ($rootScope, $interval, BuildServerApi) ->
+    ($rootScope, $state, $interval, BuildServerApi) ->
       {
         restrict: "EA"
         replace: true
@@ -17,22 +18,16 @@ module.exports =
           Tabs
           ###
 
+          scope.$state = $state
+
           scope.tabs = [
-            { name: "qr", label: "Connect" }
-            { name: "logs", label: "Logs", legacyAppIncompatible: true }
-            { name: "docs", label: "Documentation" }
-            { name: "build-settings", label: "Cloud" }
-            { name: "data", label: "Data", legacyAppIncompatible: true }
-            # { name: "generators", label: "Generators" }
+            { stateHref: "connect", name: "qr", label: "Connect" }
+            { stateHref: "logs", name: "logs", label: "Logs", legacyAppIncompatible: true }
+            { stateHref: "docs", name: "docs", label: "Documentation" }
+            { stateHref: "cloud", name: "build-settings", label: "Cloud" }
+            { stateHref: "data", name: "data", label: "Data", legacyAppIncompatible: true }
+            # { stateHref: "generators", name: "generators", label: "Generators" }
           ]
-
-          selectedTab = scope.tabs[0].name
-
-          scope.setTab = (tab) ->
-            selectedTab = tab
-
-          scope.currentTab = () ->
-            selectedTab
 
           ###
           Legacy app logic

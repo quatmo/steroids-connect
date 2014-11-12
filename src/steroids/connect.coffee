@@ -1,4 +1,5 @@
 steroidsConnectModules = angular.module "SteroidsConnect", [
+    "ui.router"
     require("./logs").name
     require("./preview").name
     require("./navigation-and-themes").name
@@ -15,20 +16,57 @@ steroidsConnectModules = angular.module "SteroidsConnect", [
 
 require "../templates/SteroidsConnectTemplates"
 
+steroidsConnectModules.config [
+  "$locationProvider"
+  "$stateProvider"
+  "$urlRouterProvider"
+  ($locationProvider, $stateProvider, $urlRouterProvider) ->
+
+    # Absolutely NO HTML5 mode
+    $locationProvider.html5Mode false
+
+    # Configure view routes with ui-router
+    $stateProvider
+
+      .state "connect",
+        url: "/connect"
+        templateUrl: "/steroids-connect/preview/preview-view.html"
+        controller: "ConnectViewCtrl"
+
+      .state "logs",
+        url: "/logs"
+        templateUrl: "/steroids-connect/logs/log-view.html"
+        controller: "LogViewCtrl"
+
+      .state "docs",
+        url: "/docs"
+        templateUrl: "/steroids-connect/docs/docs-view.html"
+
+      .state "cloud",
+        url: "/cloud"
+        templateUrl: "/steroids-connect/build-settings/build-settings-view.html"
+        controller: "CloudViewCtrl"
+
+      .state "data",
+        url: "/data"
+        templateUrl: "/steroids-connect/data/data-view.html"
+        controller: "DataViewCtrl"
+
+    # Default state
+    $urlRouterProvider.otherwise "/connect"
+
+]
+
 steroidsConnectModules.run [
   "LogCloudConnector"
-  (LogCloudConnector) ->
+  "DeviceCloudConnector",
+  (LogCloudConnector, DeviceCloudConnector) ->
 
     # Configure and run log cloud connector
     LogCloudConnector.setEndpoint("http://localhost:4567/__appgyver/logger")
     LogCloudConnector.connect()
 
-]
-
-steroidsConnectModules.run [
-  "DeviceCloudConnector",
-  (DeviceCloudConnector) ->
-
+    # Device cloud connector
     DeviceCloudConnector.connect()
 
 ]

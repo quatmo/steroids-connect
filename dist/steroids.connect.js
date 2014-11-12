@@ -1682,6 +1682,46 @@ module.exports = [
 },{}],3:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
+  "$scope", "BuildServerApi", function($scope, BuildServerApi) {
+    $scope.viewReady = false;
+    $scope.isDeploying = false;
+    $scope.hasCloudJson = false;
+    $scope.deployError = void 0;
+    $scope.getCloudJson = function() {
+      $scope.waiting = "Fetching your App ID from Steroids CLI...";
+      return BuildServerApi.getCloudConfig().then(function(res) {
+        $scope.cloudId = res.data.id;
+        $scope.cloudHash = res.data.identification_hash;
+        return $scope.hasCloudJson = true;
+      }, function(error) {
+        return $scope.hasCloudJson = false;
+      })["finally"](function() {
+        $scope.waiting = null;
+        return $scope.viewReady = true;
+      });
+    };
+    $scope.getCloudJson();
+    return $scope.deploy = function() {
+      if ($scope.isDeploying) {
+        return;
+      }
+      $scope.isDeploying = true;
+      return BuildServerApi.deploy().then(function(res) {
+        $scope.getCloudJson();
+        return $scope.deployError = void 0;
+      }, function(error) {
+        return $scope.deployError = "Could not deploy your project to the cloud. " + error.data.error;
+      })["finally"](function() {
+        return $scope.isDeploying = false;
+      });
+    };
+  }
+];
+
+
+},{}],4:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
   "BuildServerApi", function(BuildServerApi) {
     return {
       restrict: "EA",
@@ -1726,15 +1766,15 @@ module.exports = [
 ];
 
 
-},{}],4:[function(_dereq_,module,exports){
+},{}],5:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.build-settings", []).directive("buildSettingsView", _dereq_("./buildSettingsViewDirective")).service("BuildServerApi", _dereq_("./BuildServerApiService"));
+module.exports = angular.module("SteroidsConnect.build-settings", []).directive("buildSettingsView", _dereq_("./buildSettingsViewDirective")).service("BuildServerApi", _dereq_("./BuildServerApiService")).controller("CloudViewCtrl", _dereq_("./CloudViewCtrl"));
 
 
-},{"./BuildServerApiService":2,"./buildSettingsViewDirective":3}],5:[function(_dereq_,module,exports){
+},{"./BuildServerApiService":2,"./CloudViewCtrl":3,"./buildSettingsViewDirective":4}],6:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "$interval", "BuildServerApi", function($rootScope, $interval, BuildServerApi) {
+  "$rootScope", "$state", "$interval", "BuildServerApi", function($rootScope, $state, $interval, BuildServerApi) {
     return {
       restrict: "EA",
       replace: true,
@@ -1744,34 +1784,33 @@ module.exports = [
         /*
         Tabs
          */
-        var selectedTab, syncDataAfterTheseEvents;
+        var syncDataAfterTheseEvents;
+        scope.$state = $state;
         scope.tabs = [
           {
+            stateHref: "connect",
             name: "qr",
             label: "Connect"
           }, {
+            stateHref: "logs",
             name: "logs",
             label: "Logs",
             legacyAppIncompatible: true
           }, {
+            stateHref: "docs",
             name: "docs",
             label: "Documentation"
           }, {
+            stateHref: "cloud",
             name: "build-settings",
             label: "Cloud"
           }, {
+            stateHref: "data",
             name: "data",
             label: "Data",
             legacyAppIncompatible: true
           }
         ];
-        selectedTab = scope.tabs[0].name;
-        scope.setTab = function(tab) {
-          return selectedTab = tab;
-        };
-        scope.currentTab = function() {
-          return selectedTab;
-        };
 
         /*
         Legacy app logic
@@ -1834,33 +1873,55 @@ module.exports = [
 ];
 
 
-},{}],6:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.connect-ui", []).directive("connectUi", _dereq_("./connectUiDirective"));
 
 
-},{"./connectUiDirective":5}],7:[function(_dereq_,module,exports){
+},{"./connectUiDirective":6}],8:[function(_dereq_,module,exports){
 var steroidsConnectModules;
 
-steroidsConnectModules = angular.module("SteroidsConnect", [_dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, _dereq_("./data-generators").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
+steroidsConnectModules = angular.module("SteroidsConnect", ["ui.router", _dereq_("./logs").name, _dereq_("./preview").name, _dereq_("./navigation-and-themes").name, _dereq_("./generators").name, _dereq_("./connect-ui").name, _dereq_("./docs").name, _dereq_("./build-settings").name, _dereq_("./data").name, _dereq_("./data-generators").name, "AppGyver.UI-kit", "AppGyver.DataConfigurator", "AppGyver.DataBrowser"]);
 
 _dereq_("../templates/SteroidsConnectTemplates");
 
-steroidsConnectModules.run([
-  "LogCloudConnector", function(LogCloudConnector) {
-    LogCloudConnector.setEndpoint("http://localhost:4567/__appgyver/logger");
-    return LogCloudConnector.connect();
+steroidsConnectModules.config([
+  "$locationProvider", "$stateProvider", "$urlRouterProvider", function($locationProvider, $stateProvider, $urlRouterProvider) {
+    $locationProvider.html5Mode(false);
+    $stateProvider.state("connect", {
+      url: "/connect",
+      templateUrl: "/steroids-connect/preview/preview-view.html",
+      controller: "ConnectViewCtrl"
+    }).state("logs", {
+      url: "/logs",
+      templateUrl: "/steroids-connect/logs/log-view.html",
+      controller: "LogViewCtrl"
+    }).state("docs", {
+      url: "/docs",
+      templateUrl: "/steroids-connect/docs/docs-view.html"
+    }).state("cloud", {
+      url: "/cloud",
+      templateUrl: "/steroids-connect/build-settings/build-settings-view.html",
+      controller: "CloudViewCtrl"
+    }).state("data", {
+      url: "/data",
+      templateUrl: "/steroids-connect/data/data-view.html",
+      controller: "DataViewCtrl"
+    });
+    return $urlRouterProvider.otherwise("/connect");
   }
 ]);
 
 steroidsConnectModules.run([
-  "DeviceCloudConnector", function(DeviceCloudConnector) {
+  "LogCloudConnector", "DeviceCloudConnector", function(LogCloudConnector, DeviceCloudConnector) {
+    LogCloudConnector.setEndpoint("http://localhost:4567/__appgyver/logger");
+    LogCloudConnector.connect();
     return DeviceCloudConnector.connect();
   }
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":48,"./build-settings":4,"./connect-ui":6,"./data":11,"./data-generators":9,"./docs":13,"./generators":16,"./logs":21,"./navigation-and-themes":34,"./preview":46}],8:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":52,"./build-settings":5,"./connect-ui":7,"./data":13,"./data-generators":10,"./docs":15,"./generators":18,"./logs":24,"./navigation-and-themes":37,"./preview":50}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$q", "$timeout", "$sce", "Restangular", "BuildServerApi", function($q, $timeout, $sce, Restangular, BuildServerApi) {
@@ -1968,12 +2029,96 @@ module.exports = [
 ];
 
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.data-generators", []).directive("dataGeneratorsView", _dereq_("./dataGeneratorsViewDirective"));
 
 
-},{"./dataGeneratorsViewDirective":8}],10:[function(_dereq_,module,exports){
+},{"./dataGeneratorsViewDirective":9}],11:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$scope", "$q", "$timeout", "BuildServerApi", function($scope, $q, $timeout, BuildServerApi) {
+
+    /*
+    Internal helpers
+     */
+    var _deploy, _finishBeforeViewReady, _getCloudConfig, _getDataConfig, _initializeData;
+    _deploy = function() {
+      return BuildServerApi.deploy().then(function(res) {
+        $scope.cloudId = res.data.id;
+        $scope.cloudHash = res.data.identification_hash;
+        return $scope.appDeployed = true;
+      }, function(err) {
+        return $scope.error = "Could not deploy your project to the cloud. " + err.data.error;
+      });
+    };
+    _initializeData = function() {
+      return BuildServerApi.initData().then(function() {}, function(err) {
+        return $scope.error = "Could not initialize data to your project. " + err.data.error;
+      });
+    };
+    _getCloudConfig = function() {
+      return BuildServerApi.getCloudConfig().then(function(res) {
+        $scope.cloudId = res.data.id;
+        $scope.cloudHash = res.data.identification_hash;
+        return $scope.appDeployed = true;
+      });
+    };
+    _getDataConfig = function() {
+      return BuildServerApi.getDataConfig().then(function(res) {
+        return $scope.dataReady = res.data.initialized;
+      });
+    };
+
+    /*
+    View initial state
+     */
+    $scope.viewReady = false;
+    $scope.appDeployed = false;
+    $scope.dataReady = false;
+    $scope.dataEnabled = false;
+    $scope.error = void 0;
+    $scope.isInitializing = false;
+    $scope.currentTab = "configure";
+
+    /*
+    View initialization
+     */
+    _finishBeforeViewReady = [];
+    _finishBeforeViewReady.push(_getCloudConfig());
+    _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
+      return $scope.accessToken = res.data;
+    }));
+    _finishBeforeViewReady.push(_getDataConfig());
+    $q.all(_finishBeforeViewReady)["finally"](function() {
+      return $timeout(function() {
+        return $scope.viewReady = true;
+      }, 100);
+    });
+
+    /*
+    View actions
+     */
+    $scope.setCurrentTab = function(newTab) {
+      return $scope.currentTab = newTab;
+    };
+    return $scope.initializeData = function() {
+      var promise;
+      if ($scope.isInitializing) {
+        return;
+      }
+      $scope.isInitializing = true;
+      $scope.error = void 0;
+      promise = !$scope.appDeployed ? _deploy().then(_initializeData).then(_getCloudConfig).then(_getDataConfig) : _initializeData();
+      return promise["finally"](function() {
+        return $scope.isInitializing = false;
+      });
+    };
+  }
+];
+
+
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$q", "$timeout", "BuildServerApi", function($q, $timeout, BuildServerApi) {
@@ -2064,12 +2209,12 @@ module.exports = [
 ];
 
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.data", []).directive("cloudDataView", _dereq_("./dataViewDirective"));
+module.exports = angular.module("SteroidsConnect.data", []).directive("cloudDataView", _dereq_("./dataViewDirective")).controller("DataViewCtrl", _dereq_("./DataViewCtrl"));
 
 
-},{"./dataViewDirective":10}],12:[function(_dereq_,module,exports){
+},{"./DataViewCtrl":11,"./dataViewDirective":12}],14:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2083,12 +2228,12 @@ module.exports = [
 ];
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.docs", []).directive("docsView", _dereq_("./docsViewDirective"));
 
 
-},{"./docsViewDirective":12}],14:[function(_dereq_,module,exports){
+},{"./docsViewDirective":14}],16:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2120,7 +2265,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "GeneratorsAPI", function(GeneratorsAPI) {
@@ -2136,12 +2281,12 @@ module.exports = [
 ];
 
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.generators", []).directive("generatorsView", _dereq_("./generatorsViewDirective")).factory("GeneratorsAPI", _dereq_("./GeneratorsAPI"));
 
 
-},{"./GeneratorsAPI":14,"./generatorsViewDirective":15}],17:[function(_dereq_,module,exports){
+},{"./GeneratorsAPI":16,"./generatorsViewDirective":17}],19:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "LogsAPI", function($interval, $http, LogsAPI) {
@@ -2169,7 +2314,17 @@ module.exports = [
 ];
 
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$scope", "LogsAPI", "LogsFilterAPI", function($scope, LogsAPI, LogsFilterAPI) {
+    $scope.LogsAPI = LogsAPI;
+    return $scope.LogsFilterAPI = LogsFilterAPI;
+  }
+];
+
+
+},{}],21:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2196,7 +2351,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(_dereq_,module,exports){
+},{}],22:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$filter", "DevicesAPI", "LogsAPI", function($filter, DevicesAPI, LogsAPI) {
@@ -2305,7 +2460,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 
 /*
 Filters out all duplicate items from an array by checking the specified key
@@ -2353,12 +2508,12 @@ module.exports = angular.module("ui.filters", []).filter("unique", function() {
 });
 
 
-},{}],21:[function(_dereq_,module,exports){
+},{}],24:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService"));
+module.exports = angular.module("SteroidsConnect.logs", [_dereq_("./../preview").name, _dereq_("./filterUnique").name]).directive("logMessage", _dereq_("./logMessageDirective")).directive("logView", _dereq_("./logViewDirective")).directive("logFiltersView", _dereq_("./logFiltersViewDirective")).filter("logTimeFormat", _dereq_("./logTimeFormatFilter")).filter("logTimeMillisecondsFormat", _dereq_("./logTimeMillisecondsFormatFilter")).filter("logDateFormat", _dereq_("./logDateFormatFilter")).factory("LogsAPI", _dereq_("./LogsAPI")).factory("LogsFilterAPI", _dereq_("./LogsFilterAPI")).service("LogCloudConnector", _dereq_("./LogCloudConnectorService")).controller("LogViewCtrl", _dereq_("./LogViewCtrl"));
 
 
-},{"./../preview":46,"./LogCloudConnectorService":17,"./LogsAPI":18,"./LogsFilterAPI":19,"./filterUnique":20,"./logDateFormatFilter":22,"./logFiltersViewDirective":23,"./logMessageDirective":24,"./logTimeFormatFilter":25,"./logTimeMillisecondsFormatFilter":26,"./logViewDirective":27}],22:[function(_dereq_,module,exports){
+},{"./../preview":50,"./LogCloudConnectorService":19,"./LogViewCtrl":20,"./LogsAPI":21,"./LogsFilterAPI":22,"./filterUnique":23,"./logDateFormatFilter":25,"./logFiltersViewDirective":26,"./logMessageDirective":27,"./logTimeFormatFilter":28,"./logTimeMillisecondsFormatFilter":29,"./logViewDirective":30}],25:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2380,7 +2535,7 @@ module.exports = [
 ];
 
 
-},{}],23:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2397,7 +2552,7 @@ module.exports = [
 ];
 
 
-},{}],24:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsFilterAPI", function(LogsFilterAPI) {
@@ -2427,7 +2582,7 @@ module.exports = [
 ];
 
 
-},{}],25:[function(_dereq_,module,exports){
+},{}],28:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2452,7 +2607,7 @@ module.exports = [
 ];
 
 
-},{}],26:[function(_dereq_,module,exports){
+},{}],29:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2471,7 +2626,7 @@ module.exports = [
 ];
 
 
-},{}],27:[function(_dereq_,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "LogsAPI", "LogsFilterAPI", function(LogsAPI, LogsFilterAPI) {
@@ -2488,7 +2643,7 @@ module.exports = [
 ];
 
 
-},{}],28:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$http", function($http) {
@@ -2519,7 +2674,7 @@ module.exports = [
 ];
 
 
-},{}],29:[function(_dereq_,module,exports){
+},{}],32:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$scope", "$modalInstance", "tabIndex", "tabs", "icons", "views", function($scope, $modalInstance, tabIndex, tabs, icons, views) {
@@ -2555,7 +2710,7 @@ module.exports = [
 ];
 
 
-},{}],30:[function(_dereq_,module,exports){
+},{}],33:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -2572,7 +2727,7 @@ module.exports = [
 ];
 
 
-},{}],31:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("colorpicker.module", []).factory("Helper", function() {
   return {
@@ -3012,7 +3167,7 @@ module.exports = angular.module("colorpicker.module", []).factory("Helper", func
 ]);
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],35:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3030,7 +3185,7 @@ module.exports = [
 ];
 
 
-},{}],33:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3048,12 +3203,12 @@ module.exports = [
 ];
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 "use strict";
 module.exports = angular.module("SteroidsConnect.navigation-and-themes", [_dereq_("./colorpicker").name, _dereq_("./ui-sortable").name, "ui.bootstrap"]).directive("stickyScroll", _dereq_("./stickyScrollDirective")).directive("colorInput", _dereq_("./colorInputDirective")).directive("viewSelector", _dereq_("./viewSelectorDirective")).directive("tabEditor", _dereq_("./tabEditorDirective")).directive("generalSettingsConfiguratorView", _dereq_("./generalSettingsConfiguratorViewDirective")).directive("navigationBarConfiguratorView", _dereq_("./navigationBarConfiguratorViewDirective")).directive("statusBarConfiguratorView", _dereq_("./statusBarConfiguratorViewDirective")).directive("tabsConfiguratorView", _dereq_("./tabsConfiguratorViewDirective")).directive("drawerConfiguratorView", _dereq_("./drawerConfiguratorViewDirective")).directive("navigationAndThemesView", _dereq_("./navigationAndThemesViewDirective")).factory("SteroidsSettingsAPI", _dereq_("./SteroidsSettingsAPI")).controller("TabModalCtrl", _dereq_("./TabModalCtrl"));
 
 
-},{"./SteroidsSettingsAPI":28,"./TabModalCtrl":29,"./colorInputDirective":30,"./colorpicker":31,"./drawerConfiguratorViewDirective":32,"./generalSettingsConfiguratorViewDirective":33,"./navigationAndThemesViewDirective":35,"./navigationBarConfiguratorViewDirective":36,"./statusBarConfiguratorViewDirective":37,"./stickyScrollDirective":38,"./tabEditorDirective":39,"./tabsConfiguratorViewDirective":40,"./ui-sortable":41,"./viewSelectorDirective":42}],35:[function(_dereq_,module,exports){
+},{"./SteroidsSettingsAPI":31,"./TabModalCtrl":32,"./colorInputDirective":33,"./colorpicker":34,"./drawerConfiguratorViewDirective":35,"./generalSettingsConfiguratorViewDirective":36,"./navigationAndThemesViewDirective":38,"./navigationBarConfiguratorViewDirective":39,"./statusBarConfiguratorViewDirective":40,"./stickyScrollDirective":41,"./tabEditorDirective":42,"./tabsConfiguratorViewDirective":43,"./ui-sortable":44,"./viewSelectorDirective":45}],38:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "SteroidsSettingsAPI", "$timeout", "$interval", function(SteroidsSettingsAPI, $timeout, $interval) {
@@ -3107,7 +3262,7 @@ module.exports = [
 ];
 
 
-},{}],36:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3124,7 +3279,7 @@ module.exports = [
 ];
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3179,7 +3334,7 @@ module.exports = [
 ];
 
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],41:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$window", function($window) {
@@ -3221,7 +3376,7 @@ module.exports = [
 ];
 
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],42:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$modal", function($modal) {
@@ -3277,7 +3432,7 @@ module.exports = [
 ];
 
 
-},{}],40:[function(_dereq_,module,exports){
+},{}],43:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$timeout", function($timeout) {
@@ -3315,7 +3470,7 @@ module.exports = [
 ];
 
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],44:[function(_dereq_,module,exports){
 module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive("uiSortable", [
   "uiSortableConfig", "$timeout", "$log", function(uiSortableConfig, $timeout, $log) {
     return {
@@ -3472,7 +3627,7 @@ module.exports = angular.module("ui.sortable", []).value("uiSortableConfig", {})
 ]);
 
 
-},{}],42:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3507,7 +3662,79 @@ module.exports = [
 ];
 
 
-},{}],43:[function(_dereq_,module,exports){
+},{}],46:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  "$scope", "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, DevicesAPI, BuildServerApi) {
+    var decodedQrCode, parseQueryParams, qrCode, _emulatorTimeout, _simulatorTimeout;
+    $scope.DevicesAPI = DevicesAPI;
+    $scope.simulatorLaunchError = void 0;
+    $scope.emulatorLaunchError = void 0;
+    parseQueryParams = function() {
+      var param, paramObj, params, _i, _len;
+      params = /(?:[^\?]*\?)([^#]*)(?:#.*)?/g.exec($location.absUrl());
+      if (params == null) {
+        return {};
+      }
+      params = params[1].split("&");
+      paramObj = {};
+      for (_i = 0, _len = params.length; _i < _len; _i++) {
+        param = params[_i];
+        param = param.split("=");
+        paramObj[param[0]] = param[1];
+      }
+      return paramObj;
+    };
+    qrCode = parseQueryParams()["qrcode"];
+    decodedQrCode = decodeURIComponent(qrCode);
+    $scope.qrCode = decodedQrCode;
+
+    /*
+    EMULATOR
+     */
+    $scope.emulatorIsLaunching = false;
+    _emulatorTimeout = void 0;
+    $scope.launchEmulator = function() {
+      if ($scope.emulatorIsLaunching) {
+        return;
+      }
+      $scope.emulatorIsLaunching = true;
+      BuildServerApi.launchEmulator().then(function(res) {
+        return $scope.emulatorLaunchError = void 0;
+      }, function(error) {
+        $scope.emulatorIsLaunching = false;
+        return $scope.emulatorLaunchError = error.data.error;
+      })["finally"](function() {});
+      return $timeout(function() {
+        return $scope.emulatorIsLaunching = false;
+      }, 2000);
+    };
+
+    /*
+    SIMULATOR
+     */
+    $scope.simulatorIsLaunching = false;
+    _simulatorTimeout = void 0;
+    return $scope.launchSimulator = function() {
+      if ($scope.simulatorIsLaunching) {
+        return;
+      }
+      $scope.simulatorIsLaunching = true;
+      BuildServerApi.launchSimulator().then(function(res) {
+        return $scope.simulatorLaunchError = void 0;
+      }, function(error) {
+        $scope.simulatorIsLaunching = false;
+        return $scope.simulatorLaunchError = error.data.error;
+      })["finally"](function() {});
+      return $timeout(function() {
+        return $scope.simulatorIsLaunching = false;
+      }, 2000);
+    };
+  }
+];
+
+
+},{}],47:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$interval", "$http", "DevicesAPI", function($interval, $http, DevicesAPI) {
@@ -3528,7 +3755,7 @@ module.exports = [
 ];
 
 
-},{}],44:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -3560,7 +3787,7 @@ module.exports = [
 ];
 
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],49:[function(_dereq_,module,exports){
 "use strict";
 var qrcode;
 
@@ -3715,12 +3942,12 @@ angular.module("monospaced.qrcode", []).directive("qrcode", [
 module.exports = angular.module("monospaced.qrcode");
 
 
-},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],46:[function(_dereq_,module,exports){
+},{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],50:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService"));
+module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService")).controller("ConnectViewCtrl", _dereq_("./ConnectViewCtrl"));
 
 
-},{"./DeviceCloudConnectorService":43,"./DevicesAPI":44,"./angular-qrcode":45,"./previewViewDirective":47}],47:[function(_dereq_,module,exports){
+},{"./ConnectViewCtrl":46,"./DeviceCloudConnectorService":47,"./DevicesAPI":48,"./angular-qrcode":49,"./previewViewDirective":51}],51:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($location, $timeout, DevicesAPI, BuildServerApi) {
@@ -3799,7 +4026,7 @@ module.exports = [
 ];
 
 
-},{}],48:[function(_dereq_,module,exports){
+},{}],52:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -3889,7 +4116,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      <!-- Navbar links -->\n" +
     "      <ul class=\"nav navbar-nav navbar-right\">\n" +
-    "        <li ng-repeat=\"tab in tabs\" ng-class=\"{'active': currentTab() == tab.name}\"><a ng-click=\"setTab(tab.name)\">{{tab.label}}</a></li>\n" +
+    "        <li ng-repeat=\"tab in tabs\" ng-class=\"{'active': $state.includes(tab.stateHref)}\"><a ui-sref=\"{{tab.stateHref}}\">{{tab.label}}</a></li>\n" +
     "      </ul>\n" +
     "\n" +
     "    </div>\n" +
@@ -3915,50 +4142,8 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <!-- Subviews -->\n" +
-    "  <div class=\"container-fluid\" ng-switch on=\"currentTab()\">\n" +
-    "\n" +
-    "    <!-- Preview -->\n" +
-    "    <div ng-switch-when=\"qr\">\n" +
-    "      <preview-view></preview-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Navigation -->\n" +
-    "    <div ng-switch-when=\"navigation\">\n" +
-    "      <navigation-and-themes-view></navigation-and-themes-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Backend -->\n" +
-    "    <div ng-switch-when=\"backend\">\n" +
-    "      <iframe src=\"http://composer.testgyver.com/wizard_iframe_providers/592\" id=\"provider-wizard\" frameborder=\"0\" width=\"100%\" scrolling=\"no\" style=\"overflow: hidden; height: 181px;\"></iframe>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Logs -->\n" +
-    "    <div ng-switch-when=\"logs\">\n" +
-    "      <log-view></log-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Documentation -->\n" +
-    "    <div ng-switch-when=\"docs\">\n" +
-    "      <docs-view></docs-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Build Settings -->\n" +
-    "    <div ng-switch-when=\"build-settings\">\n" +
-    "      <build-settings-view></build-settings-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Data -->\n" +
-    "    <div ng-switch-when=\"data\">\n" +
-    "      <cloud-data-view></cloud-data-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Generators -->\n" +
-    "    <div ng-switch-when=\"generators\">\n" +
-    "      <generators-view></generators-view>\n" +
-    "    </div>\n" +
-    "\n" +
-    "  </div>\n" +
+    "  <!-- ui-router views -->\n" +
+    "  <div class=\"container-fluid\" ui-view></div>\n" +
     "\n" +
     "</div>\n"
   );
@@ -4736,6 +4921,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 }]);
 
-},{}]},{},[7])
-(7)
+},{}]},{},[8])
+(8)
 });

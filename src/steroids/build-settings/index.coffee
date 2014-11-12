@@ -8,3 +8,6 @@ module.exports = angular.module "SteroidsConnect.build-settings", []
 
   # Services
   .service "BuildServerApi", require("./BuildServerApiService")
+
+  # Controllers
+  .controller "CloudViewCtrl", require("./CloudViewCtrl")
