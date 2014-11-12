@@ -1907,6 +1907,15 @@ steroidsConnectModules.config([
       url: "/data",
       templateUrl: "/steroids-connect/data/data-view.html",
       controller: "DataViewCtrl"
+    }).state("data.configure", {
+      url: "/configure",
+      templateUrl: "/steroids-connect/data/data-configure.html"
+    }).state("data.browse", {
+      url: "/browse",
+      templateUrl: "/steroids-connect/data/data-browse.html"
+    }).state("data.generators", {
+      url: "/generators",
+      templateUrl: "/steroids-connect/data/data-generators.html"
     });
     return $urlRouterProvider.otherwise("/connect");
   }
@@ -2037,12 +2046,13 @@ module.exports = angular.module("SteroidsConnect.data-generators", []).directive
 },{"./dataGeneratorsViewDirective":9}],11:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$scope", "$q", "$timeout", "BuildServerApi", function($scope, $q, $timeout, BuildServerApi) {
+  "$scope", "$state", "$q", "$timeout", "BuildServerApi", function($scope, $state, $q, $timeout, BuildServerApi) {
+    var _checkReadyState, _deploy, _getCloudConfig, _getDataConfig, _initializeData;
+    $scope.$state = $state;
 
     /*
     Internal helpers
      */
-    var _deploy, _finishBeforeViewReady, _getCloudConfig, _getDataConfig, _initializeData;
     _deploy = function() {
       return BuildServerApi.deploy().then(function(res) {
         $scope.cloudId = res.data.id;
@@ -2084,17 +2094,24 @@ module.exports = [
     /*
     View initialization
      */
-    _finishBeforeViewReady = [];
-    _finishBeforeViewReady.push(_getCloudConfig());
-    _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
-      return $scope.accessToken = res.data;
-    }));
-    _finishBeforeViewReady.push(_getDataConfig());
-    $q.all(_finishBeforeViewReady)["finally"](function() {
-      return $timeout(function() {
-        return $scope.viewReady = true;
-      }, 100);
-    });
+    _checkReadyState = function() {
+      var _finishBeforeViewReady;
+      _finishBeforeViewReady = [];
+      _finishBeforeViewReady.push(_getCloudConfig());
+      _finishBeforeViewReady.push(BuildServerApi.getAccessToken().then(function(res) {
+        return $scope.accessToken = res.data;
+      }));
+      _finishBeforeViewReady.push(_getDataConfig());
+      return $q.all(_finishBeforeViewReady)["finally"](function() {
+        return $timeout(function() {
+          $scope.viewReady = true;
+          if ($state.is("data")) {
+            return $state.go("data.configure");
+          }
+        }, 100);
+      });
+    };
+    _checkReadyState();
 
     /*
     View actions
@@ -2109,7 +2126,8 @@ module.exports = [
       }
       $scope.isInitializing = true;
       $scope.error = void 0;
-      promise = !$scope.appDeployed ? _deploy().then(_initializeData).then(_getCloudConfig).then(_getDataConfig) : _initializeData();
+      promise = !$scope.appDeployed ? _deploy().then(_initializeData) : _initializeData();
+      promise.then(_checkReadyState);
       return promise["finally"](function() {
         return $scope.isInitializing = false;
       });
@@ -4215,6 +4233,21 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
   );
 
 
+  $templateCache.put('/steroids-connect/data/data-browse.html',
+    "<div ag-data-browser-ui data-raml-url=\"https://config-api.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/data/data-configure.html',
+    "<div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>"
+  );
+
+
+  $templateCache.put('/steroids-connect/data/data-generators.html',
+    "<data-data-generators-view config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" app-id=\"{{cloudId}}\" authorization-token=\"{{accessToken}}\"></data-data-generators-view>"
+  );
+
+
   $templateCache.put('/steroids-connect/data/data-view.html',
     "<div id=\"view-data\" class=\"container\">\n" +
     "\n" +
@@ -4224,15 +4257,19 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12\">\n" +
     "      <ul class=\"nav nav-pills pull-right\" ng-if=\"viewReady && dataReady\">\n" +
-    "        <li ng-class=\"{'active': currentTab == 'configure'}\">\n" +
-    "          <a ng-click=\"setCurrentTab('configure')\">1. Configure data</a>\n" +
+    "\n" +
+    "        <li ng-class=\"{'active': $state.includes('data.configure')}\">\n" +
+    "          <a ui-sref=\".configure\">1. Configure data</a>\n" +
     "        </li>\n" +
-    "        <li ng-class=\"{'active': currentTab == 'browse'}\">\n" +
-    "          <a ng-click=\"setCurrentTab('browse')\">2. Browse data</a>\n" +
+    "\n" +
+    "        <li ng-class=\"{'active': $state.includes('data.browse')}\">\n" +
+    "          <a ui-sref=\".browse\">2. Browse data</a>\n" +
     "        </li>\n" +
-    "        <li ng-class=\"{'active': currentTab == 'generate'}\">\n" +
-    "          <a ng-click=\"setCurrentTab('generate')\">3. Generate scaffolds</a>\n" +
+    "\n" +
+    "        <li ng-class=\"{'active': $state.includes('data.generators')}\">\n" +
+    "          <a ui-sref=\".generators\">3. Generate scaffolds</a>\n" +
     "        </li>\n" +
+    "\n" +
     "      </ul>\n" +
     "      <h1 class=\"no-margin\">Data</h1>\n" +
     "      <p>Configure Supersonic Data for your app.</p>\n" +
@@ -4264,25 +4301,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  <div class=\"row\" ng-if=\"viewReady && dataReady\">\n" +
     "    <div class=\"col-xs-12\">\n" +
-    "\n" +
-    "      <!-- Data Browser -->\n" +
-    "\n" +
-    "      <div class=\"row\" ng-if=\"currentTab=='browse'\">\n" +
-    "        <div ag-data-browser-ui data-raml-url=\"https://config-api.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}\"></div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <!-- Data Configurator -->\n" +
-    "\n" +
-    "      <div class=\"row\" ng-if=\"currentTab=='configure'\">\n" +
-    "        <div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <!-- Scaffold generator -->\n" +
-    "\n" +
-    "      <div class=\"row\" ng-if=\"currentTab=='generate'\">\n" +
-    "        <data-data-generators-view config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" app-id=\"{{cloudId}}\" authorization-token=\"{{accessToken}}\"></data-data-generators-view>\n" +
-    "      </div>\n" +
-    "\n" +
+    "      <div class=\"row\" ui-view></div>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +

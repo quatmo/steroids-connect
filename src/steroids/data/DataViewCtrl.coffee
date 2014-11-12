@@ -3,10 +3,13 @@
 # Directive for displaying the data view
 module.exports = [
   "$scope"
+  "$state"
   "$q"
   "$timeout"
   "BuildServerApi"
-  ($scope, $q, $timeout, BuildServerApi) ->
+  ($scope, $state, $q, $timeout, BuildServerApi) ->
+
+    $scope.$state = $state
 
     ###
     Internal helpers
@@ -53,23 +56,28 @@ module.exports = [
     View initialization
     ###
 
-    # Collection of promises to finish before view can be called ready
-    _finishBeforeViewReady = []
+    _checkReadyState = () ->
 
-    # Check if app is deployed
-    _finishBeforeViewReady.push _getCloudConfig()
+      # Collection of promises to finish before view can be called ready
+      _finishBeforeViewReady = []
 
-    # Get access token for user
-    _finishBeforeViewReady.push BuildServerApi.getAccessToken().then (res)->
-      $scope.accessToken = res.data # acually is the token
+      # Check if app is deployed
+      _finishBeforeViewReady.push _getCloudConfig()
 
-    _finishBeforeViewReady.push _getDataConfig()
+      # Get access token for user
+      _finishBeforeViewReady.push BuildServerApi.getAccessToken().then (res)->
+        $scope.accessToken = res.data # acually is the token
 
-    # After all are resolved, set view ready
-    $q.all(_finishBeforeViewReady).finally () ->
-      $timeout () ->
-        $scope.viewReady = true
-      , 100
+      _finishBeforeViewReady.push _getDataConfig()
+
+      # After all are resolved, set view ready
+      $q.all(_finishBeforeViewReady).finally () ->
+        $timeout () ->
+          $scope.viewReady = true
+          $state.go "data.configure" if $state.is "data"
+        , 100
+
+    _checkReadyState()
 
     ###
     View actions
@@ -88,10 +96,10 @@ module.exports = [
       promise = unless $scope.appDeployed
         _deploy()
           .then _initializeData
-          .then _getCloudConfig
-          .then _getDataConfig
       else
         _initializeData()
+
+      promise.then _checkReadyState
 
       promise.finally ->
         $scope.isInitializing = false

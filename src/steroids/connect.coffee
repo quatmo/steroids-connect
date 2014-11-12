@@ -52,6 +52,18 @@ steroidsConnectModules.config [
         templateUrl: "/steroids-connect/data/data-view.html"
         controller: "DataViewCtrl"
 
+      .state "data.configure",
+        url: "/configure"
+        templateUrl: "/steroids-connect/data/data-configure.html"
+
+      .state "data.browse",
+        url: "/browse"
+        templateUrl: "/steroids-connect/data/data-browse.html"
+
+      .state "data.generators",
+        url: "/generators"
+        templateUrl: "/steroids-connect/data/data-generators.html"
+
     # Default state
     $urlRouterProvider.otherwise "/connect"
 

@@ -6,15 +6,19 @@
   <div class="row">
     <div class="col-xs-12">
       <ul class="nav nav-pills pull-right" ng-if="viewReady && dataReady">
-        <li ng-class="{'active': currentTab == 'configure'}">
-          <a ng-click="setCurrentTab('configure')">1. Configure data</a>
+
+        <li ng-class="{'active': $state.includes('data.configure')}">
+          <a ui-sref=".configure">1. Configure data</a>
         </li>
-        <li ng-class="{'active': currentTab == 'browse'}">
-          <a ng-click="setCurrentTab('browse')">2. Browse data</a>
+
+        <li ng-class="{'active': $state.includes('data.browse')}">
+          <a ui-sref=".browse">2. Browse data</a>
         </li>
-        <li ng-class="{'active': currentTab == 'generate'}">
-          <a ng-click="setCurrentTab('generate')">3. Generate scaffolds</a>
+
+        <li ng-class="{'active': $state.includes('data.generators')}">
+          <a ui-sref=".generators">3. Generate scaffolds</a>
         </li>
+
       </ul>
       <h1 class="no-margin">Data</h1>
       <p>Configure Supersonic Data for your app.</p>
@@ -46,25 +50,7 @@
 
   <div class="row" ng-if="viewReady && dataReady">
     <div class="col-xs-12">
-
-      <!-- Data Browser -->
-
-      <div class="row" ng-if="currentTab=='browse'">
-        <div ag-data-browser-ui data-raml-url="https://config-api.appgyver.com/application_configuration/app/{{cloudId}}/raml.yml?identification_hash={{cloudHash}}"></div>
-      </div>
-
-      <!-- Data Configurator -->
-
-      <div class="row" ng-if="currentTab=='configure'">
-        <div ag-data-configurator config-api-base-url="https://config-api.appgyver.com/application_configuration" config-api-app-id="{{cloudId}}" config-api-authorization-token="{{accessToken}}"></div>
-      </div>
-
-      <!-- Scaffold generator -->
-
-      <div class="row" ng-if="currentTab=='generate'">
-        <data-data-generators-view config-api-base-url="https://config-api.appgyver.com/application_configuration" app-id="{{cloudId}}" authorization-token="{{accessToken}}"></data-data-generators-view>
-      </div>
-
+      <div class="row" ui-view></div>
     </div>
   </div>
 
