@@ -1657,10 +1657,13 @@ module.exports = [
       return $http.get("" + _apiBase + "/deploy");
     };
     this.launchSimulator = function() {
-      return $http.get("" + _apiBase + "/launch_simulator");
+      return $http.get("" + _apiBase + "/emulators/simulator/start");
     };
     this.launchEmulator = function() {
-      return $http.get("" + _apiBase + "/launch_emulator");
+      return $http.get("" + _apiBase + "/emulators/android/start");
+    };
+    this.launchGenymotion = function() {
+      return $http.get("" + _apiBase + "/emulators/genymotion/start");
     };
     this.getDataConfig = function() {
       return $http.get("" + _apiBase + "/data/config");
@@ -4919,6 +4922,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +
+    "          <span class=\"text-muted\"><small>Scanner: <b>{{device.version}}</b> &middot; OS: <b>{{device.osVersion}}</b> &middot; IP: <b>{{device.ipAddress}}</b></small></span>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
