@@ -4325,24 +4325,28 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <div class=\"col-sm-12\">\n" +
     "      <h2>Documentation and Tutorials</h2>\n" +
     "      <p>We've got a bunch of great learning material available for you in the Supersonic docs. Click the link below to open our documentation or jump straight to the API reference.</p>\n" +
+    "      <br>\n" +
     "      <a\n" +
-    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        class=\"btn btn-lg btn-primary\"\n" +
     "        href=\"http://docs.appgyver.com\"\n" +
     "        target=\"_blank\">\n" +
     "        Supersonic Documentation &raquo;\n" +
     "      </a>\n" +
     "      <a\n" +
-    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        class=\"btn btn-lg btn-primary\"\n" +
     "        href=\"http://docs.appgyver.com\"\n" +
     "        target=\"_blank\">\n" +
     "        Supersonic API Reference &raquo;\n" +
     "      </a>\n" +
     "\n" +
+    "      <br><br>\n" +
+    "\n" +
     "      <h2>Forums</h2>\n" +
     "      <p>Struggling with something Supersonic, or just want to share an awesome thing you created? Join the discussion on our forums – we've got a great community, and the AppGyver team is very active there!</p>\n" +
     "      <p>As always, feel free to mail us at <a href=\"mailto:contact@appgyver.com\">contact@appgyver.com</a> with any questions or feedback!</p>\n" +
+    "      <br>\n" +
     "      <a\n" +
-    "        class=\"btn btn-lrg btn-primary\"\n" +
+    "        class=\"btn btn-lg btn-primary\"\n" +
     "        href=\"http://forums.appgyver.com\"\n" +
     "        target=\"_blank\">\n" +
     "        AppGyver Forums &raquo;\n" +
