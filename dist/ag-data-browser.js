@@ -492,7 +492,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            </div>\n" +
     "\n" +
     "            <div class=\"form-group\">\n" +
-    "              <div class=\"form-control-select\" tooltip=\"Choose resource for browsing\" tooltip-placement=\"right\" tooltip-append-to-body=\"true\">\n" +
+    "              <div class=\"form-control-select\">\n" +
     "                <select ng-model=\"selectedResourceName\" ng-options=\"x for x in namesOfAvailableResources\" id=\"resourceSelectorInput\"></select>\n" +
     "              </div>\n" +
     "            </div>\n" +
