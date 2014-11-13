@@ -34,45 +34,84 @@ module.exports =
       EMULATOR
       ###
 
-      $scope.emulatorIsLaunching = false
-      _emulatorTimeout = undefined
+      $scope.emulatorStatus =
+        isLaunching: false
+        state: ""
+        stateMessage: ""
 
       $scope.launchEmulator = ->
-        # Only one at time
-        return if $scope.emulatorIsLaunching
-        $scope.emulatorIsLaunching = true
+        return if $scope.emulatorStatus.isLaunching
+        $scope.emulatorStatus.isLaunching = true
+        $scope.emulatorStatus.state = "launching"
+        $scope.emulatorStatus.stateMessage = "Launching Android emulator..."
         BuildServerApi.launchEmulator().then(
           (res) ->
-            $scope.emulatorLaunchError = undefined
+            $scope.emulatorStatus.state = "success"
+            $scope.emulatorStatus.stateMessage = "Android emulator launched!"
+            $timeout ->
+              $scope.emulatorStatus.isLaunching = false
+              $scope.emulatorStatus.state = ""
+            , 2000
           (error) ->
-            $scope.emulatorIsLaunching = false
-            $scope.emulatorLaunchError = error.data.error
-        ).finally () ->
-        $timeout ->
-          $scope.emulatorIsLaunching = false
-        , 2000
+            $scope.emulatorStatus.isLaunching = false
+            $scope.emulatorStatus.state = "error"
+            $scope.emulatorStatus.stateMessage = error.data.error
+        )
 
+      ###
+      EMULATOR
+      ###
+
+      $scope.genymotionStatus =
+        isLaunching: false
+        state: ""
+        stateMessage: ""
+
+      $scope.launchGenymotion = ->
+        return if $scope.genymotionStatus.isLaunching
+        $scope.genymotionStatus.isLaunching = true
+        $scope.genymotionStatus.state = "launching"
+        $scope.genymotionStatus.stateMessage = "Launching Genymotion for Android..."
+        BuildServerApi.launchGenymotion().then(
+          (res) ->
+            $scope.genymotionStatus.state = "success"
+            $scope.genymotionStatus.stateMessage = "Genymotion for Android launched!"
+            $timeout ->
+              $scope.genymotionStatus.isLaunching = false
+              $scope.genymotionStatus.state = ""
+            , 2000
+          (error) ->
+            $scope.genymotionStatus.isLaunching = false
+            $scope.genymotionStatus.state = "error"
+            $scope.genymotionStatus.stateMessage = error.data.error
+        )
 
       ###
       SIMULATOR
       ###
 
-      $scope.simulatorIsLaunching = false
-      _simulatorTimeout = undefined
+      $scope.simulatorStatus =
+        isLaunching: false
+        state: ""
+        stateMessage: ""
 
       $scope.launchSimulator = ->
-        # Only one at time
-        return if $scope.simulatorIsLaunching
-        $scope.simulatorIsLaunching = true
+        return if $scope.simulatorStatus.isLaunching
+        $scope.simulatorStatus.isLaunching = true
+        $scope.simulatorStatus.state = "launching"
+        $scope.simulatorStatus.stateMessage = "Launching iOS simulator..."
         BuildServerApi.launchSimulator().then(
           (res) ->
-            $scope.simulatorLaunchError = undefined
+            $scope.simulatorStatus.state = "success"
+            $scope.simulatorStatus.stateMessage = "iOS simulator launched!"
+            $timeout ->
+              $scope.simulatorStatus.isLaunching = false
+              $scope.simulatorStatus.state = ""
+            , 2000
           (error) ->
-            $scope.simulatorIsLaunching = false
-            $scope.simulatorLaunchError = error.data.error
-        ).finally () ->
-        $timeout ->
-          $scope.simulatorIsLaunching = false
-        , 2000
+            $scope.simulatorStatus.isLaunching = false
+            $scope.simulatorStatus.state = "error"
+            $scope.simulatorStatus.stateMessage = error.data.error
+        )
 
   ]

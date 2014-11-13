@@ -44,20 +44,42 @@
       </ul>
       <p ng-hide="DevicesAPI.devices">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>
       <br>
+
       <div class="clearfix">
-        <button class="btn btn-lg btn-primary" ng-click="launchSimulator()" ng-disabled="simulatorIsLaunching" style="display: inline-block; float: left;">
-          <span class="glyphicon glyphicon-phone"></span> {{simulatorIsLaunching? "Launching iOS Simulator..." : "Launch iOS Simulator"}}
-        </button>
-        <ag-ui-spinner size="29" color="black" ng-show="simulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
-        <p class="text-danger" ng-show="simulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{simulatorLaunchError}}</small></p>
+        <div class="pull-left" style="line-height: 29px; margin-right: 10px;"><b>Simulators:</b></div>
+        <div class="dropdown pull-left" style="margin-right: 10px;">
+          <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="ios_dropdown" data-toggle="dropdown" aria-expanded="true">
+            <span class="glyphicon glyphicon-phone"></span>
+            iOS
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="ios_dropdown">
+            <li><a role="menuitem" tabindex="-1" ng-click="launchSimulator()">iPhone</a></li>
+          </ul>
+        </div>
+        <div class="dropdown pull-left">
+          <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="android_dropdown" data-toggle="dropdown" aria-expanded="true">
+            <span class="glyphicon glyphicon-phone"></span>
+            Android
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="android_dropdown">
+            <li><a role="menuitem" tabindex="-1" ng-click="launchEmulator()">Emulator</a></li>
+            <li><a role="menuitem" tabindex="-1" ng-click="launchGenymotion()">Genymotion</a></li>
+          </ul>
+        </div>
       </div>
+
+      <!-- iOS status -->
       <br>
       <div class="clearfix">
-        <button class="btn btn-lg btn-primary" ng-click="launchEmulator()" ng-disabled="emulatorIsLaunching" style="display: inline-block; float: left;">
-          <span class="glyphicon glyphicon-phone"></span> {{emulatorIsLaunching? "Launching Android Emulator..." : "Launch Android Emulator"}}
-        </button>
-        <ag-ui-spinner size="29" color="black" ng-show="emulatorIsLaunching" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
-        <p class="text-danger" ng-show="emulatorLaunchError" style="display: inline-block; margin-left: 10px;"><small>{{emulatorLaunchError}}</small></p>
+        <div class="simulator-status" ng-class="{'active': simulatorStatus.state!='', 'text-success': simulatorStatus.state=='success', 'text-danger': simulatorStatus.state=='error'}">{{simulatorStatus.stateMessage}}</div>
+      </div>
+      <div class="clearfix">
+        <div class="simulator-status" ng-class="{'active': emulatorStatus.state!='', 'text-success': emulatorStatus.state=='success', 'text-danger': emulatorStatus.state=='error'}">{{emulatorStatus.stateMessage}}</div>
+      </div>
+      <div class="clearfix">
+        <div class="simulator-status" ng-class="{'active': genymotionStatus.state!='', 'text-success': genymotionStatus.state=='success', 'text-danger': genymotionStatus.state=='error'}">{{genymotionStatus.stateMessage}}</div>
       </div>
 
     </div>

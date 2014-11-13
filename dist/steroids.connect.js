@@ -3700,7 +3700,7 @@ module.exports = [
 "use strict";
 module.exports = [
   "$scope", "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, DevicesAPI, BuildServerApi) {
-    var decodedQrCode, parseQueryParams, qrCode, _emulatorTimeout, _simulatorTimeout;
+    var decodedQrCode, parseQueryParams, qrCode;
     $scope.DevicesAPI = DevicesAPI;
     $scope.simulatorLaunchError = void 0;
     $scope.emulatorLaunchError = void 0;
@@ -3726,43 +3726,88 @@ module.exports = [
     /*
     EMULATOR
      */
-    $scope.emulatorIsLaunching = false;
-    _emulatorTimeout = void 0;
+    $scope.emulatorStatus = {
+      isLaunching: false,
+      state: "",
+      stateMessage: ""
+    };
     $scope.launchEmulator = function() {
-      if ($scope.emulatorIsLaunching) {
+      if ($scope.emulatorStatus.isLaunching) {
         return;
       }
-      $scope.emulatorIsLaunching = true;
-      BuildServerApi.launchEmulator().then(function(res) {
-        return $scope.emulatorLaunchError = void 0;
+      $scope.emulatorStatus.isLaunching = true;
+      $scope.emulatorStatus.state = "launching";
+      $scope.emulatorStatus.stateMessage = "Launching Android emulator...";
+      return BuildServerApi.launchEmulator().then(function(res) {
+        $scope.emulatorStatus.state = "success";
+        $scope.emulatorStatus.stateMessage = "Android emulator launched!";
+        return $timeout(function() {
+          $scope.emulatorStatus.isLaunching = false;
+          return $scope.emulatorStatus.state = "";
+        }, 2000);
       }, function(error) {
-        $scope.emulatorIsLaunching = false;
-        return $scope.emulatorLaunchError = error.data.error;
-      })["finally"](function() {});
-      return $timeout(function() {
-        return $scope.emulatorIsLaunching = false;
-      }, 2000);
+        $scope.emulatorStatus.isLaunching = false;
+        $scope.emulatorStatus.state = "error";
+        return $scope.emulatorStatus.stateMessage = error.data.error;
+      });
+    };
+
+    /*
+    EMULATOR
+     */
+    $scope.genymotionStatus = {
+      isLaunching: false,
+      state: "",
+      stateMessage: ""
+    };
+    $scope.launchGenymotion = function() {
+      if ($scope.genymotionStatus.isLaunching) {
+        return;
+      }
+      $scope.genymotionStatus.isLaunching = true;
+      $scope.genymotionStatus.state = "launching";
+      $scope.genymotionStatus.stateMessage = "Launching Genymotion for Android...";
+      return BuildServerApi.launchGenymotion().then(function(res) {
+        $scope.genymotionStatus.state = "success";
+        $scope.genymotionStatus.stateMessage = "Genymotion for Android launched!";
+        return $timeout(function() {
+          $scope.genymotionStatus.isLaunching = false;
+          return $scope.genymotionStatus.state = "";
+        }, 2000);
+      }, function(error) {
+        $scope.genymotionStatus.isLaunching = false;
+        $scope.genymotionStatus.state = "error";
+        return $scope.genymotionStatus.stateMessage = error.data.error;
+      });
     };
 
     /*
     SIMULATOR
      */
-    $scope.simulatorIsLaunching = false;
-    _simulatorTimeout = void 0;
+    $scope.simulatorStatus = {
+      isLaunching: false,
+      state: "",
+      stateMessage: ""
+    };
     return $scope.launchSimulator = function() {
-      if ($scope.simulatorIsLaunching) {
+      if ($scope.simulatorStatus.isLaunching) {
         return;
       }
-      $scope.simulatorIsLaunching = true;
-      BuildServerApi.launchSimulator().then(function(res) {
-        return $scope.simulatorLaunchError = void 0;
+      $scope.simulatorStatus.isLaunching = true;
+      $scope.simulatorStatus.state = "launching";
+      $scope.simulatorStatus.stateMessage = "Launching iOS simulator...";
+      return BuildServerApi.launchSimulator().then(function(res) {
+        $scope.simulatorStatus.state = "success";
+        $scope.simulatorStatus.stateMessage = "iOS simulator launched!";
+        return $timeout(function() {
+          $scope.simulatorStatus.isLaunching = false;
+          return $scope.simulatorStatus.state = "";
+        }, 2000);
       }, function(error) {
-        $scope.simulatorIsLaunching = false;
-        return $scope.simulatorLaunchError = error.data.error;
-      })["finally"](function() {});
-      return $timeout(function() {
-        return $scope.simulatorIsLaunching = false;
-      }, 2000);
+        $scope.simulatorStatus.isLaunching = false;
+        $scope.simulatorStatus.state = "error";
+        return $scope.simulatorStatus.stateMessage = error.data.error;
+      });
     };
   }
 ];
@@ -4939,20 +4984,42 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      </ul>\n" +
     "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>\n" +
     "      <br>\n" +
+    "\n" +
     "      <div class=\"clearfix\">\n" +
-    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchSimulator()\" ng-disabled=\"simulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
-    "          <span class=\"glyphicon glyphicon-phone\"></span> {{simulatorIsLaunching? \"Launching iOS Simulator...\" : \"Launch iOS Simulator\"}}\n" +
-    "        </button>\n" +
-    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"simulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
-    "        <p class=\"text-danger\" ng-show=\"simulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{simulatorLaunchError}}</small></p>\n" +
+    "        <div class=\"pull-left\" style=\"line-height: 29px; margin-right: 10px;\"><b>Simulators:</b></div>\n" +
+    "        <div class=\"dropdown pull-left\" style=\"margin-right: 10px;\">\n" +
+    "          <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
+    "            <span class=\"glyphicon glyphicon-phone\"></span>\n" +
+    "            iOS\n" +
+    "            <span class=\"caret\"></span>\n" +
+    "          </button>\n" +
+    "          <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_dropdown\">\n" +
+    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator()\">iPhone</a></li>\n" +
+    "          </ul>\n" +
+    "        </div>\n" +
+    "        <div class=\"dropdown pull-left\">\n" +
+    "          <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"android_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
+    "            <span class=\"glyphicon glyphicon-phone\"></span>\n" +
+    "            Android\n" +
+    "            <span class=\"caret\"></span>\n" +
+    "          </button>\n" +
+    "          <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"android_dropdown\">\n" +
+    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchEmulator()\">Emulator</a></li>\n" +
+    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchGenymotion()\">Genymotion</a></li>\n" +
+    "          </ul>\n" +
+    "        </div>\n" +
     "      </div>\n" +
+    "\n" +
+    "      <!-- iOS status -->\n" +
     "      <br>\n" +
     "      <div class=\"clearfix\">\n" +
-    "        <button class=\"btn btn-lg btn-primary\" ng-click=\"launchEmulator()\" ng-disabled=\"emulatorIsLaunching\" style=\"display: inline-block; float: left;\">\n" +
-    "          <span class=\"glyphicon glyphicon-phone\"></span> {{emulatorIsLaunching? \"Launching Android Emulator...\" : \"Launch Android Emulator\"}}\n" +
-    "        </button>\n" +
-    "        <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"emulatorIsLaunching\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
-    "        <p class=\"text-danger\" ng-show=\"emulatorLaunchError\" style=\"display: inline-block; margin-left: 10px;\"><small>{{emulatorLaunchError}}</small></p>\n" +
+    "        <div class=\"simulator-status\" ng-class=\"{'active': simulatorStatus.state!='', 'text-success': simulatorStatus.state=='success', 'text-danger': simulatorStatus.state=='error'}\">{{simulatorStatus.stateMessage}}</div>\n" +
+    "      </div>\n" +
+    "      <div class=\"clearfix\">\n" +
+    "        <div class=\"simulator-status\" ng-class=\"{'active': emulatorStatus.state!='', 'text-success': emulatorStatus.state=='success', 'text-danger': emulatorStatus.state=='error'}\">{{emulatorStatus.stateMessage}}</div>\n" +
+    "      </div>\n" +
+    "      <div class=\"clearfix\">\n" +
+    "        <div class=\"simulator-status\" ng-class=\"{'active': genymotionStatus.state!='', 'text-success': genymotionStatus.state=='success', 'text-danger': genymotionStatus.state=='error'}\">{{genymotionStatus.stateMessage}}</div>\n" +
     "      </div>\n" +
     "\n" +
     "    </div>\n" +
