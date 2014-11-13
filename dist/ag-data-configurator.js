@@ -195,6 +195,12 @@ module.exports = [
         }
 
         /*
+        DolanDB specific
+         */
+        $scope.hideRequired = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? true : false;
+        $scope.hideExample = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? true : false;
+
+        /*
         Resource columns
          */
         $scope.columns = [];
@@ -314,7 +320,7 @@ module.exports = [
 },{}],6:[function(require,module,exports){
 "use strict";
 module.exports = [
-  function() {
+  "$rootScope", function($rootScope) {
     return {
       restrict: "EA",
       replace: true,
@@ -324,7 +330,9 @@ module.exports = [
         columnsEditable: "@",
         identifierKey: "=",
         identifierKeyEditable: "@",
-        columnTypes: "="
+        columnTypes: "=",
+        hideRequired: "@",
+        hideExample: "@"
       },
       link: function($scope, element, attrs) {
         var _makeNewTemp;
@@ -337,6 +345,7 @@ module.exports = [
         if (!$scope.columns) {
           $scope.columns = [];
         }
+        console.log($scope.hideRequired, $scope.hideExample);
         if (!$scope.columnTypes) {
           $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
         } else {
@@ -1393,8 +1402,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
     "      <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
     "      <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
-    "      <th>Required?</th>\n" +
-    "      <th>Example data</th>\n" +
+    "      <th ng-hide=\"hideRequired\">Required?</th>\n" +
+    "      <th ng-hide=\"hideExample\">Example data</th>\n" +
     "      <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
@@ -1403,8 +1412,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
     "      <td>{{column.name}}</td>\n" +
     "      <td>{{column.type}}</td>\n" +
-    "      <td>{{column.required ? 'yes' : 'no'}}</td>\n" +
-    "      <td>{{column.example_value}}</td>\n" +
+    "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
+    "      <td ng-hide=\"hideExample\">{{column.example_value}}</td>\n" +
     "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
     "    </tr>\n" +
     "    <tr ng-if=\"columnsEditable\">\n" +
@@ -1415,8 +1424,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
     "        </div>\n" +
     "      </td>\n" +
-    "      <td><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\"></td>\n" +
-    "      <td></td>\n" +
+    "      <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\"></td>\n" +
+    "      <td ng-hide=\"hideExample\"></td>\n" +
     "      <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
     "    </tr>\n" +
     "  </tbody>\n" +
@@ -1826,7 +1835,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
-    "        <ag-data-model column-types=\"availableColumnTypes\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
+    "        <ag-data-model column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
     "\n" +
     "      </div>\n" +
     "      <div class=\"col-xs-12\">\n" +
