@@ -4259,7 +4259,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('/steroids-connect/data/data-configure.html',
-    "<div ag-data-configurator config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>"
+    "<div ag-data-configurator on-connect-screen=\"true\" config-api-base-url=\"https://config-api.appgyver.com/application_configuration\" config-api-app-id=\"{{cloudId}}\" config-api-authorization-token=\"{{accessToken}}\"></div>"
   );
 
 

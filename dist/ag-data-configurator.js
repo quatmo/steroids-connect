@@ -186,6 +186,14 @@ module.exports = [
         });
 
         /*
+        Column types
+         */
+        $scope.availableColumnTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
+        if ($rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6) {
+          $scope.availableColumnTypes = ["string", "integer", "boolean"];
+        }
+
+        /*
         Resource columns
          */
         $scope.columns = [];
@@ -314,7 +322,8 @@ module.exports = [
         columns: "=",
         columnsEditable: "@",
         identifierKey: "=",
-        identifierKeyEditable: "@"
+        identifierKeyEditable: "@",
+        columnTypes: "="
       },
       link: function($scope, element, attrs) {
         var _makeNewTemp;
@@ -327,7 +336,11 @@ module.exports = [
         if (!$scope.columns) {
           $scope.columns = [];
         }
-        $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
+        if (!$scope.columnTypes) {
+          $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
+        } else {
+          $scope.availableTypes = $scope.columnTypes;
+        }
         _makeNewTemp = function() {
           return $scope.temp = {
             name: "",
@@ -1812,7 +1825,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
-    "        <ag-data-model columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
+    "        <ag-data-model column-types=\"availableColumnTypes\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
     "\n" +
     "      </div>\n" +
     "      <div class=\"col-xs-12\">\n" +
@@ -2129,14 +2142,23 @@ module.exports = [
       scope: {
         configApiBaseUrl: "@",
         configApiAppId: "@",
-        configApiAuthorizationToken: "@"
+        configApiAuthorizationToken: "@",
+        onConnectScreen: "@"
       },
       link: function($scope, element, attrs) {
 
         /*
-        Settings
+        FUGLY HACK: Is on Connect UI?
          */
         var _configureRestangular;
+        $rootScope.isOnSteroidsConnect = false;
+        if ($scope.onConnectScreen === "true" || $scope.onConnectScreen === true) {
+          $rootScope.isOnSteroidsConnect = true;
+        }
+
+        /*
+        Settings
+         */
         AgDataSettings.setApplicationId($scope.configApiAppId);
         _configureRestangular = function() {
           Restangular.setBaseUrl($scope.configApiBaseUrl);
