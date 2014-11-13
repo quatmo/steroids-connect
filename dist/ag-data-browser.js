@@ -534,13 +534,13 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "    <!-- Columns -->\n" +
     "    <div class=\"form-group\" ng-repeat=\"(columnName, columnMeta) in resource.columns\">\n" +
     "      <label for=\"{{columnName}}Input\">{{columnName}}:</label>\n" +
-    "      <div class=\"animate-switch-container\" ng-switch on=\"getFieldType(columnMeta.type)\">\n" +
+    "      <div class=\"animate-switch-container\" ng-switch on=\"getFieldType(columnMeta)\">\n" +
     "\n" +
     "        <!-- Dates -->\n" +
     "        <input ng-switch-when=\"date\" ng-disabled=\"isLoading\" type=\"text\" class=\"form-control\" datepicker-popup=\"yyyy-MM-dd\" ng-model=\"record[columnName]\" ng-required=\"true\" close-text=\"Close\" />\n" +
     "\n" +
     "        <!-- Checkboxes -->\n" +
-    "        <div ng-switch-when=\"checkbox\" class=\"checkbox\">\n" +
+    "        <div ng-switch-when=\"checkbox\" class=\"checkbox\" style=\"margin: 0px;\">\n" +
     "          <label for=\"{{columnName}}Input\">\n" +
     "            <input ng-model=\"record[columnName]\" ng-disabled=\"isLoading\" id=\"{{columnName}}Input\" type=\"checkbox\"> Yes\n" +
     "          </label>\n" +
