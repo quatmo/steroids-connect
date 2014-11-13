@@ -439,7 +439,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "          <div class=\"form-group clearfix\">\n" +
     "            <div class=\"btn-group pull-left\" style=\"margin-right: 10px;\">\n" +
     "              <button type=\"button\" ng-click=\"prevPage()\" class=\"btn btn-primary\" ng-disabled=\"page <= 1 || pageLoading\"><span class=\"glyphicon glyphicon-chevron-left\"></span></button>\n" +
-    "              <button type=\"button\" ng-click=\"nextPage()\" class=\"btn btn-primary\" ng-disabled=\"records.length == 0 || pageLoading\"><span class=\"glyphicon glyphicon-chevron-right\"></span></button>\n" +
+    "              <button type=\"button\" ng-click=\"nextPage()\" class=\"btn btn-primary\" ng-disabled=\"page >= pages || pageLoading\"><span class=\"glyphicon glyphicon-chevron-right\"></span></button>\n" +
     "            </div>\n" +
     "\n" +
     "            <p class=\"form-control-static pull-left\" style=\"margin-right: 10px; white-space: nowrap;\">Page {{page}}</p>\n" +
@@ -784,12 +784,13 @@ module.exports = [
         $scope.pages = 1;
         $scope.pageLoading = false;
         $scope.loadPage = function(pageNum) {
+          var _checkForPageNum;
           if ($scope.pageLoading || !$scope.resource) {
             return;
           }
           $scope.pageLoading = true;
           $scope.page = pageNum;
-          return $scope.resource.findAll({
+          $scope.resource.findAll({
             limit: $scope.perPage,
             skip: ($scope.perPage * $scope.page) - $scope.perPage
           }).then(function(data) {
@@ -799,9 +800,21 @@ module.exports = [
           })["finally"](function() {
             return $scope.pageLoading = false;
           });
+          if ($scope.page < $scope.pages) {
+            return;
+          }
+          _checkForPageNum = $scope.page + 1;
+          return $scope.resource.findAll({
+            limit: $scope.perPage,
+            skip: ($scope.perPage * _checkForPageNum) - $scope.perPage
+          }).then(function(data) {
+            if (data.length > 0) {
+              return $scope.pages = _checkForPageNum;
+            }
+          });
         };
         $scope.nextPage = function() {
-          if (!$scope.resource) {
+          if (!$scope.resource || $scope.page >= $scope.pages) {
             return;
           }
           return $scope.loadPage($scope.page + 1);
