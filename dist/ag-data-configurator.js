@@ -28,6 +28,7 @@ module.exports = [
         })["finally"](function() {
           return $scope.providerTemplateLoading = false;
         });
+        $scope.allowManagingProvider = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? false : true;
 
         /*
         Provider resources
@@ -1464,7 +1465,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <button type=\"button\" class=\"btn btn-primary pull-right\" style=\"margin-top: 20px;\" ng-click=\"manageProvider()\" ng-disabled=\"!providerTemplate\">Manage provider</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary pull-right\" style=\"margin-top: 20px;\" ng-click=\"manageProvider()\" ng-disabled=\"!providerTemplate\" ng-if=\"allowManagingProvider\">Manage provider</button>\n" +
     "        <h2>{{provider.name}} <small>(provider)</small></h2>\n" +
     "        <hr>\n" +
     "      </div>\n" +
