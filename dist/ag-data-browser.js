@@ -897,6 +897,7 @@ module.exports = [
             $scope.pages = 1;
             $scope.records = [];
             $scope.resource = resource;
+            $rootScope.dataBrowserSelectedResource = $scope.resource.name;
             return $scope.loadPage(1);
           }, function(err) {
             $scope.hasError = true;
@@ -912,7 +913,7 @@ module.exports = [
 },{}],9:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "AgDataConnector", "AgUserToken", function(AgDataConnector, AgUserToken) {
+  "$rootScope", "AgDataConnector", "AgUserToken", function($rootScope, AgDataConnector, AgUserToken) {
     return {
       restrict: "EA",
       replace: true,
@@ -931,7 +932,11 @@ module.exports = [
         $scope.selectedResourceName = "";
         $scope.connector.resources().listNames().then(function(listOfResourceNames) {
           $scope.namesOfAvailableResources = listOfResourceNames;
-          return $scope.selectedResourceName = $scope.namesOfAvailableResources[0];
+          if ($rootScope.dataBrowserSelectedResource) {
+            return $scope.selectedResourceName = $rootScope.dataBrowserSelectedResource;
+          } else {
+            return $scope.selectedResourceName = $scope.namesOfAvailableResources[0];
+          }
         }, function(error) {
           console.log("Didn't get names", error);
           return $scope.errorLoadingRaml = true;
