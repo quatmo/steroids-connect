@@ -931,12 +931,20 @@ module.exports = [
         $scope.namesOfAvailableResources = void 0;
         $scope.selectedResourceName = "";
         $scope.connector.resources().listNames().then(function(listOfResourceNames) {
+          var name, _i, _len, _ref;
           $scope.namesOfAvailableResources = listOfResourceNames;
           if ($rootScope.dataBrowserSelectedResource) {
-            return $scope.selectedResourceName = $rootScope.dataBrowserSelectedResource;
-          } else {
-            return $scope.selectedResourceName = $scope.namesOfAvailableResources[0];
+            _ref = $scope.namesOfAvailableResources;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              name = _ref[_i];
+              if (!(name === $rootScope.dataBrowserSelectedResource)) {
+                continue;
+              }
+              $scope.selectedResourceName = name;
+              return;
+            }
           }
+          return $scope.selectedResourceName = $scope.namesOfAvailableResources[0];
         }, function(error) {
           console.log("Didn't get names", error);
           return $scope.errorLoadingRaml = true;

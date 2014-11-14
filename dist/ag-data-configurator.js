@@ -2208,7 +2208,7 @@ module.exports = [
         /*
         FUGLY HACK: Is on Connect UI?
          */
-        var _configureRestangular;
+        var _configureRestangular, _updateStickyViewSettings;
         $rootScope.isOnSteroidsConnect = false;
         if ($scope.onConnectScreen === "true" || $scope.onConnectScreen === true) {
           $rootScope.isOnSteroidsConnect = true;
@@ -2241,6 +2241,18 @@ module.exports = [
         $scope.provider = void 0;
         $scope.resource = void 0;
         $scope.service = void 0;
+        if ($rootScope.dataConfiguratorViewState) {
+          $scope.provider = $rootScope.dataConfiguratorViewState.provider;
+          $scope.resource = $rootScope.dataConfiguratorViewState.resource;
+          $scope.service = $rootScope.dataConfiguratorViewState.service;
+        }
+        _updateStickyViewSettings = function() {
+          return $rootScope.dataConfiguratorViewState = {
+            provider: $scope.provider,
+            resource: $scope.resource,
+            service: $scope.service
+          };
+        };
 
         /*
         Methods for navigating in the flow
@@ -2249,22 +2261,26 @@ module.exports = [
           listProviders: function() {
             $scope.provider = void 0;
             $scope.resource = void 0;
-            return $scope.service = void 0;
+            $scope.service = void 0;
+            return _updateStickyViewSettings();
           },
           showProvider: function(provider) {
             if (provider) {
               $scope.provider = provider;
             }
             $scope.resource = void 0;
-            return $scope.service = void 0;
+            $scope.service = void 0;
+            return _updateStickyViewSettings();
           },
           showResource: function(resource) {
             $scope.resource = resource;
-            return $scope.service = void 0;
+            $scope.service = void 0;
+            return _updateStickyViewSettings();
           },
           showService: function(service) {
             $scope.service = service;
-            return $scope.resource = void 0;
+            $scope.resource = void 0;
+            return _updateStickyViewSettings();
           }
         };
 
