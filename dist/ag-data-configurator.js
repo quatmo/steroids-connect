@@ -11,7 +11,7 @@ module.exports = modules;
 },{"./providers":13,"./templates":21,"./ui":23}],2:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
+  "$rootScope", "$window", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -71,8 +71,21 @@ module.exports = [
         $scope.newResource = function() {
           return AgDataResourcesModal.newResource($scope.providerTemplate, $scope.provider);
         };
-        return $scope.newService = function() {
+        $scope.newService = function() {
           return AgDataServicesModal.newService($scope.providerTemplate, $scope.provider);
+        };
+        $scope.isRemoving = false;
+        return $scope.removeProvider = function() {
+          if ($scope.isRemoving) {
+            return;
+          }
+          if (!$window.confirm("Do you really want to remove this provider and all of it's resources?")) {
+            return;
+          }
+          $scope.isRemoving = true;
+          return AgDataProviders.destroy($scope.provider)["finally"](function() {
+            return $scope.isRemoving = false;
+          });
         };
       }
     };
@@ -168,7 +181,7 @@ module.exports = [
 },{}],4:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "$filter", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, $filter, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
+  "$rootScope", "$window", "$filter", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, $window, $filter, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -224,7 +237,7 @@ module.exports = [
           $scope.columnsMeta.loading = true;
           return AgDataResources.getColumnsFor($scope.resource).then(function(data) {
             $scope.resource.columns = $scope.columns = data.columns;
-            if (data.response_status_code >= 400 || ($scope.resource.columns === [] && providerTemplate && !$filter(agCanManage)(providerTemplate, 'resource_columns_edit'))) {
+            if (data.response_status_code >= 400 || ($scope.resource.columns.length === 0 && $scope.providerTemplate && !$filter("agCanManage")($scope.providerTemplate, 'resource_columns_edit'))) {
               $scope.columnsMeta.error = true;
               return;
             }
@@ -248,8 +261,21 @@ module.exports = [
         $scope.manageResource = function() {
           return AgDataResourcesModal.manageResource($scope.providerTemplate, $scope.provider, $scope.resource);
         };
-        return $scope.manageResourceActions = function() {
+        $scope.manageResourceActions = function() {
           return AgDataResourceActionsModal.manageResourceActions($scope.providerTemplate, $scope.provider, $scope.resource);
+        };
+        $scope.isRemoving = false;
+        return $scope.removeResource = function() {
+          if ($scope.isRemoving) {
+            return;
+          }
+          if (!$window.confirm("Do you really want to remove this resource?")) {
+            return;
+          }
+          $scope.isRemoving = true;
+          return AgDataResources.destroy($scope.resource)["finally"](function() {
+            return $scope.isRemoving = false;
+          });
         };
       }
     };
@@ -260,7 +286,7 @@ module.exports = [
 },{}],5:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "AgDataProviders", "AgDataServices", "AgDataServicesModal", function($rootScope, AgDataProviders, AgDataServices, AgDataServicesModal) {
+  "$rootScope", "$window", "AgDataProviders", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataServices, AgDataServicesModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -309,8 +335,21 @@ module.exports = [
         /*
         Methods
          */
-        return $scope.manageService = function() {
+        $scope.manageService = function() {
           return AgDataServicesModal.manageService($scope.providerTemplate, $scope.provider, $scope.service);
+        };
+        $scope.isRemoving = false;
+        return $scope.removeService = function() {
+          if ($scope.isRemoving) {
+            return;
+          }
+          if (!$window.confirm("Do you really want to remove this service?")) {
+            return;
+          }
+          $scope.isRemoving = true;
+          return AgDataServices.destroy($scope.service)["finally"](function() {
+            return $scope.isRemoving = false;
+          });
         };
       }
     };
@@ -1474,7 +1513,11 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <button type=\"button\" class=\"btn btn-primary pull-right\" style=\"margin-top: 20px;\" ng-click=\"manageProvider()\" ng-disabled=\"!providerTemplate\" ng-if=\"allowManagingProvider\">Manage provider</button>\n" +
+    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
+    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"removeProvider()\" ng-if=\"allowManagingProvider\">Remove provider</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"manageProvider()\" style=\"margin-right: 10px;\" ng-if=\"allowManagingProvider\">Manage provider</button>\n" +
+    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"isRemoving || resourcesMeta.loading || servicesMeta.loading\"></ag-ui-spinner>\n" +
+    "        </div>\n" +
     "        <h2>{{provider.name}} <small>(provider)</small></h2>\n" +
     "        <hr>\n" +
     "      </div>\n" +
@@ -1795,9 +1838,11 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <div class=\"pull-right\" style=\"margin-top: 20px;\">\n" +
-    "          <button type=\"button\" ng-if=\"(providerTemplate | agCanManage:'resource_methods')\" class=\"btn btn-default\" ng-click=\"manageResourceActions()\" style=\"margin-right: 10px;\" ng-disabled=\"!providerTemplate\">Customize actions</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary\" ng-click=\"manageResource()\" ng-disabled=\"!providerTemplate\">Manage resource</button>\n" +
+    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
+    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"removeResource()\">Remove resource</button>\n" +
+    "          <button type=\"button\" ng-if=\"(providerTemplate | agCanManage:'resource_methods')\" class=\"btn btn-default pull-right\" ng-click=\"manageResourceActions()\" style=\"margin-right: 10px;\" ng-disabled=\"!providerTemplate || isRemoving\">Customize actions</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"manageResource()\" ng-disabled=\"!providerTemplate || isRemoving\" style=\"margin-right: 10px;\">Manage resource</button>\n" +
+    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"columnsMeta.loading || columnsSaving || isRemoving\"></ag-ui-spinner>\n" +
     "        </div>\n" +
     "        <h2>{{resource.name}} <small>(resource)</small></h2>\n" +
     "        <hr>\n" +
@@ -1917,9 +1962,11 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <div class=\"pull-right\" style=\"margin-top: 20px;\">\n" +
-    "          <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveService()\" ng-disabled=\"saving\" style=\"margin-right: 10px;\">Save changes to service</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary\" ng-click=\"manageService()\" ng-disabled=\"saving || !providerTemplate\">Service settings</button>\n" +
+    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
+    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || saving || isRemoving\" ng-click=\"removeService()\">Remove service</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"manageService()\" ng-disabled=\"saving || !providerTemplate || isRemoving\" style=\"margin-right: 10px;\">Service settings</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-success pull-right\" ng-click=\"saveService()\" ng-disabled=\"saving || isRemoving\" style=\"margin-right: 10px;\">Save changes to service</button>\n" +
+    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"saving || isRemoving\"></ag-ui-spinner>\n" +
     "        </div>\n" +
     "        <h2>{{service.name}} <small>(service)</small></h2>\n" +
     "        <hr>\n" +
