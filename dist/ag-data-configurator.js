@@ -168,7 +168,7 @@ module.exports = [
 },{}],4:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
+  "$rootScope", "$filter", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, $filter, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -224,7 +224,7 @@ module.exports = [
           $scope.columnsMeta.loading = true;
           return AgDataResources.getColumnsFor($scope.resource).then(function(data) {
             $scope.resource.columns = $scope.columns = data.columns;
-            if (data.response_status_code === 500) {
+            if (data.response_status_code >= 400 || ($scope.resource.columns === [] && providerTemplate && !$filter(agCanManage)(providerTemplate, 'resource_columns_edit'))) {
               $scope.columnsMeta.error = true;
               return;
             }
@@ -232,7 +232,8 @@ module.exports = [
           }, function(err) {
             return $scope.columnsMeta.error = true;
           })["finally"](function() {
-            return $scope.columnsMeta.loading = false;
+            $scope.columnsMeta.loading = false;
+            return $rootScope.$broadcast("ag.data-configurator.resource.updated", $scope.resource);
           });
         };
         if (!$scope.hadColumnsToBeginWith) {
@@ -345,7 +346,6 @@ module.exports = [
         if (!$scope.columns) {
           $scope.columns = [];
         }
-        console.log($scope.hideRequired, $scope.hideExample);
         if (!$scope.columnTypes) {
           $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
         } else {
@@ -1832,6 +1832,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ul>\n" +
     "            <li><small>Is provider's base URL and resource's URL path (Class UID) are correct?</small></li>\n" +
     "            <li><small>Have you added the necessary authentication details to provider?</small></li>\n" +
+    "            <li><small>Do you have data in your resource?</small></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
