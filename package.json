@@ -3,12 +3,10 @@
   "version": "0.2.3",
   "description": "Shared components for AppGyver Steroids Connect.",
   "main": "index.js",
-  "dependencies": {
+  "devDependencies": {
     "ag-ui-kit": "git+https://ag-global-styles-bridge:with_dis_i_read_styles_2014@github.com/AppGyver/ag-ui-kit.git#master",
     "ag-data-browser": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-browser#master",
-    "ag-data-configurator": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-configurator#master"
-  },
-  "devDependencies": {
+    "ag-data-configurator": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-configurator#master",
     "grunt": "~0.4.5",
     "load-grunt-config": "~0.10.0",
     "load-grunt-tasks": "~0.6.0",
