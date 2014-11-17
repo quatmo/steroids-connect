@@ -11,7 +11,7 @@ module.exports = modules;
 },{"./providers":13,"./templates":21,"./ui":23}],2:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "$window", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
+  "$rootScope", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -28,7 +28,6 @@ module.exports = [
         })["finally"](function() {
           return $scope.providerTemplateLoading = false;
         });
-        $scope.allowManagingProvider = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? false : true;
 
         /*
         Provider resources
@@ -71,21 +70,8 @@ module.exports = [
         $scope.newResource = function() {
           return AgDataResourcesModal.newResource($scope.providerTemplate, $scope.provider);
         };
-        $scope.newService = function() {
+        return $scope.newService = function() {
           return AgDataServicesModal.newService($scope.providerTemplate, $scope.provider);
-        };
-        $scope.isRemoving = false;
-        return $scope.removeProvider = function() {
-          if ($scope.isRemoving) {
-            return;
-          }
-          if (!$window.confirm("Do you really want to remove this provider and all of it's resources?")) {
-            return;
-          }
-          $scope.isRemoving = true;
-          return AgDataProviders.destroy($scope.provider)["finally"](function() {
-            return $scope.isRemoving = false;
-          });
         };
       }
     };
@@ -181,7 +167,7 @@ module.exports = [
 },{}],4:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "$window", "$filter", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, $window, $filter, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
+  "$rootScope", "AgDataProviders", "AgDataResources", "AgDataResourcesModal", "AgDataResourceActionsModal", function($rootScope, AgDataProviders, AgDataResources, AgDataResourcesModal, AgDataResourceActionsModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -198,20 +184,6 @@ module.exports = [
         })["finally"](function() {
           return $scope.providerTemplateLoading = false;
         });
-
-        /*
-        Column types
-         */
-        $scope.availableColumnTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
-        if ($rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6) {
-          $scope.availableColumnTypes = ["string", "integer", "boolean"];
-        }
-
-        /*
-        DolanDB specific
-         */
-        $scope.hideRequired = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? true : false;
-        $scope.hideExample = $rootScope.isOnSteroidsConnect && $scope.provider.providerTypeId === 6 ? true : false;
 
         /*
         Resource columns
@@ -237,7 +209,7 @@ module.exports = [
           $scope.columnsMeta.loading = true;
           return AgDataResources.getColumnsFor($scope.resource).then(function(data) {
             $scope.resource.columns = $scope.columns = data.columns;
-            if (data.response_status_code >= 400 || ($scope.resource.columns.length === 0 && $scope.providerTemplate && !$filter("agCanManage")($scope.providerTemplate, 'resource_columns_edit'))) {
+            if (data.response_status_code === 500) {
               $scope.columnsMeta.error = true;
               return;
             }
@@ -245,8 +217,7 @@ module.exports = [
           }, function(err) {
             return $scope.columnsMeta.error = true;
           })["finally"](function() {
-            $scope.columnsMeta.loading = false;
-            return $rootScope.$broadcast("ag.data-configurator.resource.updated", $scope.resource);
+            return $scope.columnsMeta.loading = false;
           });
         };
         if (!$scope.hadColumnsToBeginWith) {
@@ -261,21 +232,8 @@ module.exports = [
         $scope.manageResource = function() {
           return AgDataResourcesModal.manageResource($scope.providerTemplate, $scope.provider, $scope.resource);
         };
-        $scope.manageResourceActions = function() {
+        return $scope.manageResourceActions = function() {
           return AgDataResourceActionsModal.manageResourceActions($scope.providerTemplate, $scope.provider, $scope.resource);
-        };
-        $scope.isRemoving = false;
-        return $scope.removeResource = function() {
-          if ($scope.isRemoving) {
-            return;
-          }
-          if (!$window.confirm("Do you really want to remove this resource?")) {
-            return;
-          }
-          $scope.isRemoving = true;
-          return AgDataResources.destroy($scope.resource)["finally"](function() {
-            return $scope.isRemoving = false;
-          });
         };
       }
     };
@@ -286,7 +244,7 @@ module.exports = [
 },{}],5:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "$window", "AgDataProviders", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataServices, AgDataServicesModal) {
+  "$rootScope", "AgDataProviders", "AgDataServices", "AgDataServicesModal", function($rootScope, AgDataProviders, AgDataServices, AgDataServicesModal) {
     return {
       restrict: "EA",
       replace: true,
@@ -335,21 +293,8 @@ module.exports = [
         /*
         Methods
          */
-        $scope.manageService = function() {
+        return $scope.manageService = function() {
           return AgDataServicesModal.manageService($scope.providerTemplate, $scope.provider, $scope.service);
-        };
-        $scope.isRemoving = false;
-        return $scope.removeService = function() {
-          if ($scope.isRemoving) {
-            return;
-          }
-          if (!$window.confirm("Do you really want to remove this service?")) {
-            return;
-          }
-          $scope.isRemoving = true;
-          return AgDataServices.destroy($scope.service)["finally"](function() {
-            return $scope.isRemoving = false;
-          });
         };
       }
     };
@@ -360,7 +305,7 @@ module.exports = [
 },{}],6:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", function($rootScope) {
+  function() {
     return {
       restrict: "EA",
       replace: true,
@@ -369,10 +314,7 @@ module.exports = [
         columns: "=",
         columnsEditable: "@",
         identifierKey: "=",
-        identifierKeyEditable: "@",
-        columnTypes: "=",
-        hideRequired: "@",
-        hideExample: "@"
+        identifierKeyEditable: "@"
       },
       link: function($scope, element, attrs) {
         var _makeNewTemp;
@@ -385,11 +327,7 @@ module.exports = [
         if (!$scope.columns) {
           $scope.columns = [];
         }
-        if (!$scope.columnTypes) {
-          $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
-        } else {
-          $scope.availableTypes = $scope.columnTypes;
-        }
+        $scope.availableTypes = ["string", "integer", "boolean", "array", "object", "image", "file"];
         _makeNewTemp = function() {
           return $scope.temp = {
             name: "",
@@ -408,9 +346,6 @@ module.exports = [
         $scope.add = function() {
           if (!$scope.canAdd()) {
             return;
-          }
-          if (!$scope.columns) {
-            $scope.columns = [];
           }
           $scope.columns.push($scope.temp);
           return _makeNewTemp();
@@ -1441,8 +1376,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
     "      <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
     "      <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
-    "      <th ng-hide=\"hideRequired\">Required?</th>\n" +
-    "      <th ng-hide=\"hideExample\">Example data</th>\n" +
+    "      <th>Required?</th>\n" +
+    "      <th>Example data</th>\n" +
     "      <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
@@ -1451,8 +1386,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
     "      <td>{{column.name}}</td>\n" +
     "      <td>{{column.type}}</td>\n" +
-    "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
-    "      <td ng-hide=\"hideExample\">{{column.example_value}}</td>\n" +
+    "      <td>{{column.required ? 'yes' : 'no'}}</td>\n" +
+    "      <td>{{column.example_value}}</td>\n" +
     "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
     "    </tr>\n" +
     "    <tr ng-if=\"columnsEditable\">\n" +
@@ -1463,8 +1398,8 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
     "        </div>\n" +
     "      </td>\n" +
-    "      <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\"></td>\n" +
-    "      <td ng-hide=\"hideExample\"></td>\n" +
+    "      <td><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\"></td>\n" +
+    "      <td></td>\n" +
     "      <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
     "    </tr>\n" +
     "  </tbody>\n" +
@@ -1513,11 +1448,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
-    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"removeProvider()\" ng-if=\"allowManagingProvider\">Remove provider</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"manageProvider()\" style=\"margin-right: 10px;\" ng-if=\"allowManagingProvider\">Manage provider</button>\n" +
-    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"isRemoving || resourcesMeta.loading || servicesMeta.loading\"></ag-ui-spinner>\n" +
-    "        </div>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary pull-right\" style=\"margin-top: 20px;\" ng-click=\"manageProvider()\" ng-disabled=\"!providerTemplate\">Manage provider</button>\n" +
     "        <h2>{{provider.name}} <small>(provider)</small></h2>\n" +
     "        <hr>\n" +
     "      </div>\n" +
@@ -1557,7 +1488,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <!-- Services -->\n" +
     "\n" +
-    "    <div class=\"row\" ng-if=\"providerTemplate && providerTemplate.uid==1\">\n" +
+    "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12\">\n" +
     "        <br><br>\n" +
     "        <h3 style=\"margin-bottom: 0px;\">Services</h3>\n" +
@@ -1838,11 +1769,9 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
-    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || isRemoving\" ng-click=\"removeResource()\">Remove resource</button>\n" +
-    "          <button type=\"button\" ng-if=\"(providerTemplate | agCanManage:'resource_methods')\" class=\"btn btn-default pull-right\" ng-click=\"manageResourceActions()\" style=\"margin-right: 10px;\" ng-disabled=\"!providerTemplate || isRemoving\">Customize actions</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"manageResource()\" ng-disabled=\"!providerTemplate || isRemoving\" style=\"margin-right: 10px;\">Manage resource</button>\n" +
-    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"columnsMeta.loading || columnsSaving || isRemoving\"></ag-ui-spinner>\n" +
+    "        <div class=\"pull-right\" style=\"margin-top: 20px;\">\n" +
+    "          <button type=\"button\" ng-if=\"(providerTemplate | agCanManage:'resource_methods')\" class=\"btn btn-default\" ng-click=\"manageResourceActions()\" style=\"margin-right: 10px;\" ng-disabled=\"!providerTemplate\">Customize actions</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-primary\" ng-click=\"manageResource()\" ng-disabled=\"!providerTemplate\">Manage resource</button>\n" +
     "        </div>\n" +
     "        <h2>{{resource.name}} <small>(resource)</small></h2>\n" +
     "        <hr>\n" +
@@ -1856,7 +1785,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <br>\n" +
     "        <div class=\"clearfix\">\n" +
     "          <div class=\"pull-right\" style=\"margin-top: 26px;\">\n" +
-    "            <button type=\"button\" class=\"btn btn-primary\" ng-click=\"fetchColumns()\" ng-if=\"providerTemplate.uid != 6\" ng-disabled=\"columnsMeta.loading || columnsSaving\" style=\"margin-right: 10px;\">Reload model from API</button>\n" +
+    "            <button type=\"button\" class=\"btn btn-primary\" ng-click=\"fetchColumns()\" ng-disabled=\"columnsMeta.loading || columnsSaving\" style=\"margin-right: 10px;\">Reload model from API</button>\n" +
     "            <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveColumns()\" ng-if=\"(providerTemplate | agCanManage:'resource_columns_edit')\" ng-disabled=\"columnsMeta.loading || columnsSaving\">Save changes to data model</button>\n" +
     "          </div>\n" +
     "          <h3 style=\"margin-bottom: 0px;\">Data model</h3>\n" +
@@ -1877,11 +1806,10 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ul>\n" +
     "            <li><small>Is provider's base URL and resource's URL path (Class UID) are correct?</small></li>\n" +
     "            <li><small>Have you added the necessary authentication details to provider?</small></li>\n" +
-    "            <li><small>Do you have data in your resource?</small></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
-    "        <ag-data-model column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
+    "        <ag-data-model columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
     "\n" +
     "      </div>\n" +
     "      <div class=\"col-xs-12\">\n" +
@@ -1962,11 +1890,9 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "\n" +
     "    <div class=\"row\">\n" +
     "      <div class=\"col-xs-12 clearfix\">\n" +
-    "        <div class=\"pull-right clearfix\" style=\"margin-top: 20px;\">\n" +
-    "          <button type=\"button\" class=\"btn btn-danger pull-right\" ng-disabled=\"!providerTemplate || saving || isRemoving\" ng-click=\"removeService()\">Remove service</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"manageService()\" ng-disabled=\"saving || !providerTemplate || isRemoving\" style=\"margin-right: 10px;\">Service settings</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-success pull-right\" ng-click=\"saveService()\" ng-disabled=\"saving || isRemoving\" style=\"margin-right: 10px;\">Save changes to service</button>\n" +
-    "          <ag-ui-spinner size=\"22\" color=\"black\" style=\"vertical-align: top; margin-top: 3px; margin-right: 10px; float: right;\" ng-show=\"saving || isRemoving\"></ag-ui-spinner>\n" +
+    "        <div class=\"pull-right\" style=\"margin-top: 20px;\">\n" +
+    "          <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveService()\" ng-disabled=\"saving\" style=\"margin-right: 10px;\">Save changes to service</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-primary\" ng-click=\"manageService()\" ng-disabled=\"saving || !providerTemplate\">Service settings</button>\n" +
     "        </div>\n" +
     "        <h2>{{service.name}} <small>(service)</small></h2>\n" +
     "        <hr>\n" +
@@ -2132,7 +2058,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
-    "            <li class=\"active\">Providers</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2146,7 +2072,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <div class=\"col-xs-12\">\n" +
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
-    "            <li class=\"active\">{{provider.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2161,7 +2087,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\">{{resource.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showResource()\">{{resource.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2176,7 +2102,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <ol class=\"breadcrumb\">\n" +
     "            <li><a ng-click=\"navigation.listProviders()\">Providers</a></li>\n" +
     "            <li><a ng-click=\"navigation.showProvider()\">{{provider.name}}</a></li>\n" +
-    "            <li class=\"active\">{{service.name}}</li>\n" +
+    "            <li class=\"active\"><a ng-click=\"navigation.showService()\">{{service.name}}</a></li>\n" +
     "          </ol>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -2200,23 +2126,14 @@ module.exports = [
       scope: {
         configApiBaseUrl: "@",
         configApiAppId: "@",
-        configApiAuthorizationToken: "@",
-        onConnectScreen: "@"
+        configApiAuthorizationToken: "@"
       },
       link: function($scope, element, attrs) {
 
         /*
-        FUGLY HACK: Is on Connect UI?
-         */
-        var _configureRestangular, _updateStickyViewSettings;
-        $rootScope.isOnSteroidsConnect = false;
-        if ($scope.onConnectScreen === "true" || $scope.onConnectScreen === true) {
-          $rootScope.isOnSteroidsConnect = true;
-        }
-
-        /*
         Settings
          */
+        var _configureRestangular;
         AgDataSettings.setApplicationId($scope.configApiAppId);
         _configureRestangular = function() {
           Restangular.setBaseUrl($scope.configApiBaseUrl);
@@ -2241,18 +2158,6 @@ module.exports = [
         $scope.provider = void 0;
         $scope.resource = void 0;
         $scope.service = void 0;
-        if ($rootScope.dataConfiguratorViewState) {
-          $scope.provider = $rootScope.dataConfiguratorViewState.provider;
-          $scope.resource = $rootScope.dataConfiguratorViewState.resource;
-          $scope.service = $rootScope.dataConfiguratorViewState.service;
-        }
-        _updateStickyViewSettings = function() {
-          return $rootScope.dataConfiguratorViewState = {
-            provider: $scope.provider,
-            resource: $scope.resource,
-            service: $scope.service
-          };
-        };
 
         /*
         Methods for navigating in the flow
@@ -2261,26 +2166,22 @@ module.exports = [
           listProviders: function() {
             $scope.provider = void 0;
             $scope.resource = void 0;
-            $scope.service = void 0;
-            return _updateStickyViewSettings();
+            return $scope.service = void 0;
           },
           showProvider: function(provider) {
             if (provider) {
               $scope.provider = provider;
             }
             $scope.resource = void 0;
-            $scope.service = void 0;
-            return _updateStickyViewSettings();
+            return $scope.service = void 0;
           },
           showResource: function(resource) {
             $scope.resource = resource;
-            $scope.service = void 0;
-            return _updateStickyViewSettings();
+            return $scope.service = void 0;
           },
           showService: function(service) {
             $scope.service = service;
-            $scope.resource = void 0;
-            return _updateStickyViewSettings();
+            return $scope.resource = void 0;
           }
         };
 

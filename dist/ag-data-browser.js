@@ -412,7 +412,7 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            <tr>\n" +
     "              <td colspan=\"{{countColumns() + 1}}\">\n" +
     "                <h3 class=\"text-danger\">\n" +
-    "                  {{page > 1 ? \"No more content.\" : \"No content.\"}}\n" +
+    "                  No more content.\n" +
     "                </h3>\n" +
     "              </td>\n" +
     "            </tr>\n" +
@@ -434,12 +434,10 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "            </div>\n" +
     "          </div>\n" +
     "\n" +
-    "          <button type=\"button\" ng-click=\"reloadPage()\" class=\"btn btn-primary\" ng-disabled=\"pageLoading\" style=\"margin-right: 10px;\" tooltip=\"Refresh page\" tooltip-placement=\"bottom\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\n" +
-    "\n" +
     "          <div class=\"form-group clearfix\">\n" +
     "            <div class=\"btn-group pull-left\" style=\"margin-right: 10px;\">\n" +
     "              <button type=\"button\" ng-click=\"prevPage()\" class=\"btn btn-primary\" ng-disabled=\"page <= 1 || pageLoading\"><span class=\"glyphicon glyphicon-chevron-left\"></span></button>\n" +
-    "              <button type=\"button\" ng-click=\"nextPage()\" class=\"btn btn-primary\" ng-disabled=\"page >= pages || pageLoading\"><span class=\"glyphicon glyphicon-chevron-right\"></span></button>\n" +
+    "              <button type=\"button\" ng-click=\"nextPage()\" class=\"btn btn-primary\" ng-disabled=\"records.length == 0 || pageLoading\"><span class=\"glyphicon glyphicon-chevron-right\"></span></button>\n" +
     "            </div>\n" +
     "\n" +
     "            <p class=\"form-control-static pull-left\" style=\"margin-right: 10px; white-space: nowrap;\">Page {{page}}</p>\n" +
@@ -529,69 +527,31 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "    <div class=\"alert\" ng-class=\"{'alert-success': statusMessage.isSuccess, 'alert-danger': statusMessage.isError, 'alert-info': statusMessage.isInfo}\"><b>{{statusMessage.text}}</b></div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!recordHasBeenDeleted\" ng-submit=\"save()\" name=\"resourceModalForm\">\n" +
-    "\n" +
-    "    <div class=\"text-right\" style=\"margin-top: -20px; margin-bottom: 20px;\">\n" +
-    "      <small>\n" +
-    "        <b ng-show=\"resourceModalForm.$valid\">\n" +
-    "          <span class=\"glyphicon glyphicon-ok text-success\"></span>\n" +
-    "          All fields are OK\n" +
-    "        </b>\n" +
-    "        <b ng-hide=\"resourceModalForm.$valid\">\n" +
-    "          <span class=\"glyphicon glyphicon-remove text-danger\"></span>\n" +
-    "          Please, check the fields\n" +
-    "        </b>\n" +
-    "      </small>\n" +
-    "    </div>\n" +
+    "  <form class=\"ag__form\" ng-if=\"!recordHasBeenDeleted\">\n" +
     "\n" +
     "    <!-- Columns -->\n" +
     "    <div class=\"form-group\" ng-repeat=\"(columnName, columnMeta) in resource.columns\">\n" +
     "      <label for=\"{{columnName}}Input\">{{columnName}}:</label>\n" +
-    "      <div ng-form name=\"resourceFormFieldForm\">\n" +
-    "        <div ng-switch on=\"getFieldType(columnMeta)\">\n" +
+    "      <div class=\"animate-switch-container\" ng-switch on=\"getFieldType(columnMeta.type)\">\n" +
     "\n" +
-    "          <!-- Dates -->\n" +
-    "          <div ng-switch-when=\"date\">\n" +
-    "            <input ng-disabled=\"isLoading\" type=\"text\" class=\"form-control\" datepicker-popup=\"yyyy-MM-dd\" ng-model=\"record[columnName]\" close-text=\"Close\" name=\"resourceFieldInput\" />\n" +
-    "          </div>\n" +
+    "        <!-- Dates -->\n" +
+    "        <input ng-switch-when=\"date\" ng-disabled=\"isLoading\" type=\"text\" class=\"form-control\" datepicker-popup=\"yyyy-MM-dd\" ng-model=\"record[columnName]\" ng-required=\"true\" close-text=\"Close\" />\n" +
     "\n" +
-    "          <!-- Checkboxes -->\n" +
-    "          <div ng-switch-when=\"checkbox\">\n" +
-    "            <div class=\"checkbox\" style=\"margin: 0px;\">\n" +
-    "              <label for=\"{{columnName}}Input\">\n" +
-    "                <input type=\"checkbox\" ng-model=\"record[columnName]\" ng-disabled=\"isLoading\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\"> Yes\n" +
-    "              </label>\n" +
-    "            </div>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <!-- Numbers -->\n" +
-    "          <div ng-switch-when=\"number\">\n" +
-    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\">\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <!-- Integers -->\n" +
-    "          <div ng-switch-when=\"integer\">\n" +
-    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\" ng-pattern=\"/^[0-9]*$/\">\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <!-- All others -->\n" +
-    "          <div ng-switch-default>\n" +
-    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"text\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\">\n" +
-    "          </div>\n" +
-    "\n" +
+    "        <!-- Checkboxes -->\n" +
+    "        <div ng-switch-when=\"checkbox\" class=\"checkbox\">\n" +
+    "          <label for=\"{{columnName}}Input\">\n" +
+    "            <input ng-model=\"record[columnName]\" ng-disabled=\"isLoading\" id=\"{{columnName}}Input\" type=\"checkbox\"> Yes\n" +
+    "          </label>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <!-- Errors -->\n" +
-    "      <div class=\"text-danger\">\n" +
-    "        <div ng-show=\"resourceFormFieldForm.resourceFieldInput.$error.required\">This field is required.</div>\n" +
-    "        <div ng-show=\"(resourceFormFieldForm.resourceFieldInput.$error.number || resourceFormFieldForm.resourceFieldInput.$error.pattern) && getFieldType(columnMeta)=='integer'\">This field expects an integer.</div>\n" +
-    "        <div ng-show=\"resourceFormFieldForm.resourceFieldInput.$error.number && getFieldType(columnMeta)!='integer'\">This field expects a number.</div>\n" +
-    "      </div>\n" +
+    "        <!-- Numbers -->\n" +
+    "        <input ng-switch-when=\"number\" ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" id=\"{{columnName}}Input\">\n" +
     "\n" +
+    "        <!-- All others -->\n" +
+    "        <input ng-switch-default ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"text\" class=\"form-control\" id=\"{{columnName}}Input\">\n" +
+    "\n" +
+    "      </div>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <button type=\"submit\" ng-click=\"save()\" style=\"visibility: hidden; height: 0px; width: 0px;\"></button>\n" +
     "\n" +
     "  </form>\n" +
     "\n" +
@@ -822,37 +782,26 @@ module.exports = [
         $scope.pages = 1;
         $scope.pageLoading = false;
         $scope.loadPage = function(pageNum) {
-          var _checkForPageNum;
           if ($scope.pageLoading || !$scope.resource) {
             return;
           }
           $scope.pageLoading = true;
           $scope.page = pageNum;
-          $scope.resource.findAll({
+          console.log("Loading page", $scope.page);
+          return $scope.resource.findAll({
             limit: $scope.perPage,
             skip: ($scope.perPage * $scope.page) - $scope.perPage
           }).then(function(data) {
+            console.log("Got page:", data);
             return $scope.records = data;
           }, function(err) {
             return $scope.records = [];
           })["finally"](function() {
             return $scope.pageLoading = false;
           });
-          if ($scope.page < $scope.pages) {
-            return;
-          }
-          _checkForPageNum = $scope.page + 1;
-          return $scope.resource.findAll({
-            limit: $scope.perPage,
-            skip: ($scope.perPage * _checkForPageNum) - $scope.perPage
-          }).then(function(data) {
-            if (data.length > 0) {
-              return $scope.pages = _checkForPageNum;
-            }
-          });
         };
         $scope.nextPage = function() {
-          if (!$scope.resource || $scope.page >= $scope.pages) {
+          if (!$scope.resource) {
             return;
           }
           return $scope.loadPage($scope.page + 1);
@@ -862,9 +811,6 @@ module.exports = [
             return;
           }
           return $scope.loadPage($scope.page - 1);
-        };
-        $scope.reloadPage = function() {
-          return $scope.loadPage($scope.page);
         };
         $scope.setPerPage = function(amount) {
           $scope.perPage = amount;
@@ -935,7 +881,6 @@ module.exports = [
             $scope.pages = 1;
             $scope.records = [];
             $scope.resource = resource;
-            $rootScope.dataBrowserSelectedResource = $scope.resource.name;
             return $scope.loadPage(1);
           }, function(err) {
             $scope.hasError = true;
@@ -951,7 +896,7 @@ module.exports = [
 },{}],9:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", "AgDataConnector", "AgUserToken", function($rootScope, AgDataConnector, AgUserToken) {
+  "AgDataConnector", "AgUserToken", function(AgDataConnector, AgUserToken) {
     return {
       restrict: "EA",
       replace: true,
@@ -969,19 +914,7 @@ module.exports = [
         $scope.namesOfAvailableResources = void 0;
         $scope.selectedResourceName = "";
         $scope.connector.resources().listNames().then(function(listOfResourceNames) {
-          var name, _i, _len, _ref;
           $scope.namesOfAvailableResources = listOfResourceNames;
-          if ($rootScope.dataBrowserSelectedResource) {
-            _ref = $scope.namesOfAvailableResources;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              name = _ref[_i];
-              if (!(name === $rootScope.dataBrowserSelectedResource)) {
-                continue;
-              }
-              $scope.selectedResourceName = name;
-              return;
-            }
-          }
           return $scope.selectedResourceName = $scope.namesOfAvailableResources[0];
         }, function(error) {
           console.log("Didn't get names", error);
@@ -1012,8 +945,7 @@ module.exports = [
     var _dataTypeToFieldType, _openModal;
     _dataTypeToFieldType = {
       string: "text",
-      integer: "integer",
-      float: "number",
+      integer: "number",
       number: "number",
       date: "date",
       boolean: "checkbox"
@@ -1046,14 +978,14 @@ module.exports = [
              */
             $scope.save = function() {
               if ($scope.isLoading) {
-                return false;
+                return;
               }
               $scope.isLoading = true;
               $scope.statusMessage = {
                 text: "Saving record...",
                 isInfo: true
               };
-              $scope.resource.save($scope.record).then(function(data) {
+              return $scope.resource.save($scope.record).then(function(data) {
                 $scope.record = angular.copy(data);
                 return $scope.statusMessage = {
                   text: "The record was saved.",
@@ -1067,7 +999,6 @@ module.exports = [
               })["finally"](function() {
                 return $scope.isLoading = false;
               });
-              return false;
             };
             $scope.remove = function() {
               if ($scope.isLoading || $scope.recordHasBeenDeleted || $scope.isNewRecord()) {

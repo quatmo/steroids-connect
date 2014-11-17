@@ -42,7 +42,7 @@
           <span ng-if="!device.connected && device.error"><a href="">{{device.error.message}}</a></span>
         </li>
       </ul>
-      <p ng-hide="DevicesAPI.devices">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>
+      <p ng-hide="DevicesAPI.devices">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator.<br><br></p>
       <br>
 
       <div class="clearfix">
@@ -55,17 +55,6 @@
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="ios_dropdown">
             <li><a role="menuitem" tabindex="-1" ng-click="launchSimulator()">iPhone</a></li>
-          </ul>
-        </div>
-        <div class="dropdown pull-left">
-          <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="android_dropdown" data-toggle="dropdown" aria-expanded="true">
-            <span class="glyphicon glyphicon-phone"></span>
-            Android
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="android_dropdown">
-            <li><a role="menuitem" tabindex="-1" ng-click="launchEmulator()">Emulator</a></li>
-            <li><a role="menuitem" tabindex="-1" ng-click="launchGenymotion()">Genymotion</a></li>
           </ul>
         </div>
       </div>

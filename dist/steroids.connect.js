@@ -4982,7 +4982,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
-    "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator or Android Emulator below.<br><br></p>\n" +
+    "      <p ng-hide=\"DevicesAPI.devices\">No connected devices detected. Please scan the QR code on the left with your iOS or Android device running the AppGyver Scanner app, or launch the iOS Simulator.<br><br></p>\n" +
     "      <br>\n" +
     "\n" +
     "      <div class=\"clearfix\">\n" +
@@ -4995,17 +4995,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          </button>\n" +
     "          <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_dropdown\">\n" +
     "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator()\">iPhone</a></li>\n" +
-    "          </ul>\n" +
-    "        </div>\n" +
-    "        <div class=\"dropdown pull-left\">\n" +
-    "          <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"android_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
-    "            <span class=\"glyphicon glyphicon-phone\"></span>\n" +
-    "            Android\n" +
-    "            <span class=\"caret\"></span>\n" +
-    "          </button>\n" +
-    "          <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"android_dropdown\">\n" +
-    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchEmulator()\">Emulator</a></li>\n" +
-    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchGenymotion()\">Genymotion</a></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "      </div>\n" +
