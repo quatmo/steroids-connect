@@ -529,31 +529,69 @@ angular.module('AppGyver.DataBrowser').run(['$templateCache', function($template
     "    <div class=\"alert\" ng-class=\"{'alert-success': statusMessage.isSuccess, 'alert-danger': statusMessage.isError, 'alert-info': statusMessage.isInfo}\"><b>{{statusMessage.text}}</b></div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!recordHasBeenDeleted\">\n" +
+    "  <form class=\"ag__form\" ng-if=\"!recordHasBeenDeleted\" ng-submit=\"save()\" name=\"resourceModalForm\">\n" +
+    "\n" +
+    "    <div class=\"text-right\" style=\"margin-top: -20px; margin-bottom: 20px;\">\n" +
+    "      <small>\n" +
+    "        <b ng-show=\"resourceModalForm.$valid\">\n" +
+    "          <span class=\"glyphicon glyphicon-ok text-success\"></span>\n" +
+    "          All fields are OK\n" +
+    "        </b>\n" +
+    "        <b ng-hide=\"resourceModalForm.$valid\">\n" +
+    "          <span class=\"glyphicon glyphicon-remove text-danger\"></span>\n" +
+    "          Please, check the fields\n" +
+    "        </b>\n" +
+    "      </small>\n" +
+    "    </div>\n" +
     "\n" +
     "    <!-- Columns -->\n" +
     "    <div class=\"form-group\" ng-repeat=\"(columnName, columnMeta) in resource.columns\">\n" +
     "      <label for=\"{{columnName}}Input\">{{columnName}}:</label>\n" +
-    "      <div class=\"animate-switch-container\" ng-switch on=\"getFieldType(columnMeta)\">\n" +
+    "      <div ng-form name=\"resourceFormFieldForm\">\n" +
+    "        <div ng-switch on=\"getFieldType(columnMeta)\">\n" +
     "\n" +
-    "        <!-- Dates -->\n" +
-    "        <input ng-switch-when=\"date\" ng-disabled=\"isLoading\" type=\"text\" class=\"form-control\" datepicker-popup=\"yyyy-MM-dd\" ng-model=\"record[columnName]\" ng-required=\"true\" close-text=\"Close\" />\n" +
+    "          <!-- Dates -->\n" +
+    "          <div ng-switch-when=\"date\">\n" +
+    "            <input ng-disabled=\"isLoading\" type=\"text\" class=\"form-control\" datepicker-popup=\"yyyy-MM-dd\" ng-model=\"record[columnName]\" close-text=\"Close\" name=\"resourceFieldInput\" />\n" +
+    "          </div>\n" +
     "\n" +
-    "        <!-- Checkboxes -->\n" +
-    "        <div ng-switch-when=\"checkbox\" class=\"checkbox\" style=\"margin: 0px;\">\n" +
-    "          <label for=\"{{columnName}}Input\">\n" +
-    "            <input ng-model=\"record[columnName]\" ng-disabled=\"isLoading\" id=\"{{columnName}}Input\" type=\"checkbox\"> Yes\n" +
-    "          </label>\n" +
+    "          <!-- Checkboxes -->\n" +
+    "          <div ng-switch-when=\"checkbox\">\n" +
+    "            <div class=\"checkbox\" style=\"margin: 0px;\">\n" +
+    "              <label for=\"{{columnName}}Input\">\n" +
+    "                <input type=\"checkbox\" ng-model=\"record[columnName]\" ng-disabled=\"isLoading\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\"> Yes\n" +
+    "              </label>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <!-- Numbers -->\n" +
+    "          <div ng-switch-when=\"number\">\n" +
+    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\">\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <!-- Integers -->\n" +
+    "          <div ng-switch-when=\"integer\">\n" +
+    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\" ng-pattern=\"/^[0-9]*$/\">\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <!-- All others -->\n" +
+    "          <div ng-switch-default>\n" +
+    "            <input ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"text\" class=\"form-control\" name=\"resourceFieldInput\" id=\"{{columnName}}Input\">\n" +
+    "          </div>\n" +
+    "\n" +
     "        </div>\n" +
-    "\n" +
-    "        <!-- Numbers -->\n" +
-    "        <input ng-switch-when=\"number\" ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"number\" class=\"form-control\" id=\"{{columnName}}Input\">\n" +
-    "\n" +
-    "        <!-- All others -->\n" +
-    "        <input ng-switch-default ng-disabled=\"isLoading\" ng-model=\"record[columnName]\" type=\"text\" class=\"form-control\" id=\"{{columnName}}Input\">\n" +
-    "\n" +
     "      </div>\n" +
+    "\n" +
+    "      <!-- Errors -->\n" +
+    "      <div class=\"text-danger\">\n" +
+    "        <div ng-show=\"resourceFormFieldForm.resourceFieldInput.$error.required\">This field is required.</div>\n" +
+    "        <div ng-show=\"(resourceFormFieldForm.resourceFieldInput.$error.number || resourceFormFieldForm.resourceFieldInput.$error.pattern) && getFieldType(columnMeta)=='integer'\">This field expects an integer.</div>\n" +
+    "        <div ng-show=\"resourceFormFieldForm.resourceFieldInput.$error.number && getFieldType(columnMeta)!='integer'\">This field expects a number.</div>\n" +
+    "      </div>\n" +
+    "\n" +
     "    </div>\n" +
+    "\n" +
+    "    <button type=\"submit\" ng-click=\"save()\" style=\"visibility: hidden; height: 0px; width: 0px;\"></button>\n" +
     "\n" +
     "  </form>\n" +
     "\n" +
@@ -974,7 +1012,8 @@ module.exports = [
     var _dataTypeToFieldType, _openModal;
     _dataTypeToFieldType = {
       string: "text",
-      integer: "number",
+      integer: "integer",
+      float: "number",
       number: "number",
       date: "date",
       boolean: "checkbox"
@@ -1007,14 +1046,14 @@ module.exports = [
              */
             $scope.save = function() {
               if ($scope.isLoading) {
-                return;
+                return false;
               }
               $scope.isLoading = true;
               $scope.statusMessage = {
                 text: "Saving record...",
                 isInfo: true
               };
-              return $scope.resource.save($scope.record).then(function(data) {
+              $scope.resource.save($scope.record).then(function(data) {
                 $scope.record = angular.copy(data);
                 return $scope.statusMessage = {
                   text: "The record was saved.",
@@ -1028,6 +1067,7 @@ module.exports = [
               })["finally"](function() {
                 return $scope.isLoading = false;
               });
+              return false;
             };
             $scope.remove = function() {
               if ($scope.isLoading || $scope.recordHasBeenDeleted || $scope.isNewRecord()) {
