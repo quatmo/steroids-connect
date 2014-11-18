@@ -2015,7 +2015,7 @@ module.exports = [
           $scope.generatorError = false;
           $scope.generatorSuccess = false;
           $scope.isGenerating = true;
-          $scope.generatorSuccessMessage = $sce.trustAsHtml("To access your new data scaffold, open <code>app/structure.coffee</code> and change the location of the root view (or a tab) to \"<b>" + ($scope.selectedResource.name.toLowerCase()) + "#index</b>\" ");
+          $scope.generatorSuccessMessage = $sce.trustAsHtml(" To access your new data scaffold, open <code>app/structure.coffee</code> and change the location of the root view (or a tab) to: <pre><code>" + ($scope.selectedResource.name.toLowerCase()) + "#index</code></pre> ");
           return BuildServerApi.generate({
             name: "scaffold",
             parameters: {
@@ -4368,8 +4368,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "              <ag-ui-spinner size=\"29\" color=\"black\" ng-show=\"isGenerating\" style=\"display: inline-block; float: left; margin-left: 10px;\"></ag-ui-spinner>\n" +
     "            </div>\n" +
     "\n" +
-    "            <p ng-if=\"generatorError\" class=\"text-danger\" style=\"margin-top: 6px;\"><small>Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</small></p>\n" +
-    "            <p ng-if=\"generatorSuccess\" class=\"text-success\" style=\"margin-top: 6px;\"><small ng-bind-html=\"generatorSuccessMessage\"></small></p>\n" +
+    "            <div ng-show=\"generatorError\">\n" +
+    "              <p class=\"text-danger\" style=\"margin-top: 6px;\">Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : \"An unknown error occured.\"}}</p>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div ng-show=\"generatorSuccess\">\n" +
+    "              <p class=\"text-success\" style=\"margin-top: 6px;\">\n" +
+    "                <div ng-bind-html=\"generatorSuccessMessage\"></div>\n" +
+    "              </p>\n" +
+    "            </div>\n" +
     "\n" +
     "          </div>\n" +
     "        </div>\n" +

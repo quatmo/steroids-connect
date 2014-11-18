@@ -52,8 +52,15 @@
               <ag-ui-spinner size="29" color="black" ng-show="isGenerating" style="display: inline-block; float: left; margin-left: 10px;"></ag-ui-spinner>
             </div>
 
-            <p ng-if="generatorError" class="text-danger" style="margin-top: 6px;"><small>Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</small></p>
-            <p ng-if="generatorSuccess" class="text-success" style="margin-top: 6px;"><small ng-bind-html="generatorSuccessMessage"></small></p>
+            <div ng-show="generatorError">
+              <p class="text-danger" style="margin-top: 6px;">Failed to generate scaffold. {{generatorErrorMessage ? generatorErrorMessage : "An unknown error occured."}}</p>
+            </div>
+
+            <div ng-show="generatorSuccess">
+              <p class="text-success" style="margin-top: 6px;">
+                <div ng-bind-html="generatorSuccessMessage"></div>
+              </p>
+            </div>
 
           </div>
         </div>
