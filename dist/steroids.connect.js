@@ -4986,7 +4986,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <br>\n" +
     "\n" +
     "      <div class=\"clearfix\">\n" +
-    "        <div class=\"pull-left\" style=\"line-height: 29px; margin-right: 10px;\"><b>Simulators:</b></div>\n" +
+    "        <div class=\"pull-left\" style=\"line-height: 29px; margin-right: 10px;\"><b>Emulate:</b></div>\n" +
     "        <div class=\"dropdown pull-left\" style=\"margin-right: 10px;\">\n" +
     "          <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
     "            <span class=\"glyphicon glyphicon-phone\"></span>\n" +
@@ -4997,6 +4997,17 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator()\">iPhone</a></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
+    "        <div class=\"dropdown pull-left\">\n" +
+    "          <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"android_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
+    "            <span class=\"glyphicon glyphicon-phone\"></span>\n" +
+    "            Android\n" +
+    "            <span class=\"caret\"></span>\n" +
+    "          </button>\n" +
+    "           <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"android_dropdown\">\n" +
+    "             <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchEmulator()\">Emulator</a></li>\n" +
+    "             <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchGenymotion()\">Genymotion</a></li>\n" +
+    "           </ul>\n" +
+    "         </div>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- iOS status -->\n" +
