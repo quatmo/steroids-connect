@@ -8,3 +8,4 @@ module.exports = angular.module "SteroidsConnect.preview", [
   .factory "DevicesAPI", require("./DevicesAPI")
   .service "DeviceCloudConnector", require("./DeviceCloudConnectorService")
   .controller "ConnectViewCtrl", require("./ConnectViewCtrl")
+  .filter "strReplace", require("./strReplaceFilter")

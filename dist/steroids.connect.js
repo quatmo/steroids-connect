@@ -1933,7 +1933,7 @@ steroidsConnectModules.run([
 ]);
 
 
-},{"../templates/SteroidsConnectTemplates":54,"./build-settings":5,"./connect-ui":7,"./data":13,"./data-generators":10,"./docs":15,"./generators":18,"./logs":25,"./navigation-and-themes":39,"./preview":52}],9:[function(_dereq_,module,exports){
+},{"../templates/SteroidsConnectTemplates":55,"./build-settings":5,"./connect-ui":7,"./data":13,"./data-generators":10,"./docs":15,"./generators":18,"./logs":25,"./navigation-and-themes":39,"./preview":52}],9:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$q", "$timeout", "$sce", "Restangular", "BuildServerApi", function($q, $timeout, $sce, Restangular, BuildServerApi) {
@@ -4081,10 +4081,10 @@ module.exports = angular.module("monospaced.qrcode");
 
 },{"../../../bower_components/qrcode-generator/js/qrcode.js":1}],52:[function(_dereq_,module,exports){
 "use strict";
-module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService")).controller("ConnectViewCtrl", _dereq_("./ConnectViewCtrl"));
+module.exports = angular.module("SteroidsConnect.preview", [_dereq_("./angular-qrcode").name]).directive("previewView", _dereq_("./previewViewDirective")).factory("DevicesAPI", _dereq_("./DevicesAPI")).service("DeviceCloudConnector", _dereq_("./DeviceCloudConnectorService")).controller("ConnectViewCtrl", _dereq_("./ConnectViewCtrl")).filter("strReplace", _dereq_("./strReplaceFilter"));
 
 
-},{"./ConnectViewCtrl":48,"./DeviceCloudConnectorService":49,"./DevicesAPI":50,"./angular-qrcode":51,"./previewViewDirective":53}],53:[function(_dereq_,module,exports){
+},{"./ConnectViewCtrl":48,"./DeviceCloudConnectorService":49,"./DevicesAPI":50,"./angular-qrcode":51,"./previewViewDirective":53,"./strReplaceFilter":54}],53:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($location, $timeout, DevicesAPI, BuildServerApi) {
@@ -4164,6 +4164,17 @@ module.exports = [
 
 
 },{}],54:[function(_dereq_,module,exports){
+"use strict";
+module.exports = [
+  function() {
+    return function(input, find, replaceWith) {
+      return input.replace(new RegExp(find, "g"), replaceWith);
+    };
+  }
+];
+
+
+},{}],55:[function(_dereq_,module,exports){
 angular.module('SteroidsConnect').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -5050,7 +5061,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +
-    "          <span class=\"text-muted\"><small>Scanner: <b>{{device.version}}</b> &middot; OS: <b>{{device.osVersion}}</b> &middot; IP: <b>{{device.ipAddress}}</b></small></span>\n" +
+    "          <span class=\"text-muted\"><small>Scanner: <b>{{device.version}}</b> &middot; OS: <b>{{device.osVersion | strReplace:'_':'.'}}</b> &middot; IP: <b>{{device.ipAddress}}</b></small></span>\n" +
     "          <span ng-if=\"!device.connected && device.error\"><a href=\"\">{{device.error.message}}</a></span>\n" +
     "        </li>\n" +
     "      </ul>\n" +
