@@ -5,7 +5,7 @@
     <!-- Filter for log msg type -->
     <div class="form-group">
       <div class="btn-group">
-        <button type="button" class="btn btn-default" ng-class="{'active': LogsFilterAPI.filters.level == availableLogLevel.level}" ng-click="LogsFilterAPI.filterByLogLevel(availableLogLevel.level)" ng-repeat="availableLogLevel in LogsFilterAPI.availableLogLevelFilters">{{availableLogLevel.label}}</button>
+        <button type="button" class="btn btn-default" ng-class="{'active': availableLogLevel.active}" ng-click="LogsFilterAPI.toggleFilterLogLevel(availableLogLevel.level)" ng-repeat="availableLogLevel in LogsFilterAPI.availableLogLevelFilters">{{availableLogLevel.label}}</button>
       </div>
     </div>
 

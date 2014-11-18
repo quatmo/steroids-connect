@@ -22,7 +22,7 @@
         <tbody>
           <tr
             log-message="logMsg"
-            ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters">
+            ng-repeat="logMsg in LogsAPI.logs | filterByLogLevels | filter:LogsFilterAPI.filters">
           </tr>
         </tbody>
       </table>

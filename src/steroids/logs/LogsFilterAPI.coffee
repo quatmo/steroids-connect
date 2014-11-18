@@ -18,8 +18,12 @@ module.exports =
         filters: {
           deviceName: "" # Name of the device originating the log entry
           view: ""       # Name of the view originating the log entry
-          level: ""      # Level of the log entry (eg. "error" or "info")
         }
+
+        logLevels:
+          "info": true
+          "error": true
+          "wanr": true
 
         # Method for clearing ALL filters
         clearFilters: () ->
@@ -76,27 +80,58 @@ module.exports =
         filterByLogLevel: (level) ->
           if level? then @filters['level'] = level else @filters['level'] = ""
 
+        # Method for toggling filter log levels on/off
+        toggleFilterLogLevel: (level) ->
+          # When "all" is clicked
+          if not level or level is ""
+            for logLevel, idx in @availableLogLevelFilters
+              if @availableLogLevelFilters[idx].level is "" then @availableLogLevelFilters[idx].active = true else @availableLogLevelFilters[idx].active = false
+          # When an option other than "all" is selected
+          else
+            for logLevel, idx in @availableLogLevelFilters when logLevel.level is level
+              @availableLogLevelFilters[idx].active = !@availableLogLevelFilters[idx].active
+              break
+            @availableLogLevelFilters[0].active = false
+          # Create levels
+          _tempLevels = {}
+          _tempCount = 0
+          for curLevel in @availableLogLevelFilters when curLevel.level isnt "" and curLevel.active
+            _tempLevels[curLevel.level] = true
+            _tempCount++
+          # Set level
+          if _tempCount is 0
+            @logLevels = null
+            @availableLogLevelFilters[0].active = true
+          else
+            @logLevels = _tempLevels
+          return
+
         # Returns a list of available log levels to filter on
         availableLogLevelFilters: [
             {
               label: "All"
               level: ""
+              active: false
             }
             {
               label: "Info"
               level: "info"
+              active: true
             }
             {
               label: "Errors"
               level: "error"
+              active: true
             }
             {
               label: "Warnings"
               level: "warn"
+              active: true
             }
             {
               label: "Debug"
               level: "debug"
+              active: false
             }
           ]
 
