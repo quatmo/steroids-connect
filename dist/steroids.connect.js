@@ -4392,7 +4392,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      </a>\n" +
     "      <a\n" +
     "        class=\"btn btn-lg btn-primary\"\n" +
-    "        href=\"http://docs.appgyver.com\"\n" +
+    "        href=\"http://docs.appgyver.com/supersonic/api-reference\"\n" +
     "        target=\"_blank\">\n" +
     "        Supersonic API Reference &raquo;\n" +
     "      </a>\n" +
