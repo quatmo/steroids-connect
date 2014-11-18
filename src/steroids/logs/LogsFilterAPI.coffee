@@ -15,23 +15,24 @@ module.exports =
 
         # Current filters
         # Empty strings = do not filter
-        filters: {
-          deviceName: "" # Name of the device originating the log entry
+        filters:
+          #deviceName: "" # Name of the device originating the log entry
           view: ""       # Name of the view originating the log entry
-        }
 
         logLevels:
           "info": true
           "error": true
-          "wanr": true
+          "warn": true
 
         # Method for clearing ALL filters
         clearFilters: () ->
-          @filters = {
-            deviceName: ""
+          @filters =
+            #deviceName: ""
             view: ""
-            level: ""
-          }
+          @logLevels =
+            "info": true
+            "error": true
+            "warn": true
 
         # Method for settings the filter on device name
         filterByDeviceName: (deviceName) ->

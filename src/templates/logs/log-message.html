@@ -1,8 +1,8 @@
 <tr class="logMsg" ng-class="(logMessage.level == 'error') ? 'level-error' : ''">
-  <td class="text-muted logMsg-device-name">
+  <!--<td class="text-muted logMsg-device-name">
     <span class="glyphicon glyphicon-phone"></span>
     <a ng-click="LogsFilterAPI.filterByDeviceName(logMessage.deviceName)">{{logMessage.deviceName}}</a>
-  </td>
+  </td>-->
   <td class="text-muted logMsg-view-name">
     <span class="glyphicon glyphicon-list-alt"></span>
     <a ng-click="LogsFilterAPI.filterByViewName(logMessage.view)">{{logMessage.view | viewUrlToRouteName}}</a>

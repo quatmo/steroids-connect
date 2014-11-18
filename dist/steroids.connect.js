@@ -2382,19 +2382,21 @@ module.exports = [
       EXPOSED LOGS FILTER API DEFINITION
        */
       filters: {
-        deviceName: "",
         view: ""
       },
       logLevels: {
         "info": true,
         "error": true,
-        "wanr": true
+        "warn": true
       },
       clearFilters: function() {
-        return this.filters = {
-          deviceName: "",
-          view: "",
-          level: ""
+        this.filters = {
+          view: ""
+        };
+        return this.logLevels = {
+          "info": true,
+          "error": true,
+          "warn": true
         };
       },
       filterByDeviceName: function(deviceName) {
@@ -4552,11 +4554,11 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    </div>\n" +
     "\n" +
     "    <!-- Filter for device name -->\n" +
-    "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
+    "    <!--<div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <div class=\"form-control-select ag__pill\">\n" +
     "        <select name=\"filterByDeviceName\" ng-model=\"LogsFilterAPI.filters.deviceName\" ng-options=\"x.filterBy as x.label for x in LogsFilterAPI.availableDeviceNameFilters(true)\"></select>\n" +
     "      </div>\n" +
-    "    </div>\n" +
+    "    </div>-->\n" +
     "\n" +
     "    <!-- Filter for view name -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
@@ -4583,10 +4585,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
 
   $templateCache.put('/steroids-connect/logs/log-message.html',
     "<tr class=\"logMsg\" ng-class=\"(logMessage.level == 'error') ? 'level-error' : ''\">\n" +
-    "  <td class=\"text-muted logMsg-device-name\">\n" +
+    "  <!--<td class=\"text-muted logMsg-device-name\">\n" +
     "    <span class=\"glyphicon glyphicon-phone\"></span>\n" +
     "    <a ng-click=\"LogsFilterAPI.filterByDeviceName(logMessage.deviceName)\">{{logMessage.deviceName}}</a>\n" +
-    "  </td>\n" +
+    "  </td>-->\n" +
     "  <td class=\"text-muted logMsg-view-name\">\n" +
     "    <span class=\"glyphicon glyphicon-list-alt\"></span>\n" +
     "    <a ng-click=\"LogsFilterAPI.filterByViewName(logMessage.view)\">{{logMessage.view | viewUrlToRouteName}}</a>\n" +
@@ -4624,16 +4626,21 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <table>\n" +
     "        <thead>\n" +
     "          <tr>\n" +
-    "            <th class=\"logMsg-device-name\">Device</th>\n" +
+    "            <!--<th class=\"logMsg-device-name\">Device</th>-->\n" +
     "            <th class=\"logMsg-view-name\">View</th>\n" +
     "            <th class=\"logMsg-time\">Time</th>\n" +
     "            <th class=\"logMsg-content\">Message</th>\n" +
     "          </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
+    "          <tr>\n" +
+    "            <td>{{thisViewLogs.length}}</td>\n" +
+    "          </tr>\n" +
+    "        </tbody>\n" +
+    "        <tbody>\n" +
     "          <tr\n" +
     "            log-message=\"logMsg\"\n" +
-    "            ng-repeat=\"logMsg in LogsAPI.logs | filterByLogLevels | filter:LogsFilterAPI.filters\">\n" +
+    "            ng-repeat=\"logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters | filterByLogLevels\">\n" +
     "          </tr>\n" +
     "        </tbody>\n" +
     "      </table>\n" +

@@ -1,12 +1,29 @@
 {
   "name": "steroids-connect",
-  "version": "0.2.5",
+  "version": "1.0.1",
   "description": "Shared components for AppGyver Steroids Connect.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AppGyver/steroids-connect.git"
+  },
+  "keywords": [
+    "steroids",
+    "connect"
+  ],
+  "author": "Tomi Hiltunen <tomi.hiltunen@appgyver.com>",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/AppGyver/steroids-connect/issues"
+  },
+  "homepage": "https://github.com/AppGyver/steroids-connect",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
-    "ag-ui-kit": "git+https://ag-global-styles-bridge:with_dis_i_read_styles_2014@github.com/AppGyver/ag-ui-kit.git#master",
-    "ag-data-browser": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-browser#master",
-    "ag-data-configurator": "git+https://jepjep:00f4fe8dd1f89e7cfa1276bfb005ac27e476312e@github.com/AppGyver/ag-data-configurator#master",
+    "ag-ui-kit": "AppGyver/ag-ui-kit#master",
+    "ag-data-browser": "AppGyver/ag-data-browser#master",
+    "ag-data-configurator": "AppGyver/ag-data-configurator#master",
     "grunt": "~0.4.5",
     "load-grunt-config": "~0.10.0",
     "load-grunt-tasks": "~0.6.0",
@@ -24,22 +41,5 @@
     "grunt-contrib-concat": "~0.4.0",
     "browserify-shim": "~3.6.0",
     "moment": "~2.7.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/AppGyver/steroids-connect.git"
-  },
-  "keywords": [
-    "steroids",
-    "connect"
-  ],
-  "author": "Tomi Hiltunen <tomi.hiltunen@appgyver.com>",
-  "license": "",
-  "bugs": {
-    "url": "https://github.com/AppGyver/steroids-connect/issues"
-  },
-  "homepage": "https://github.com/AppGyver/steroids-connect"
+  }
 }

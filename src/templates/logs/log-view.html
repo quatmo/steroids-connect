@@ -13,16 +13,21 @@
       <table>
         <thead>
           <tr>
-            <th class="logMsg-device-name">Device</th>
+            <!--<th class="logMsg-device-name">Device</th>-->
             <th class="logMsg-view-name">View</th>
             <th class="logMsg-time">Time</th>
             <th class="logMsg-content">Message</th>
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>{{thisViewLogs.length}}</td>
+          </tr>
+        </tbody>
+        <tbody>
           <tr
             log-message="logMsg"
-            ng-repeat="logMsg in LogsAPI.logs | filterByLogLevels | filter:LogsFilterAPI.filters">
+            ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters | filterByLogLevels">
           </tr>
         </tbody>
       </table>
