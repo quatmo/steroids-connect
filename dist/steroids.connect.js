@@ -4597,6 +4597,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <span class=\"glyphicon glyphicon-time\"></span>\n" +
     "    <abbr title=\"{{logMessage.datetime | logDateFormat}}\">{{logMessage.datetime | logTimeFormat}}.{{logMessage.datetime | logTimeMillisecondsFormat}}</abbr>\n" +
     "  </td>\n" +
+    "  <td class=\"logMsg-level\">\n" +
+    "    {{logMessage.level}}\n" +
+    "  </td>\n" +
     "  <td class=\"logMsg-content font-proxima\">\n" +
     "    <div ng-click=\"toggleAdditionalDetails()\" ng-class=\"{'has-more-details': hasAdditionalDetails()}\">\n" +
     "      <b>{{logMessage.message}}</b>\n" +
@@ -4629,6 +4632,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <!--<th class=\"logMsg-device-name\">Device</th>-->\n" +
     "            <th class=\"logMsg-view-name\">View</th>\n" +
     "            <th class=\"logMsg-time\">Time</th>\n" +
+    "            <th class=\"logMsg-level\">Level</th>\n" +
     "            <th class=\"logMsg-content\">Message</th>\n" +
     "          </tr>\n" +
     "        </thead>\n" +

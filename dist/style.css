@@ -742,10 +742,10 @@ colorpicker-preview {
       vertical-align: top; }
     .ag__steroids-connect .logs-container table thead th {
       padding-bottom: 10px; }
-    .ag__steroids-connect .logs-container table .logMsg-device-name, .ag__steroids-connect .logs-container table .logMsg-view-name, .ag__steroids-connect .logs-container table .logMsg-time {
+    .ag__steroids-connect .logs-container table .logMsg-device-name, .ag__steroids-connect .logs-container table .logMsg-view-name, .ag__steroids-connect .logs-container table .logMsg-time, .ag__steroids-connect .logs-container table .logMsg-level {
       padding-right: 20px;
       white-space: nowrap; }
-    .ag__steroids-connect .logs-container table .logMsg-time {
+    .ag__steroids-connect .logs-container table .logMsg-level {
       padding-right: 40px; }
     .ag__steroids-connect .logs-container table .logMsg-content {
       width: 100%; }
