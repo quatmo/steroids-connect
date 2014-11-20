@@ -3895,8 +3895,16 @@ module.exports = [
     connection = void 0;
     requestClients = function() {
       return $http.get("http://localhost:4567/__appgyver/clients").success(function(data) {
-        var devices;
+        var devices, _keys;
         devices = Object.keys(data.clients).length === 0 ? null : data.clients;
+        if (devices) {
+          _keys = Object.keys(devices);
+          angular.forEach(_keys, function(key) {
+            if (this[key].device == null) {
+              return this[key].device = "Android";
+            }
+          }, devices);
+        }
         return DevicesAPI.setDevices(devices);
       });
     };

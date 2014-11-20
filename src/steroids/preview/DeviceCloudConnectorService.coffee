@@ -17,6 +17,14 @@ module.exports =
           else
             data.clients
 
+          # Handle android names
+          if devices
+            _keys = Object.keys devices
+            angular.forEach _keys, (key) ->
+              unless @[key].device?
+                @[key].device = "Android"
+            , devices
+
           DevicesAPI.setDevices(devices)
 
       @connect = () ->
