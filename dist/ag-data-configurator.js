@@ -8,7 +8,7 @@ require("./templates");
 module.exports = modules;
 
 
-},{"./providers":13,"./templates":21,"./ui":23}],2:[function(require,module,exports){
+},{"./providers":14,"./templates":22,"./ui":24}],2:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "$window", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
@@ -663,6 +663,40 @@ module.exports = [
 "use strict";
 module.exports = [
   function() {
+    return {
+      restrict: "A",
+      replace: false,
+      scope: {
+        jsonString: "@prettifyJsonString"
+      },
+      link: function($scope, element, attrs) {
+        var $element, createPrettyString;
+        $element = angular.element(element);
+        createPrettyString = function() {
+          var e, obj, str;
+          try {
+            obj = JSON.parse($scope.jsonString);
+            str = JSON.stringify(obj, void 0, 2);
+            return $element.html(str);
+          } catch (_error) {
+            e = _error;
+            return console.log(e);
+          }
+        };
+        createPrettyString();
+        return $scope.$watch("jsonString", function() {
+          return createPrettyString();
+        });
+      }
+    };
+  }
+];
+
+
+},{}],12:[function(require,module,exports){
+"use strict";
+module.exports = [
+  function() {
     return function(template, propertyName) {
       if (!template) {
         return false;
@@ -673,7 +707,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -691,12 +725,12 @@ module.exports = [
 ];
 
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
-module.exports = angular.module("AppGyver.DataConfigurator.Providers", []).filter("agNoHiddenTemplates", require("./filters/agNoHiddenTemplates")).filter("agCanManage", require("./filters/agCanManage")).directive("agDataConfiguratorProviders", require("./directives/agDataConfiguratorProviders")).directive("agDataConfiguratorProviderDetails", require("./directives/agDataConfiguratorProviderDetails")).directive("agProviderAuthentication", require("./directives/agProviderAuthentication")).directive("agHeaders", require("./directives/agHeaders")).directive("agUrlSubstitutions", require("./directives/agUrlSubstitutions")).directive("agQueryParameters", require("./directives/agQueryParameters")).directive("agDataModel", require("./directives/agDataModel")).directive("agDataConfiguratorResourceDetails", require("./directives/agDataConfiguratorResourceDetails")).directive("agDataConfiguratorServiceDetails", require("./directives/agDataConfiguratorServiceDetails")).service("AgDataProviders", require("./services/AgDataProviders")).service("AgDataProvidersModal", require("./services/AgDataProvidersModal")).service("AgDataResources", require("./services/AgDataResources")).service("AgDataResourcesModal", require("./services/AgDataResourcesModal")).service("AgDataResourceActionsModal", require("./services/AgDataResourceActionsModal")).service("AgDataServices", require("./services/AgDataServices")).service("AgDataServicesModal", require("./services/AgDataServicesModal"));
+module.exports = angular.module("AppGyver.DataConfigurator.Providers", []).filter("agNoHiddenTemplates", require("./filters/agNoHiddenTemplates")).filter("agCanManage", require("./filters/agCanManage")).directive("agDataConfiguratorProviders", require("./directives/agDataConfiguratorProviders")).directive("agDataConfiguratorProviderDetails", require("./directives/agDataConfiguratorProviderDetails")).directive("agProviderAuthentication", require("./directives/agProviderAuthentication")).directive("agHeaders", require("./directives/agHeaders")).directive("agUrlSubstitutions", require("./directives/agUrlSubstitutions")).directive("agQueryParameters", require("./directives/agQueryParameters")).directive("agDataModel", require("./directives/agDataModel")).directive("agDataConfiguratorResourceDetails", require("./directives/agDataConfiguratorResourceDetails")).directive("agDataConfiguratorServiceDetails", require("./directives/agDataConfiguratorServiceDetails")).directive("prettifyJsonString", require("./directives/prettifyJsonString")).service("AgDataProviders", require("./services/AgDataProviders")).service("AgDataProvidersModal", require("./services/AgDataProvidersModal")).service("AgDataResources", require("./services/AgDataResources")).service("AgDataResourcesModal", require("./services/AgDataResourcesModal")).service("AgDataResourceActionsModal", require("./services/AgDataResourceActionsModal")).service("AgDataServices", require("./services/AgDataServices")).service("AgDataServicesModal", require("./services/AgDataServicesModal"));
 
 
-},{"./directives/agDataConfiguratorProviderDetails":2,"./directives/agDataConfiguratorProviders":3,"./directives/agDataConfiguratorResourceDetails":4,"./directives/agDataConfiguratorServiceDetails":5,"./directives/agDataModel":6,"./directives/agHeaders":7,"./directives/agProviderAuthentication":8,"./directives/agQueryParameters":9,"./directives/agUrlSubstitutions":10,"./filters/agCanManage":11,"./filters/agNoHiddenTemplates":12,"./services/AgDataProviders":14,"./services/AgDataProvidersModal":15,"./services/AgDataResourceActionsModal":16,"./services/AgDataResources":17,"./services/AgDataResourcesModal":18,"./services/AgDataServices":19,"./services/AgDataServicesModal":20}],14:[function(require,module,exports){
+},{"./directives/agDataConfiguratorProviderDetails":2,"./directives/agDataConfiguratorProviders":3,"./directives/agDataConfiguratorResourceDetails":4,"./directives/agDataConfiguratorServiceDetails":5,"./directives/agDataModel":6,"./directives/agHeaders":7,"./directives/agProviderAuthentication":8,"./directives/agQueryParameters":9,"./directives/agUrlSubstitutions":10,"./directives/prettifyJsonString":11,"./filters/agCanManage":12,"./filters/agNoHiddenTemplates":13,"./services/AgDataProviders":15,"./services/AgDataProvidersModal":16,"./services/AgDataResourceActionsModal":17,"./services/AgDataResources":18,"./services/AgDataResourcesModal":19,"./services/AgDataServices":20,"./services/AgDataServicesModal":21}],15:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -754,7 +788,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", function($modal, Restangular, AgDataProviders) {
@@ -877,7 +911,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataResources", function($modal, Restangular, AgDataProviders, AgDataResources) {
@@ -992,7 +1026,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -1035,7 +1069,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataResources", function($modal, Restangular, AgDataProviders, AgDataResources) {
@@ -1221,7 +1255,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -1264,7 +1298,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataServices", function($modal, Restangular, AgDataProviders, AgDataServices) {
@@ -1431,7 +1465,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -1472,7 +1506,10 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <td>{{column.name}}</td>\n" +
     "      <td>{{column.type}}</td>\n" +
     "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
-    "      <td ng-hide=\"hideExample\">{{column.example_value}}</td>\n" +
+    "      <td ng-hide=\"hideExample\">\n" +
+    "        <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
+    "        <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; overflow: auto;\"></div>\n" +
+    "      </td>\n" +
     "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
     "    </tr>\n" +
     "    <tr ng-if=\"columnsEditable\">\n" +
@@ -2210,7 +2247,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
 
 }]);
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -2353,12 +2390,12 @@ module.exports = [
 ];
 
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 module.exports = angular.module("AppGyver.DataConfigurator.UI", []).directive("agDataConfigurator", require("./directives/agDataConfigurator")).service("AgDataSettings", require("./services/AgDataSettings"));
 
 
-},{"./directives/agDataConfigurator":22,"./services/AgDataSettings":24}],24:[function(require,module,exports){
+},{"./directives/agDataConfigurator":23,"./services/AgDataSettings":25}],25:[function(require,module,exports){
 "use strict";
 module.exports = [
   function() {
