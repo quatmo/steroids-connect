@@ -224,6 +224,20 @@ module.exports = [
         $scope.hadColumnsToBeginWith = !($scope.resource.columns === null);
         $scope.columnsSaving = false;
         $scope.saveColumns = function() {
+          var _identifierKeyMatched;
+          if ($filter("agCanManage")($scope.providerTemplate, "resource_identifier_key")) {
+            _identifierKeyMatched = false;
+            angular.forEach($scope.columns, function(column) {
+              if (column.name === $scope.resource.identifierKey) {
+                return _identifierKeyMatched = true;
+              }
+            });
+            if (!_identifierKeyMatched || (!$scope.resource.identifierKey || $scope.resource.identifierKey === "")) {
+              $scope.resource.identifierKey = null;
+              alert("Identifier key (ID) must be set!");
+              return;
+            }
+          }
           $scope.columnsSaving = true;
           $scope.resource.columns = $scope.columns;
           return AgDataResources.save($scope.resource).then(function(data) {
@@ -1113,8 +1127,14 @@ module.exports = [
             /*
             Modal methods
              */
+            $scope.isValidResourceName = function() {
+              return !$scope.resource.name.match(/s$/g);
+            };
             $scope.save = function() {
               if ($scope.isLoading) {
+                return;
+              }
+              if (!$scope.isValidResourceName()) {
                 return;
               }
               $scope.isLoading = true;
@@ -1928,6 +1948,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    <div class=\"form-group\">\n" +
     "      <label for=\"ResourceNameInput\">Name:</label>\n" +
     "      <input ng-model=\"resource.name\" type=\"text\" class=\"form-control\" id=\"ResourceNameInput\">\n" +
+    "      <p ng-show=\"!isValidResourceName()\" class=\"text-red\" style=\"margin-top: 6px;\">Name cannot end in letter \"s\". Please use singular words.</p>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid==1\">\n" +
