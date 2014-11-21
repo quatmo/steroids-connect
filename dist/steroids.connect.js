@@ -4394,7 +4394,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "  </div>\n" +
     "\n" +
-    "</div>\n"
+    "</div>"
   );
 
 
