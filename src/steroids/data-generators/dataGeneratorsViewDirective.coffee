@@ -91,7 +91,7 @@ module.exports = [
         $scope.generatorError = false
         $scope.generatorSuccess = false
         $scope.isGenerating = true
-        $scope.generatorSuccessMessage = $sce.trustAsHtml(""" To access your new data scaffold, open the project structure file at<br><br>&nbsp;&nbsp;&nbsp;<code style="margin-left: 20px;">myProject/app/structure.coffee</code><br><br>and change the location of the root view (or a tab) to: <br><br><p class="lead text-selectable" style="margin-left: 20px; font-family: monospace; white-space: none;">#{$scope.selectedResource.name.toLowerCase()}#index</p> """)
+        $scope.generatorSuccessMessage = $sce.trustAsHtml(""" To access your new data scaffold, open the project structure file at<br><br><code style="margin-left: 20px;">myProject/app/structure.coffee</code><br><br>and change the location of the root view (or a tab) to: <br><br><p class="lead text-selectable" style="margin-left: 20px; font-family: monospace; white-space: none;">#{$scope.selectedResource.name.toLowerCase()}#index</p> """)
         BuildServerApi
           .generate
             name: "scaffold",
