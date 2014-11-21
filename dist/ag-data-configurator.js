@@ -972,6 +972,7 @@ module.exports = [
             Modal methods
              */
             $scope.save = function() {
+              var actionName;
               if ($scope.isLoading) {
                 return;
               }
@@ -980,6 +981,14 @@ module.exports = [
                 text: "Saving resource...",
                 isInfo: true
               };
+              for (actionName in $scope.resource.actions) {
+                if ($scope.resource.actions[actionName].rootKeys.request === "") {
+                  $scope.resource.actions[actionName].rootKeys.request = null;
+                }
+                if ($scope.resource.actions[actionName].rootKeys.response === "") {
+                  $scope.resource.actions[actionName].rootKeys.response = null;
+                }
+              }
               return AgDataResources.save($scope.resource).then(function(data) {
                 $scope.resource = Restangular.copy(data);
                 return $scope.statusMessage = {
@@ -1508,7 +1517,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
     "      <td ng-hide=\"hideExample\">\n" +
     "        <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
-    "        <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; overflow: auto;\"></div>\n" +
+    "        <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; max-height: 300px; overflow: auto;\"></div>\n" +
     "      </td>\n" +
     "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
     "    </tr>\n" +
