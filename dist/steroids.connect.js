@@ -2015,7 +2015,7 @@ module.exports = [
           $scope.generatorError = false;
           $scope.generatorSuccess = false;
           $scope.isGenerating = true;
-          $scope.generatorSuccessMessage = $sce.trustAsHtml(" To access your new data scaffold, open <code>app/structure.coffee</code> and change the location of the root view (or a tab) to: <pre><code>" + ($scope.selectedResource.name.toLowerCase()) + "#index</code></pre> ");
+          $scope.generatorSuccessMessage = $sce.trustAsHtml(" To access your new data scaffold, open <code>app/structure.coffee</code> and change the location of the root view (or a tab) to: <br><br><p class=\"lead text-selectable\" style=\"font-family: monospace;\">" + ($scope.selectedResource.name.toLowerCase()) + "#index</p> ");
           return BuildServerApi.generate({
             name: "scaffold",
             parameters: {
@@ -4335,7 +4335,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <br><br>\n" +
     "\n" +
     "  <!-- List of available generators -->\n" +
-    "  <div class=\"row\">\n" +
+    "  <div class=\"row text-noselect\">\n" +
     "\n" +
     "    <div class=\"col-xs-12 col-sm-6\">\n" +
     "      <form class=\"form-horizontal\" role=\"form\">\n" +
@@ -4381,7 +4381,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            </div>\n" +
     "\n" +
     "            <div ng-show=\"generatorSuccess\">\n" +
-    "              <p class=\"text-success\" style=\"margin-top: 6px;\">\n" +
+    "              <p class=\"text-success text-noselect\" style=\"margin-top: 6px;\">\n" +
     "                <div ng-bind-html=\"generatorSuccessMessage\"></div>\n" +
     "              </p>\n" +
     "            </div>\n" +
