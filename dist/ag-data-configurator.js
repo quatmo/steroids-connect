@@ -451,7 +451,8 @@ module.exports = [
             $scope.columns = [];
           }
           $scope.columns.push($scope.temp);
-          return _makeNewTemp();
+          _makeNewTemp();
+          return false;
         };
         $scope.removeByName = function(name) {
           var column, idx, _i, _len, _ref, _results;
@@ -1513,43 +1514,45 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
 
 
   $templateCache.put('/appgyver/data-configurator/providers/data-model.html',
-    "<table class=\"table table-striped full-width ag__form\">\n" +
-    "  <thead>\n" +
-    "    <tr>\n" +
-    "      <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
-    "      <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
-    "      <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
-    "      <th ng-hide=\"hideRequired\">Required?</th>\n" +
-    "      <th ng-hide=\"hideExample\">Example data</th>\n" +
-    "      <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
-    "    </tr>\n" +
-    "  </thead>\n" +
-    "  <tbody>\n" +
-    "    <tr ng-repeat=\"column in columns | orderBy:'name'\">\n" +
-    "      <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
-    "      <td>{{column.name}}</td>\n" +
-    "      <td>{{column.type}}</td>\n" +
-    "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
-    "      <td ng-hide=\"hideExample\">\n" +
-    "        <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
-    "        <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; max-height: 300px; overflow: auto;\"></div>\n" +
-    "      </td>\n" +
-    "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
-    "    </tr>\n" +
-    "    <tr ng-if=\"columnsEditable\">\n" +
-    "      <td ng-if=\"identifierKeyEditable\"></td>\n" +
-    "      <td><input type=\"text\" class=\"form-control\" ng-model=\"temp.name\" placeholder=\"Name...\"></td>\n" +
-    "      <td>\n" +
-    "        <div class=\"form-control-select\">\n" +
-    "          <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
-    "        </div>\n" +
-    "      </td>\n" +
-    "      <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\" style=\"margin: 0px;\"></td>\n" +
-    "      <td ng-hide=\"hideExample\"></td>\n" +
-    "      <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
-    "    </tr>\n" +
-    "  </tbody>\n" +
-    "</table>"
+    "<form ng-submit=\"add()\">\n" +
+    "  <table class=\"table table-striped full-width ag__form\">\n" +
+    "    <thead>\n" +
+    "      <tr>\n" +
+    "        <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
+    "        <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
+    "        <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
+    "        <th ng-hide=\"hideRequired\">Required?</th>\n" +
+    "        <th ng-hide=\"hideExample\">Example data</th>\n" +
+    "        <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
+    "      </tr>\n" +
+    "    </thead>\n" +
+    "    <tbody>\n" +
+    "      <tr ng-repeat=\"column in columns | orderBy:'name'\">\n" +
+    "        <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
+    "        <td>{{column.name}}</td>\n" +
+    "        <td>{{column.type}}</td>\n" +
+    "        <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
+    "        <td ng-hide=\"hideExample\">\n" +
+    "          <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
+    "          <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; max-height: 300px; overflow: auto;\"></div>\n" +
+    "        </td>\n" +
+    "        <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
+    "      </tr>\n" +
+    "      <tr ng-if=\"columnsEditable\">\n" +
+    "        <td ng-if=\"identifierKeyEditable\"></td>\n" +
+    "        <td><input type=\"text\" class=\"form-control\" ng-model=\"temp.name\" placeholder=\"Name...\"></td>\n" +
+    "        <td>\n" +
+    "          <div class=\"form-control-select\">\n" +
+    "            <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
+    "          </div>\n" +
+    "        </td>\n" +
+    "        <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\" style=\"margin: 0px;\"></td>\n" +
+    "        <td ng-hide=\"hideExample\"></td>\n" +
+    "        <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
+    "      </tr>\n" +
+    "    </tbody>\n" +
+    "  </table>\n" +
+    "</form>"
   );
 
 
@@ -1698,28 +1701,30 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ProviderNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"provider.name\" type=\"text\" class=\"form-control\" id=\"ProviderNameInput\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ProviderNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"provider.name\" type=\"text\" class=\"form-control\" id=\"ProviderNameInput\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"template | agCanManage:'provider_base_url'\">\n" +
-    "      <label for=\"ProviderBaseUrlInput\">Base URL:</label>\n" +
-    "      <input ng-model=\"provider.baseUrl\" type=\"text\" class=\"form-control\" id=\"ProviderBaseUrlInput\" placeholder=\"http://example.com/api\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"template | agCanManage:'provider_base_url'\">\n" +
+    "        <label for=\"ProviderBaseUrlInput\">Base URL:</label>\n" +
+    "        <input ng-model=\"provider.baseUrl\" type=\"text\" class=\"form-control\" id=\"ProviderBaseUrlInput\" placeholder=\"http://example.com/api\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-provider-authentication can-change-type=\"true\" ng-if=\"template | agCanManage:'provider_authentication'\"></ag-provider-authentication>\n" +
+    "      <ag-provider-authentication can-change-type=\"true\" ng-if=\"template | agCanManage:'provider_authentication'\"></ag-provider-authentication>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-class=\"{'has-error': providerForm[field.name].$invalid}\" ng-repeat=\"field in template.keys\">\n" +
-    "      <label for=\"ProviderCustomInput_{{field.name}}\">{{field.human_name}}</label>\n" +
-    "      <input ng-required=\"field.required\" ag-name=\"field.name\" ng-model=\"provider.configurationKeys[field.name]\" type=\"text\" class=\"form-control\" id=\"ProviderCustomInput_{{field.name}}\" placeholder=\"\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': providerForm[field.name].$invalid}\" ng-repeat=\"field in template.keys\">\n" +
+    "        <label for=\"ProviderCustomInput_{{field.name}}\">{{field.human_name}}</label>\n" +
+    "        <input ng-required=\"field.required\" ag-name=\"field.name\" ng-model=\"provider.configurationKeys[field.name]\" type=\"text\" class=\"form-control\" id=\"ProviderCustomInput_{{field.name}}\" placeholder=\"\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"provider.headers\" for-resource=\"{{false}}\" ng-if=\"template | agCanManage:'provider_headers'\"></ag-headers>\n" +
+    "      <ag-headers headers=\"provider.headers\" for-resource=\"{{false}}\" ng-if=\"template | agCanManage:'provider_headers'\"></ag-headers>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -1857,50 +1862,54 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <ul class=\"nav nav-pills\">\n" +
-    "    <li ng-class=\"{'active': selectedAction == actionName}\" ng-repeat=\"(actionName, actionMeta) in availableActions\">\n" +
-    "      <a ng-click=\"selectAction(actionName)\">{{actionMeta.label}}</a>\n" +
-    "    </li>\n" +
-    "  </ul>\n" +
-    "  <br>\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
     "\n" +
-    "  <div class=\"well\">{{availableActions[selectedAction].description}}</div>\n" +
+    "    <ul class=\"nav nav-pills\">\n" +
+    "      <li ng-class=\"{'active': selectedAction == actionName}\" ng-repeat=\"(actionName, actionMeta) in availableActions\">\n" +
+    "        <a ng-click=\"selectAction(actionName)\">{{actionMeta.label}}</a>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "    <br>\n" +
     "\n" +
-    "  <form class=\"ag__form\">\n" +
+    "    <div class=\"well\">{{availableActions[selectedAction].description}}</div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ActionPathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}{{getAction().path}}<br>(the {id} will be replaced with resource's unique identifier)</small>\n" +
-    "      <input ng-model=\"getAction().path\" type=\"text\" class=\"form-control\" id=\"ActionPathInput\">\n" +
-    "    </div>\n" +
+    "    <form class=\"ag__form\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Root keys:</label>\n" +
-    "      <small class=\"text-muted\">If your desired data is nested under a certain property (eg. \"data\", \"results\"), you can set that property as the root key here for requests and responses individually.</small>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-3\">Response:</div>\n" +
-    "        <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.response\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyResponseInput\"></div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ActionPathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}{{getAction().path}}<br>(the {id} will be replaced with resource's unique identifier)</small>\n" +
+    "        <input ng-model=\"getAction().path\" type=\"text\" class=\"form-control\" id=\"ActionPathInput\">\n" +
     "      </div>\n" +
-    "      <div class=\"row\" style=\"margin-top: 10px;\">\n" +
-    "        <div class=\"col-xs-3\">Request:</div>\n" +
-    "        <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.request\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyRequestInput\"></div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Root keys:</label>\n" +
+    "        <small class=\"text-muted\">If your desired data is nested under a certain property (eg. \"data\", \"results\"), you can set that property as the root key here for requests and responses individually.</small>\n" +
+    "        <div class=\"row\">\n" +
+    "          <div class=\"col-xs-3\">Response:</div>\n" +
+    "          <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.response\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyResponseInput\"></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"row\" style=\"margin-top: 10px;\">\n" +
+    "          <div class=\"col-xs-3\">Request:</div>\n" +
+    "          <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.request\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyRequestInput\"></div>\n" +
+    "        </div>\n" +
     "      </div>\n" +
-    "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Query parameters:</label>\n" +
-    "      <ag-query-parameters query-parameters=\"getAction().queryParameters\"></ag-query-parameters>\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Query parameters:</label>\n" +
+    "        <ag-query-parameters query-parameters=\"getAction().queryParameters\"></ag-query-parameters>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>URL substitutions:</label>\n" +
-    "      <small class=\"text-muted\">URL subsitutions can be used in resource path by wrapping the name in curly brackets, like {id}. Note, that {id} is automatically repalced with resource's unique identifier.</small>\n" +
-    "      <ag-url-substitutions url-substitutions=\"getAction().urlSubstitutions\"></ag-url-substitutions>\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>URL substitutions:</label>\n" +
+    "        <small class=\"text-muted\">URL subsitutions can be used in resource path by wrapping the name in curly brackets, like {id}. Note, that {id} is automatically repalced with resource's unique identifier.</small>\n" +
+    "        <ag-url-substitutions url-substitutions=\"getAction().urlSubstitutions\"></ag-url-substitutions>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"getAction().headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "      <ag-headers headers=\"getAction().headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -2008,26 +2017,28 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ResourceNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"resource.name\" type=\"text\" class=\"form-control\" id=\"ResourceNameInput\">\n" +
-    "      <p ng-show=\"!isValidResourceName()\" class=\"text-red\" style=\"margin-top: 6px;\">Name cannot end in letter \"s\". Please use singular words.</p>\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ResourceNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"resource.name\" type=\"text\" class=\"form-control\" id=\"ResourceNameInput\">\n" +
+    "        <p ng-show=\"!isValidResourceName()\" class=\"text-red\" style=\"margin-top: 6px;\">Name cannot end in letter \"s\". Please use singular words.</p>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid==1\">\n" +
-    "      <label for=\"ResourcePathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}</small>\n" +
-    "      <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"car\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid==1\">\n" +
+    "        <label for=\"ResourcePathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}</small>\n" +
+    "        <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid!=1\">\n" +
-    "      <label for=\"ResourcePathInput\">Class UID:</label>\n" +
-    "      <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"Car\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid!=1\">\n" +
+    "        <label for=\"ResourcePathInput\">Class UID:</label>\n" +
+    "        <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"Car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -2141,29 +2152,31 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServiceNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"service.name\" type=\"text\" class=\"form-control\" id=\"ServiceNameInput\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServicePathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{service.path}}</small>\n" +
-    "      <input ng-model=\"service.path\" type=\"text\" class=\"form-control\" id=\"ServicePathInput\" placeholder=\"car\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServiceNameInput\">Service method:</label>\n" +
-    "      <div class=\"form-control-select\">\n" +
-    "        <select ng-change=\"setAction(actionName)\" ng-model=\"actionName\" ng-options=\"action as method for (action, method) in actionToMethod\"></select>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServiceNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"service.name\" type=\"text\" class=\"form-control\" id=\"ServiceNameInput\">\n" +
     "      </div>\n" +
-    "    </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"service.headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServicePathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{service.path}}</small>\n" +
+    "        <input ng-model=\"service.path\" type=\"text\" class=\"form-control\" id=\"ServicePathInput\" placeholder=\"car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "  </form>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServiceNameInput\">Service method:</label>\n" +
+    "        <div class=\"form-control-select\">\n" +
+    "          <select ng-change=\"setAction(actionName)\" ng-model=\"actionName\" ng-options=\"action as method for (action, method) in actionToMethod\"></select>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <ag-headers headers=\"service.headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
