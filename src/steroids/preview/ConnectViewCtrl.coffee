@@ -6,10 +6,9 @@ module.exports =
     "$scope"
     "$location"
     "$timeout"
-    "$interval"
     "DevicesAPI"
     "BuildServerApi"
-    ($scope, $location, $timeout, $interval, DevicesAPI, BuildServerApi) ->
+    ($scope, $location, $timeout, DevicesAPI, BuildServerApi) ->
 
       $scope.DevicesAPI = DevicesAPI
       $scope.simulatorLaunchError = undefined
@@ -36,15 +35,17 @@ module.exports =
       ###
 
       $scope.viewsToDebug = []
+      $scope.loadingViewsToDebug = true
 
-      $interval ->
+      $scope.reloadViewsToDebug = ->
+        $scope.loadingViewsToDebug = true
         BuildServerApi.getViewsToDebug().then(
           (list) ->
             $scope.viewsToDebug = list.data
           () ->
             $scope.viewsToDebug = []
-        )
-      , 1000
+        ).finally ->
+          $scope.loadingViewsToDebug = false
 
       $scope.debugViewByUrl = (url) ->
         BuildServerApi.debugView(url)
@@ -76,6 +77,8 @@ module.exports =
             $scope.emulatorStatus.state = "error"
             $scope.emulatorStatus.stateMessage = error.data.error
         )
+
+      # chrome://inspect
 
       ###
       EMULATOR

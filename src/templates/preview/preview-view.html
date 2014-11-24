@@ -37,12 +37,15 @@
         <li ng-repeat="device in DevicesAPI.devices">
           <!-- S/ DEBUG -->
           <div class="dropdown pull-right" style="margin-top: 6px;" ng-if="device.simulator">
-            <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="ios_simulator_debug_dropdown" data-toggle="dropdown" aria-expanded="true">
+            <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="ios_simulator_debug_dropdown" data-toggle="dropdown" aria-expanded="true" ng-click="reloadViewsToDebug()">
               Debug
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="ios_simulator_debug_dropdown">
-              <li ng-repeat="debuggable in viewsToDebug"><a role="menuitem" tabindex="-1" ng-click="debugViewByUrl(debuggable)">{{debuggable | viewUrlToRouteName}}</a></li>
+              <li ng-hide="loadingViewsToDebug" ng-repeat="debuggable in viewsToDebug"><a role="menuitem" tabindex="-1" ng-click="debugViewByUrl(debuggable)">{{debuggable | viewUrlToRouteName}}</a></li>
+              <li ng-show="loadingViewsToDebug" class="clearfix" style="padding-left: 10px; padding-right: 10px;">
+                <div style="vertical-align: center;"><ag-ui-spinner size="22" color="black" style="display: inline-block; float: left;"></ag-ui-spinner> <span style="vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;">Getting views...</span></div>
+              </li>
             </ul>
           </div>
           <!-- E/ DEBUG -->

@@ -3791,7 +3791,7 @@ module.exports = [
 },{}],48:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$scope", "$location", "$timeout", "$interval", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, $interval, DevicesAPI, BuildServerApi) {
+  "$scope", "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, DevicesAPI, BuildServerApi) {
     var decodedQrCode, parseQueryParams, qrCode;
     $scope.DevicesAPI = DevicesAPI;
     $scope.simulatorLaunchError = void 0;
@@ -3819,13 +3819,17 @@ module.exports = [
     VIEW DEBUGGING
      */
     $scope.viewsToDebug = [];
-    $interval(function() {
+    $scope.loadingViewsToDebug = true;
+    $scope.reloadViewsToDebug = function() {
+      $scope.loadingViewsToDebug = true;
       return BuildServerApi.getViewsToDebug().then(function(list) {
         return $scope.viewsToDebug = list.data;
       }, function() {
         return $scope.viewsToDebug = [];
+      })["finally"](function() {
+        return $scope.loadingViewsToDebug = false;
       });
-    }, 1000);
+    };
     $scope.debugViewByUrl = function(url) {
       return BuildServerApi.debugView(url);
     };
@@ -5119,12 +5123,15 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <!-- S/ DEBUG -->\n" +
     "          <div class=\"dropdown pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.simulator\">\n" +
-    "            <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_simulator_debug_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
+    "            <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_simulator_debug_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\" ng-click=\"reloadViewsToDebug()\">\n" +
     "              Debug\n" +
     "              <span class=\"caret\"></span>\n" +
     "            </button>\n" +
     "            <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_simulator_debug_dropdown\">\n" +
-    "              <li ng-repeat=\"debuggable in viewsToDebug\"><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"debugViewByUrl(debuggable)\">{{debuggable | viewUrlToRouteName}}</a></li>\n" +
+    "              <li ng-hide=\"loadingViewsToDebug\" ng-repeat=\"debuggable in viewsToDebug\"><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"debugViewByUrl(debuggable)\">{{debuggable | viewUrlToRouteName}}</a></li>\n" +
+    "              <li ng-show=\"loadingViewsToDebug\" class=\"clearfix\" style=\"padding-left: 10px; padding-right: 10px;\">\n" +
+    "                <div style=\"vertical-align: center;\"><ag-ui-spinner size=\"22\" color=\"black\" style=\"display: inline-block; float: left;\"></ag-ui-spinner> <span style=\"vertical-align: top; display: inline-block; float: left; line-height: 22px; margin-left: 10px;\">Getting views...</span></div>\n" +
+    "              </li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
     "          <!-- E/ DEBUG -->\n" +
