@@ -59,6 +59,9 @@ module.exports = [
         params:
           "url": viewUrl
 
+    @openChromeInspector = ->
+      $http.get "#{_apiBase}/debug/chrome"
+
     # Return this
     @
 

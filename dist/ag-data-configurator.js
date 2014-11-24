@@ -2387,42 +2387,51 @@ module.exports = [
         Events
          */
         $rootScope.$on("ag.data-configurator.provider.created", function($event, newProvider) {
-          return $scope.navigation.showProvider(newProvider);
+          $scope.navigation.showProvider(newProvider);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.provider.updated", function($event, updatedProvider) {
           if ($scope.provider.uid === updatedProvider.uid) {
-            return $scope.provider = updatedProvider;
+            $scope.provider = updatedProvider;
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.provider.destroyed", function($event, destroyedProviderId) {
           if ($scope.provider.uid === destroyedProviderId) {
-            return $scope.navigation.listProviders();
+            $scope.navigation.listProviders();
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.resource.created", function($event, newResource) {
-          return $scope.navigation.showResource(newResource);
+          $scope.navigation.showResource(newResource);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.resource.updated", function($event, updatedResource) {
           if ($scope.resource.uid === updatedResource.uid) {
-            return $scope.resource = updatedResource;
+            $scope.resource = updatedResource;
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.resource.destroyed", function($event, destroyedResourceId) {
           if ($scope.resource.uid === destroyedResourceId) {
-            return $scope.navigation.showProvider();
+            $scope.navigation.showProvider();
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.service.created", function($event, newService) {
-          return $scope.navigation.showService(newService);
+          $scope.navigation.showService(newService);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.service.updated", function($event, updatedService) {
           if ($scope.service.uid === updatedService.uid) {
-            return $scope.service = updatedService;
+            $scope.service = updatedService;
+            return _updateStickyViewSettings();
           }
         });
         return $rootScope.$on("ag.data-configurator.service.destroyed", function($event, destroyedServiceId) {
           if ($scope.service.uid === destroyedServiceId) {
-            return $scope.navigation.showProvider();
+            $scope.navigation.showProvider();
+            return _updateStickyViewSettings();
           }
         });
       }

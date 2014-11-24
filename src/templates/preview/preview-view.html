@@ -36,7 +36,7 @@
       <ul class="devices-list">
         <li ng-repeat="device in DevicesAPI.devices">
           <!-- S/ DEBUG -->
-          <div class="dropdown pull-right" style="margin-top: 6px;" ng-if="device.simulator">
+          <div class="dropdown pull-right" style="margin-top: 6px;" ng-if="device.device!='Android' && device.simulator">
             <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="ios_simulator_debug_dropdown" data-toggle="dropdown" aria-expanded="true" ng-click="reloadViewsToDebug()">
               Debug
               <span class="caret"></span>
@@ -48,6 +48,9 @@
               </li>
             </ul>
           </div>
+          <button class="btn btn-lg btn-primary pull-right" style="margin-top: 6px;" ng-if="device.device=='Android'" type="button" ng-click="openChromeInspector()">
+            Debug
+          </button>
           <!-- E/ DEBUG -->
           <div class="status-indicator" ng-class="{'yellow': false, 'green': true}"></div>
           <h2 class="no-margin"><b>{{device.device}}{{device.simulator? " simulator" : ""}}</b></h2>

@@ -1687,6 +1687,9 @@ module.exports = [
         }
       });
     };
+    this.openChromeInspector = function() {
+      return $http.get("" + _apiBase + "/debug/chrome");
+    };
     return this;
   }
 ];
@@ -3833,6 +3836,9 @@ module.exports = [
     $scope.debugViewByUrl = function(url) {
       return BuildServerApi.debugView(url);
     };
+    $scope.openChromeInspector = function() {
+      return BuildServerApi.openChromeInspector();
+    };
 
     /*
     EMULATOR
@@ -5122,7 +5128,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <ul class=\"devices-list\">\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <!-- S/ DEBUG -->\n" +
-    "          <div class=\"dropdown pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.simulator\">\n" +
+    "          <div class=\"dropdown pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.device!='Android' && device.simulator\">\n" +
     "            <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_simulator_debug_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\" ng-click=\"reloadViewsToDebug()\">\n" +
     "              Debug\n" +
     "              <span class=\"caret\"></span>\n" +
@@ -5134,6 +5140,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "              </li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
+    "          <button class=\"btn btn-lg btn-primary pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.device=='Android'\" type=\"button\" ng-click=\"openChromeInspector()\">\n" +
+    "            Debug\n" +
+    "          </button>\n" +
     "          <!-- E/ DEBUG -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +

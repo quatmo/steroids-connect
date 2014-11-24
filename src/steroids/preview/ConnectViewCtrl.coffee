@@ -50,6 +50,9 @@ module.exports =
       $scope.debugViewByUrl = (url) ->
         BuildServerApi.debugView(url)
 
+      $scope.openChromeInspector = ->
+        BuildServerApi.openChromeInspector()
+
       ###
       EMULATOR
       ###
