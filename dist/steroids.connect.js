@@ -1656,8 +1656,20 @@ module.exports = [
     this.deploy = function() {
       return $http.get("" + _apiBase + "/deploy");
     };
-    this.launchSimulator = function() {
-      return $http.get("" + _apiBase + "/emulators/simulator/start");
+    this.getAvailableSimulators = function() {
+      return $http.get("" + _apiBase + "/emulators/simulator/devices");
+    };
+    this.launchSimulator = function(deviceType) {
+      var options;
+      options = {};
+      if (deviceType) {
+        options = {
+          params: {
+            "device": "" + deviceType.name + "@" + deviceType.sdks
+          }
+        };
+      }
+      return $http.get("" + _apiBase + "/emulators/simulator/start", options);
     };
     this.launchEmulator = function() {
       return $http.get("" + _apiBase + "/emulators/android/start");
@@ -3904,19 +3916,23 @@ module.exports = [
     /*
     SIMULATOR
      */
+    $scope.availableSimulators = [];
+    BuildServerApi.getAvailableSimulators().then(function(devices) {
+      return $scope.availableSimulators = devices.data;
+    });
     $scope.simulatorStatus = {
       isLaunching: false,
       state: "",
       stateMessage: ""
     };
-    return $scope.launchSimulator = function() {
+    return $scope.launchSimulator = function(deviceType) {
       if ($scope.simulatorStatus.isLaunching) {
         return;
       }
       $scope.simulatorStatus.isLaunching = true;
       $scope.simulatorStatus.state = "launching";
       $scope.simulatorStatus.stateMessage = "Launching iOS simulator...";
-      return BuildServerApi.launchSimulator().then(function(res) {
+      return BuildServerApi.launchSimulator(deviceType).then(function(res) {
         $scope.simulatorStatus.state = "success";
         $scope.simulatorStatus.stateMessage = "iOS simulator launched!";
         return $timeout(function() {
@@ -5160,7 +5176,9 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <span class=\"caret\"></span>\n" +
     "          </button>\n" +
     "          <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_dropdown\">\n" +
-    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator()\">iPhone</a></li>\n" +
+    "            <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator()\">Default simulator</a></li>\n" +
+    "            <li class=\"divider\"></li>\n" +
+    "            <li ng-repeat=\"deviceSimulator in availableSimulators\"><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchSimulator(deviceSimulator)\"><b>{{deviceSimulator.name}}</b> <span class=\"text-muted\">@{{deviceSimulator.sdks}}</span></a></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "        <div class=\"dropdown pull-left\">\n" +

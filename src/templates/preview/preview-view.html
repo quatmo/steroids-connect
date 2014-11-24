@@ -70,7 +70,9 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="ios_dropdown">
-            <li><a role="menuitem" tabindex="-1" ng-click="launchSimulator()">iPhone</a></li>
+            <li><a role="menuitem" tabindex="-1" ng-click="launchSimulator()">Default simulator</a></li>
+            <li class="divider"></li>
+            <li ng-repeat="deviceSimulator in availableSimulators"><a role="menuitem" tabindex="-1" ng-click="launchSimulator(deviceSimulator)"><b>{{deviceSimulator.name}}</b> <span class="text-muted">@{{deviceSimulator.sdks}}</span></a></li>
           </ul>
         </div>
         <div class="dropdown pull-left">

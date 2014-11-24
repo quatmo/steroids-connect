@@ -115,17 +115,22 @@ module.exports =
       SIMULATOR
       ###
 
+      $scope.availableSimulators = []
+
+      BuildServerApi.getAvailableSimulators().then (devices) ->
+        $scope.availableSimulators = devices.data
+
       $scope.simulatorStatus =
         isLaunching: false
         state: ""
         stateMessage: ""
 
-      $scope.launchSimulator = ->
+      $scope.launchSimulator = (deviceType) ->
         return if $scope.simulatorStatus.isLaunching
         $scope.simulatorStatus.isLaunching = true
         $scope.simulatorStatus.state = "launching"
         $scope.simulatorStatus.stateMessage = "Launching iOS simulator..."
-        BuildServerApi.launchSimulator().then(
+        BuildServerApi.launchSimulator(deviceType).then(
           (res) ->
             $scope.simulatorStatus.state = "success"
             $scope.simulatorStatus.stateMessage = "iOS simulator launched!"

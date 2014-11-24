@@ -26,8 +26,16 @@ module.exports = [
 
     # Emulators / Simulators
 
-    @launchSimulator = ->
-      $http.get "#{_apiBase}/emulators/simulator/start"
+    @getAvailableSimulators = ->
+      $http.get "#{_apiBase}/emulators/simulator/devices"
+
+    @launchSimulator = (deviceType) ->
+      options = {}
+      if deviceType
+        options =
+          params:
+            "device": "#{deviceType.name}@#{deviceType.sdks}"
+      $http.get "#{_apiBase}/emulators/simulator/start", options
 
     @launchEmulator = ->
       $http.get "#{_apiBase}/emulators/android/start"
