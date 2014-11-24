@@ -34,8 +34,18 @@
       <h2 class="no-margin">Connected devices:</h2>
       <br>
       <ul class="devices-list">
-
         <li ng-repeat="device in DevicesAPI.devices">
+          <!-- S/ DEBUG -->
+          <div class="dropdown pull-right" style="margin-top: 6px;" ng-if="device.simulator">
+            <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="ios_simulator_debug_dropdown" data-toggle="dropdown" aria-expanded="true">
+              Debug
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="ios_simulator_debug_dropdown">
+              <li ng-repeat="debuggable in viewsToDebug"><a role="menuitem" tabindex="-1" ng-click="debugViewByUrl(debuggable)">{{debuggable | viewUrlToRouteName}}</a></li>
+            </ul>
+          </div>
+          <!-- E/ DEBUG -->
           <div class="status-indicator" ng-class="{'yellow': false, 'green': true}"></div>
           <h2 class="no-margin"><b>{{device.device}}{{device.simulator? " simulator" : ""}}</b></h2>
           <span class="text-muted"><small>Scanner: <b>{{device.version}}</b> &middot; OS: <b>{{device.osVersion | strReplace:'_':'.'}}</b> &middot; IP: <b>{{device.ipAddress}}</b></small></span>
@@ -70,7 +80,7 @@
          </div>
       </div>
 
-      <!-- iOS status -->
+      <!-- Emulator/Simulator status -->
       <br>
       <div class="clearfix">
         <div class="simulator-status" ng-class="{'active': simulatorStatus.state!='', 'text-success': simulatorStatus.state=='success', 'text-danger': simulatorStatus.state=='error'}">{{simulatorStatus.stateMessage}}</div>

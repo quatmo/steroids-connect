@@ -1677,6 +1677,16 @@ module.exports = [
     this.generate = function(parameters) {
       return $http.post("" + _apiBase + "/generate", parameters);
     };
+    this.getViewsToDebug = function() {
+      return $http.get("" + _apiBase + "/debug/safari/views");
+    };
+    this.debugView = function(viewUrl) {
+      return $http.get("" + _apiBase + "/debug/safari/view", {
+        params: {
+          "url": viewUrl
+        }
+      });
+    };
     return this;
   }
 ];
@@ -2744,8 +2754,16 @@ module.exports = [
 "use strict";
 module.exports = [
   function() {
+    var viewNameRegex;
+    viewNameRegex = /^http\:\/\/localhost\/app\/([^\/]+)\/([^\/]+)\.\w+$/g;
     return function(input) {
-      return input.replace("http://localhost/app/", "").replace(".html", "").replace("/", "#");
+      var matches;
+      matches = input.match(viewNameRegex);
+      if (matches) {
+        return input.replace("http://localhost/app/", "").replace(".html", "").replace("/", "#");
+      } else {
+        return input;
+      }
     };
   }
 ];
@@ -3773,7 +3791,7 @@ module.exports = [
 },{}],48:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
-  "$scope", "$location", "$timeout", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, DevicesAPI, BuildServerApi) {
+  "$scope", "$location", "$timeout", "$interval", "DevicesAPI", "BuildServerApi", function($scope, $location, $timeout, $interval, DevicesAPI, BuildServerApi) {
     var decodedQrCode, parseQueryParams, qrCode;
     $scope.DevicesAPI = DevicesAPI;
     $scope.simulatorLaunchError = void 0;
@@ -3796,6 +3814,21 @@ module.exports = [
     qrCode = parseQueryParams()["qrcode"];
     decodedQrCode = decodeURIComponent(qrCode);
     $scope.qrCode = decodedQrCode;
+
+    /*
+    VIEW DEBUGGING
+     */
+    $scope.viewsToDebug = [];
+    $interval(function() {
+      return BuildServerApi.getViewsToDebug().then(function(list) {
+        return $scope.viewsToDebug = list.data;
+      }, function() {
+        return $scope.viewsToDebug = [];
+      });
+    }, 1000);
+    $scope.debugViewByUrl = function(url) {
+      return BuildServerApi.debugView(url);
+    };
 
     /*
     EMULATOR
@@ -5083,8 +5116,18 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <h2 class=\"no-margin\">Connected devices:</h2>\n" +
     "      <br>\n" +
     "      <ul class=\"devices-list\">\n" +
-    "\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
+    "          <!-- S/ DEBUG -->\n" +
+    "          <div class=\"dropdown pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.simulator\">\n" +
+    "            <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_simulator_debug_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\">\n" +
+    "              Debug\n" +
+    "              <span class=\"caret\"></span>\n" +
+    "            </button>\n" +
+    "            <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_simulator_debug_dropdown\">\n" +
+    "              <li ng-repeat=\"debuggable in viewsToDebug\"><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"debugViewByUrl(debuggable)\">{{debuggable | viewUrlToRouteName}}</a></li>\n" +
+    "            </ul>\n" +
+    "          </div>\n" +
+    "          <!-- E/ DEBUG -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +
     "          <span class=\"text-muted\"><small>Scanner: <b>{{device.version}}</b> &middot; OS: <b>{{device.osVersion | strReplace:'_':'.'}}</b> &middot; IP: <b>{{device.ipAddress}}</b></small></span>\n" +
@@ -5119,7 +5162,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "         </div>\n" +
     "      </div>\n" +
     "\n" +
-    "      <!-- iOS status -->\n" +
+    "      <!-- Emulator/Simulator status -->\n" +
     "      <br>\n" +
     "      <div class=\"clearfix\">\n" +
     "        <div class=\"simulator-status\" ng-class=\"{'active': simulatorStatus.state!='', 'text-success': simulatorStatus.state=='success', 'text-danger': simulatorStatus.state=='error'}\">{{simulatorStatus.stateMessage}}</div>\n" +

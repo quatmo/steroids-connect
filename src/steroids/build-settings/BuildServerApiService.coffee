@@ -5,6 +5,8 @@ module.exports = [
   "$http"
   ($http) ->
 
+    # General
+
     _apiBase = "http://localhost:4567/__appgyver"
 
     @ping = ->
@@ -22,6 +24,8 @@ module.exports = [
     @deploy = ->
       $http.get "#{_apiBase}/deploy"
 
+    # Emulators / Simulators
+
     @launchSimulator = ->
       $http.get "#{_apiBase}/emulators/simulator/start"
 
@@ -30,6 +34,8 @@ module.exports = [
 
     @launchGenymotion = ->
       $http.get "#{_apiBase}/emulators/genymotion/start"
+
+    # Data & scaffolds
 
     @getDataConfig = ->
       $http.get "#{_apiBase}/data/config"
@@ -42,6 +48,16 @@ module.exports = [
 
     @generate = (parameters)->
       $http.post "#{_apiBase}/generate", parameters
+
+    # Debugging
+
+    @getViewsToDebug = ->
+      $http.get "#{_apiBase}/debug/safari/views"
+
+    @debugView = (viewUrl) ->
+      $http.get "#{_apiBase}/debug/safari/view",
+        params:
+          "url": viewUrl
 
     # Return this
     @

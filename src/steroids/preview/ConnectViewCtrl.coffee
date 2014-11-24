@@ -6,9 +6,10 @@ module.exports =
     "$scope"
     "$location"
     "$timeout"
+    "$interval"
     "DevicesAPI"
     "BuildServerApi"
-    ($scope, $location, $timeout, DevicesAPI, BuildServerApi) ->
+    ($scope, $location, $timeout, $interval, DevicesAPI, BuildServerApi) ->
 
       $scope.DevicesAPI = DevicesAPI
       $scope.simulatorLaunchError = undefined
@@ -29,6 +30,24 @@ module.exports =
       decodedQrCode = decodeURIComponent(qrCode)
 
       $scope.qrCode = decodedQrCode
+
+      ###
+      VIEW DEBUGGING
+      ###
+
+      $scope.viewsToDebug = []
+
+      $interval ->
+        BuildServerApi.getViewsToDebug().then(
+          (list) ->
+            $scope.viewsToDebug = list.data
+          () ->
+            $scope.viewsToDebug = []
+        )
+      , 1000
+
+      $scope.debugViewByUrl = (url) ->
+        BuildServerApi.debugView(url)
 
       ###
       EMULATOR
