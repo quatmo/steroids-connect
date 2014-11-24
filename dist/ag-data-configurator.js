@@ -187,6 +187,11 @@ module.exports = [
       replace: true,
       templateUrl: "/appgyver/data-configurator/providers/resource-details.html",
       link: function($scope, element, attrs) {
+        $rootScope.$on("ag.data-configurator.resource.updated", function($event, updatedResource) {
+          if ($scope.resource.uid === updatedResource.uid) {
+            return $scope.resource = updatedResource;
+          }
+        });
 
         /*
         Provider template
@@ -223,6 +228,12 @@ module.exports = [
         };
         $scope.hadColumnsToBeginWith = !($scope.resource.columns === null);
         $scope.columnsSaving = false;
+        $scope.acceptableDefaultIdentifierKeys = {
+          "id": true,
+          "uid": true,
+          "uuid": true,
+          "udid": true
+        };
         $scope.saveColumns = function() {
           var _identifierKeyMatched;
           if ($filter("agCanManage")($scope.providerTemplate, "resource_identifier_key")) {
@@ -250,10 +261,23 @@ module.exports = [
         $scope.fetchColumns = function() {
           $scope.columnsMeta.loading = true;
           return AgDataResources.getColumnsFor($scope.resource).then(function(data) {
+            var column, _i, _len, _ref;
             $scope.resource.columns = $scope.columns = data.columns;
             if (data.response_status_code >= 400 || ($scope.resource.columns.length === 0 && $scope.providerTemplate && !$filter("agCanManage")($scope.providerTemplate, 'resource_columns_edit'))) {
               $scope.columnsMeta.error = true;
               return;
+            }
+            if (!$scope.resource.identifierKey || $scope.resource.identifierKey === "") {
+              _ref = data.columns;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                column = _ref[_i];
+                if (!$scope.acceptableDefaultIdentifierKeys[column.name]) {
+                  continue;
+                }
+                $scope.resource.identifierKey = column.name;
+                $scope.saveColumns();
+                break;
+              }
             }
             return $scope.columnsMeta.error = false;
           }, function(err) {
@@ -437,6 +461,9 @@ module.exports = [
             column = _ref[idx];
             if (!(column.name === name)) {
               continue;
+            }
+            if ($scope.identifierKey === name) {
+              $scope.identifierKey = null;
             }
             $scope.columns.splice(idx, 1);
             break;
@@ -805,8 +832,8 @@ module.exports = [
             /*
             Modal instance controller
              */
-            $scope.template = angular.copy(template);
-            $scope.provider = angular.copy(provider);
+            $scope.template = Restangular.copy(template);
+            $scope.provider = Restangular.copy(provider);
             $scope.isLoading = false;
             $scope.statusMessage = void 0;
             $scope.hasBeenDeleted = false;
@@ -836,15 +863,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataProviders.save($scope.provider).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.provider = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The provider was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the provider.",
@@ -865,12 +888,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataProviders.destroy($scope.provider).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The provider was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the provider.",
@@ -990,11 +1013,11 @@ module.exports = [
                 }
               }
               return AgDataResources.save($scope.resource).then(function(data) {
-                $scope.resource = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the resource.",
@@ -1186,15 +1209,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataResources.save($scope.resource).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.resource = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the resource.",
@@ -1215,12 +1234,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataResources.destroy($scope.resource).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the resource.",
@@ -1396,15 +1415,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataServices.save($scope.service).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.service = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The service was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the service.",
@@ -1425,12 +1440,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataServices.destroy($scope.service).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The service was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the service.",
@@ -1945,6 +1960,10 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "            <li><small>Have you added the necessary authentication details to provider?</small></li>\n" +
     "            <li><small>Do you have data in your resource?</small></li>\n" +
     "          </ul>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"alert alert-danger\" ng-if=\"(providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')) && (!resource.identifierKey || resource.identifierKey=='') && (columns && columns.length > 0)\">\n" +
+    "          <b>Important!</b> Choose the unique identifier by selecting one of the radio buttons below and save the resource.\n" +
     "        </div>\n" +
     "\n" +
     "        <ag-data-model column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
