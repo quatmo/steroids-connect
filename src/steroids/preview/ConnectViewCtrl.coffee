@@ -118,7 +118,10 @@ module.exports =
       $scope.availableSimulators = []
 
       BuildServerApi.getAvailableSimulators().then (devices) ->
-        $scope.availableSimulators = devices.data
+        _view = []
+        for view in devices.data when view isnt "http://localhost/loading.html" and view isnt "http://localhost/appgyver/contextmenu/contextmenu.html"
+          _view.push view
+        $scope.availableSimulators = _view
 
       $scope.simulatorStatus =
         isLaunching: false

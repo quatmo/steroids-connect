@@ -3918,7 +3918,16 @@ module.exports = [
      */
     $scope.availableSimulators = [];
     BuildServerApi.getAvailableSimulators().then(function(devices) {
-      return $scope.availableSimulators = devices.data;
+      var view, _i, _len, _ref, _view;
+      _view = [];
+      _ref = devices.data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
+        if (view !== "http://localhost/loading.html" && view !== "http://localhost/appgyver/contextmenu/contextmenu.html") {
+          _view.push(view);
+        }
+      }
+      return $scope.availableSimulators = _view;
     });
     $scope.simulatorStatus = {
       isLaunching: false,
