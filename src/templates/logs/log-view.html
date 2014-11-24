@@ -21,11 +21,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{thisViewLogs.length}}</td>
-          </tr>
-        </tbody>
-        <tbody>
           <tr
             log-message="logMsg"
             ng-repeat="logMsg in LogsAPI.logs | filter:LogsFilterAPI.filters | filterByLogLevels">

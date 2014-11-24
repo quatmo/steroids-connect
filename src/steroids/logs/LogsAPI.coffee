@@ -23,7 +23,8 @@ module.exports =
           if $.isArray(newLogMsg)
             @logs = newLogMsg.concat @logs
           else
-            @logs.push newLogMsg if newLogMsg?
+            @logs.unshift newLogMsg if newLogMsg?
+          if @logs.length > 600 then @logs = @logs.slice 0, 500
 
         # Method for clearing the whole log cache
         clear: () ->

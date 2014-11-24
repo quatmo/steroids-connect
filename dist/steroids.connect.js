@@ -2370,11 +2370,14 @@ module.exports = [
       logs: [],
       add: function(newLogMsg) {
         if ($.isArray(newLogMsg)) {
-          return this.logs = newLogMsg.concat(this.logs);
+          this.logs = newLogMsg.concat(this.logs);
         } else {
           if (newLogMsg != null) {
-            return this.logs.push(newLogMsg);
+            this.logs.unshift(newLogMsg);
           }
+        }
+        if (this.logs.length > 600) {
+          return this.logs = this.logs.slice(0, 500);
         }
       },
       clear: function() {
@@ -4694,11 +4697,6 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <th class=\"logMsg-content\">Message</th>\n" +
     "          </tr>\n" +
     "        </thead>\n" +
-    "        <tbody>\n" +
-    "          <tr>\n" +
-    "            <td>{{thisViewLogs.length}}</td>\n" +
-    "          </tr>\n" +
-    "        </tbody>\n" +
     "        <tbody>\n" +
     "          <tr\n" +
     "            log-message=\"logMsg\"\n" +
