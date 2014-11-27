@@ -4355,7 +4355,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  </nav>\n" +
     "\n" +
     "  <!-- Statubar -->\n" +
-    "  <div class=\"ag__steroids-connect__status-bar\" ng-if=\"isConnected\">\n" +
+    "  <div class=\"ag__steroids-connect__status-bar\" ng-if=\"isConnected && false\">\n" +
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\" ng-if=\"workingOn\">\n" +
