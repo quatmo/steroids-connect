@@ -245,8 +245,6 @@ module.exports = [
             });
             if (!_identifierKeyMatched || (!$scope.resource.identifierKey || $scope.resource.identifierKey === "")) {
               $scope.resource.identifierKey = null;
-              alert("Identifier key (ID) must be set!");
-              return;
             }
           }
           $scope.columnsSaving = true;
@@ -292,6 +290,13 @@ module.exports = [
         } else {
           $scope.columns = $scope.resource.columns;
         }
+
+        /*
+        Auto-Save
+         */
+        $rootScope.$on("ag.data-configurator.resource.data-model.changed", function() {
+          return $scope.saveColumns();
+        });
 
         /*
         Methods
@@ -398,7 +403,7 @@ module.exports = [
 },{}],6:[function(require,module,exports){
 "use strict";
 module.exports = [
-  "$rootScope", function($rootScope) {
+  "$rootScope", "$timeout", function($rootScope, $timeout) {
     return {
       restrict: "EA",
       replace: true,
@@ -410,7 +415,8 @@ module.exports = [
         identifierKeyEditable: "@",
         columnTypes: "=",
         hideRequired: "@",
-        hideExample: "@"
+        hideExample: "@",
+        isSaving: "="
       },
       link: function($scope, element, attrs) {
         var _makeNewTemp;
@@ -444,7 +450,7 @@ module.exports = [
           return true;
         };
         $scope.add = function() {
-          if (!$scope.canAdd()) {
+          if (!$scope.canAdd() || $scope.isSaving) {
             return;
           }
           if (!$scope.columns) {
@@ -452,10 +458,14 @@ module.exports = [
           }
           $scope.columns.push($scope.temp);
           _makeNewTemp();
+          $rootScope.$broadcast("ag.data-configurator.resource.data-model.changed");
           return false;
         };
         $scope.removeByName = function(name) {
           var column, idx, _i, _len, _ref, _results;
+          if ($scope.isSaving) {
+            return;
+          }
           _ref = $scope.columns;
           _results = [];
           for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
@@ -467,12 +477,19 @@ module.exports = [
               $scope.identifierKey = null;
             }
             $scope.columns.splice(idx, 1);
+            $rootScope.$broadcast("ag.data-configurator.resource.data-model.changed");
             break;
           }
           return _results;
         };
         return $scope.setIdentifierKey = function(identifierKey) {
-          return $scope.identifierKey = identifierKey;
+          if ($scope.isSaving) {
+            return;
+          }
+          $scope.identifierKey = identifierKey;
+          return $timeout(function() {
+            return $rootScope.$broadcast("ag.data-configurator.resource.data-model.changed");
+          }, 10);
         };
       }
     };
@@ -1528,7 +1545,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </thead>\n" +
     "    <tbody>\n" +
     "      <tr ng-repeat=\"column in columns | orderBy:'name'\">\n" +
-    "        <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
+    "        <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\" ng-disabled=\"isSaving\"></td>\n" +
     "        <td>{{column.name}}</td>\n" +
     "        <td>{{column.type}}</td>\n" +
     "        <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
@@ -1536,7 +1553,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
     "          <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; max-height: 300px; overflow: auto;\"></div>\n" +
     "        </td>\n" +
-    "        <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
+    "        <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\" ng-disabled=\"isSaving\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
     "      </tr>\n" +
     "      <tr ng-if=\"columnsEditable\">\n" +
     "        <td ng-if=\"identifierKeyEditable\"></td>\n" +
@@ -1548,7 +1565,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        </td>\n" +
     "        <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\" style=\"margin: 0px;\"></td>\n" +
     "        <td ng-hide=\"hideExample\"></td>\n" +
-    "        <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
+    "        <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd() || isSaving\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
     "      </tr>\n" +
     "    </tbody>\n" +
     "  </table>\n" +
@@ -1947,7 +1964,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        <div class=\"clearfix\">\n" +
     "          <div class=\"pull-right\" style=\"margin-top: 26px;\">\n" +
     "            <button type=\"button\" class=\"btn btn-primary\" ng-click=\"fetchColumns()\" ng-if=\"providerTemplate.uid != 6\" ng-disabled=\"columnsMeta.loading || columnsSaving\" style=\"margin-right: 10px;\">Reload model from API</button>\n" +
-    "            <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveColumns()\" ng-if=\"(providerTemplate | agCanManage:'resource_columns_edit')\" ng-disabled=\"columnsMeta.loading || columnsSaving\">Save changes to data model</button>\n" +
+    "            <!--<button type=\"button\" class=\"btn btn-success\" ng-click=\"saveColumns()\" ng-if=\"(providerTemplate | agCanManage:'resource_columns_edit')\" ng-disabled=\"columnsMeta.loading || columnsSaving\">Save changes to data model</button>-->\n" +
     "          </div>\n" +
     "          <h3 style=\"margin-bottom: 0px;\">Data model</h3>\n" +
     "        </div>\n" +
@@ -1972,19 +1989,19 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "        </div>\n" +
     "\n" +
     "        <div class=\"alert alert-danger\" ng-if=\"(providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')) && (!resource.identifierKey || resource.identifierKey=='') && (columns && columns.length > 0)\">\n" +
-    "          <b>Important!</b> Choose the unique identifier by selecting one of the radio buttons below and save the resource.\n" +
+    "          <b>Important!</b> Choose the unique identifier by selecting one of the radio buttons below and save the resource. <b>Without an identifier key your data resource won't work.</b>\n" +
     "        </div>\n" +
     "\n" +
-    "        <ag-data-model column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
+    "        <ag-data-model is-saving=\"columnsSaving\" column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
     "\n" +
     "      </div>\n" +
-    "      <div class=\"col-xs-12\">\n" +
+    "      <!--<div class=\"col-xs-12\">\n" +
     "        <div class=\"clearfix\">\n" +
     "          <div class=\"pull-right\">\n" +
     "            <button type=\"button\" class=\"btn btn-success\" ng-click=\"saveColumns()\" ng-if=\"(providerTemplate | agCanManage:'resource_columns_edit')\" ng-disabled=\"columnsMeta.loading || columnsSaving\">Save changes to data model</button>\n" +
     "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
+    "      </div>-->\n" +
     "    </div>\n" +
     "\n" +
     "  </div>\n" +
