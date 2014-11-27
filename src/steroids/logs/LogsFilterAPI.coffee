@@ -67,7 +67,7 @@ module.exports =
           availableForFiltering = []
           # If option "All" should be included:
           if includeAll is true then availableForFiltering.push
-            label: "All views"
+            label: "ALL VIEWS"
             filterBy: ""
           # Include available devices
           for logMsg in $filter("unique")(LogsAPI.logs, "view")

@@ -2473,7 +2473,7 @@ module.exports = [
         availableForFiltering = [];
         if (includeAll === true) {
           availableForFiltering.push({
-            label: "All views",
+            label: "ALL VIEWS",
             filterBy: ""
           });
         }

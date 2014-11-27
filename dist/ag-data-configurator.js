@@ -8,7 +8,7 @@ require("./templates");
 module.exports = modules;
 
 
-},{"./providers":13,"./templates":21,"./ui":23}],2:[function(require,module,exports){
+},{"./providers":14,"./templates":22,"./ui":24}],2:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "$window", "AgDataProviders", "AgDataProvidersModal", "AgDataResources", "AgDataResourcesModal", "AgDataServices", "AgDataServicesModal", function($rootScope, $window, AgDataProviders, AgDataProvidersModal, AgDataResources, AgDataResourcesModal, AgDataServices, AgDataServicesModal) {
@@ -187,6 +187,11 @@ module.exports = [
       replace: true,
       templateUrl: "/appgyver/data-configurator/providers/resource-details.html",
       link: function($scope, element, attrs) {
+        $rootScope.$on("ag.data-configurator.resource.updated", function($event, updatedResource) {
+          if ($scope.resource.uid === updatedResource.uid) {
+            return $scope.resource = updatedResource;
+          }
+        });
 
         /*
         Provider template
@@ -223,7 +228,27 @@ module.exports = [
         };
         $scope.hadColumnsToBeginWith = !($scope.resource.columns === null);
         $scope.columnsSaving = false;
+        $scope.acceptableDefaultIdentifierKeys = {
+          "id": true,
+          "uid": true,
+          "uuid": true,
+          "udid": true
+        };
         $scope.saveColumns = function() {
+          var _identifierKeyMatched;
+          if ($filter("agCanManage")($scope.providerTemplate, "resource_identifier_key")) {
+            _identifierKeyMatched = false;
+            angular.forEach($scope.columns, function(column) {
+              if (column.name === $scope.resource.identifierKey) {
+                return _identifierKeyMatched = true;
+              }
+            });
+            if (!_identifierKeyMatched || (!$scope.resource.identifierKey || $scope.resource.identifierKey === "")) {
+              $scope.resource.identifierKey = null;
+              alert("Identifier key (ID) must be set!");
+              return;
+            }
+          }
           $scope.columnsSaving = true;
           $scope.resource.columns = $scope.columns;
           return AgDataResources.save($scope.resource).then(function(data) {
@@ -236,10 +261,23 @@ module.exports = [
         $scope.fetchColumns = function() {
           $scope.columnsMeta.loading = true;
           return AgDataResources.getColumnsFor($scope.resource).then(function(data) {
+            var column, _i, _len, _ref;
             $scope.resource.columns = $scope.columns = data.columns;
             if (data.response_status_code >= 400 || ($scope.resource.columns.length === 0 && $scope.providerTemplate && !$filter("agCanManage")($scope.providerTemplate, 'resource_columns_edit'))) {
               $scope.columnsMeta.error = true;
               return;
+            }
+            if (!$scope.resource.identifierKey || $scope.resource.identifierKey === "") {
+              _ref = data.columns;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                column = _ref[_i];
+                if (!$scope.acceptableDefaultIdentifierKeys[column.name]) {
+                  continue;
+                }
+                $scope.resource.identifierKey = column.name;
+                $scope.saveColumns();
+                break;
+              }
             }
             return $scope.columnsMeta.error = false;
           }, function(err) {
@@ -413,7 +451,8 @@ module.exports = [
             $scope.columns = [];
           }
           $scope.columns.push($scope.temp);
-          return _makeNewTemp();
+          _makeNewTemp();
+          return false;
         };
         $scope.removeByName = function(name) {
           var column, idx, _i, _len, _ref, _results;
@@ -423,6 +462,9 @@ module.exports = [
             column = _ref[idx];
             if (!(column.name === name)) {
               continue;
+            }
+            if ($scope.identifierKey === name) {
+              $scope.identifierKey = null;
             }
             $scope.columns.splice(idx, 1);
             break;
@@ -649,6 +691,40 @@ module.exports = [
 "use strict";
 module.exports = [
   function() {
+    return {
+      restrict: "A",
+      replace: false,
+      scope: {
+        jsonString: "@prettifyJsonString"
+      },
+      link: function($scope, element, attrs) {
+        var $element, createPrettyString;
+        $element = angular.element(element);
+        createPrettyString = function() {
+          var e, obj, str;
+          try {
+            obj = JSON.parse($scope.jsonString);
+            str = JSON.stringify(obj, void 0, 2);
+            return $element.html(str);
+          } catch (_error) {
+            e = _error;
+            return console.log(e);
+          }
+        };
+        createPrettyString();
+        return $scope.$watch("jsonString", function() {
+          return createPrettyString();
+        });
+      }
+    };
+  }
+];
+
+
+},{}],12:[function(require,module,exports){
+"use strict";
+module.exports = [
+  function() {
     return function(template, propertyName) {
       if (!template) {
         return false;
@@ -659,7 +735,7 @@ module.exports = [
 ];
 
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -677,12 +753,12 @@ module.exports = [
 ];
 
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
-module.exports = angular.module("AppGyver.DataConfigurator.Providers", []).filter("agNoHiddenTemplates", require("./filters/agNoHiddenTemplates")).filter("agCanManage", require("./filters/agCanManage")).directive("agDataConfiguratorProviders", require("./directives/agDataConfiguratorProviders")).directive("agDataConfiguratorProviderDetails", require("./directives/agDataConfiguratorProviderDetails")).directive("agProviderAuthentication", require("./directives/agProviderAuthentication")).directive("agHeaders", require("./directives/agHeaders")).directive("agUrlSubstitutions", require("./directives/agUrlSubstitutions")).directive("agQueryParameters", require("./directives/agQueryParameters")).directive("agDataModel", require("./directives/agDataModel")).directive("agDataConfiguratorResourceDetails", require("./directives/agDataConfiguratorResourceDetails")).directive("agDataConfiguratorServiceDetails", require("./directives/agDataConfiguratorServiceDetails")).service("AgDataProviders", require("./services/AgDataProviders")).service("AgDataProvidersModal", require("./services/AgDataProvidersModal")).service("AgDataResources", require("./services/AgDataResources")).service("AgDataResourcesModal", require("./services/AgDataResourcesModal")).service("AgDataResourceActionsModal", require("./services/AgDataResourceActionsModal")).service("AgDataServices", require("./services/AgDataServices")).service("AgDataServicesModal", require("./services/AgDataServicesModal"));
+module.exports = angular.module("AppGyver.DataConfigurator.Providers", []).filter("agNoHiddenTemplates", require("./filters/agNoHiddenTemplates")).filter("agCanManage", require("./filters/agCanManage")).directive("agDataConfiguratorProviders", require("./directives/agDataConfiguratorProviders")).directive("agDataConfiguratorProviderDetails", require("./directives/agDataConfiguratorProviderDetails")).directive("agProviderAuthentication", require("./directives/agProviderAuthentication")).directive("agHeaders", require("./directives/agHeaders")).directive("agUrlSubstitutions", require("./directives/agUrlSubstitutions")).directive("agQueryParameters", require("./directives/agQueryParameters")).directive("agDataModel", require("./directives/agDataModel")).directive("agDataConfiguratorResourceDetails", require("./directives/agDataConfiguratorResourceDetails")).directive("agDataConfiguratorServiceDetails", require("./directives/agDataConfiguratorServiceDetails")).directive("prettifyJsonString", require("./directives/prettifyJsonString")).service("AgDataProviders", require("./services/AgDataProviders")).service("AgDataProvidersModal", require("./services/AgDataProvidersModal")).service("AgDataResources", require("./services/AgDataResources")).service("AgDataResourcesModal", require("./services/AgDataResourcesModal")).service("AgDataResourceActionsModal", require("./services/AgDataResourceActionsModal")).service("AgDataServices", require("./services/AgDataServices")).service("AgDataServicesModal", require("./services/AgDataServicesModal"));
 
 
-},{"./directives/agDataConfiguratorProviderDetails":2,"./directives/agDataConfiguratorProviders":3,"./directives/agDataConfiguratorResourceDetails":4,"./directives/agDataConfiguratorServiceDetails":5,"./directives/agDataModel":6,"./directives/agHeaders":7,"./directives/agProviderAuthentication":8,"./directives/agQueryParameters":9,"./directives/agUrlSubstitutions":10,"./filters/agCanManage":11,"./filters/agNoHiddenTemplates":12,"./services/AgDataProviders":14,"./services/AgDataProvidersModal":15,"./services/AgDataResourceActionsModal":16,"./services/AgDataResources":17,"./services/AgDataResourcesModal":18,"./services/AgDataServices":19,"./services/AgDataServicesModal":20}],14:[function(require,module,exports){
+},{"./directives/agDataConfiguratorProviderDetails":2,"./directives/agDataConfiguratorProviders":3,"./directives/agDataConfiguratorResourceDetails":4,"./directives/agDataConfiguratorServiceDetails":5,"./directives/agDataModel":6,"./directives/agHeaders":7,"./directives/agProviderAuthentication":8,"./directives/agQueryParameters":9,"./directives/agUrlSubstitutions":10,"./directives/prettifyJsonString":11,"./filters/agCanManage":12,"./filters/agNoHiddenTemplates":13,"./services/AgDataProviders":15,"./services/AgDataProvidersModal":16,"./services/AgDataResourceActionsModal":17,"./services/AgDataResources":18,"./services/AgDataResourcesModal":19,"./services/AgDataServices":20,"./services/AgDataServicesModal":21}],15:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -740,7 +816,7 @@ module.exports = [
 ];
 
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", function($modal, Restangular, AgDataProviders) {
@@ -757,8 +833,8 @@ module.exports = [
             /*
             Modal instance controller
              */
-            $scope.template = angular.copy(template);
-            $scope.provider = angular.copy(provider);
+            $scope.template = Restangular.copy(template);
+            $scope.provider = Restangular.copy(provider);
             $scope.isLoading = false;
             $scope.statusMessage = void 0;
             $scope.hasBeenDeleted = false;
@@ -788,15 +864,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataProviders.save($scope.provider).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.provider = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The provider was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the provider.",
@@ -817,12 +889,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataProviders.destroy($scope.provider).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The provider was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the provider.",
@@ -863,7 +935,7 @@ module.exports = [
 ];
 
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataResources", function($modal, Restangular, AgDataProviders, AgDataResources) {
@@ -924,6 +996,7 @@ module.exports = [
             Modal methods
              */
             $scope.save = function() {
+              var actionName;
               if ($scope.isLoading) {
                 return;
               }
@@ -932,12 +1005,20 @@ module.exports = [
                 text: "Saving resource...",
                 isInfo: true
               };
+              for (actionName in $scope.resource.actions) {
+                if ($scope.resource.actions[actionName].rootKeys.request === "") {
+                  $scope.resource.actions[actionName].rootKeys.request = null;
+                }
+                if ($scope.resource.actions[actionName].rootKeys.response === "") {
+                  $scope.resource.actions[actionName].rootKeys.response = null;
+                }
+              }
               return AgDataResources.save($scope.resource).then(function(data) {
-                $scope.resource = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the resource.",
@@ -978,7 +1059,7 @@ module.exports = [
 ];
 
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -1021,7 +1102,7 @@ module.exports = [
 ];
 
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataResources", function($modal, Restangular, AgDataProviders, AgDataResources) {
@@ -1113,8 +1194,14 @@ module.exports = [
             /*
             Modal methods
              */
+            $scope.isValidResourceName = function() {
+              return !$scope.resource.name.match(/s$/g);
+            };
             $scope.save = function() {
               if ($scope.isLoading) {
+                return;
+              }
+              if (!$scope.isValidResourceName()) {
                 return;
               }
               $scope.isLoading = true;
@@ -1123,15 +1210,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataResources.save($scope.resource).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.resource = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the resource.",
@@ -1152,12 +1235,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataResources.destroy($scope.resource).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The resource was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the resource.",
@@ -1201,7 +1284,7 @@ module.exports = [
 ];
 
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -1244,7 +1327,7 @@ module.exports = [
 ];
 
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$modal", "Restangular", "AgDataProviders", "AgDataServices", function($modal, Restangular, AgDataProviders, AgDataServices) {
@@ -1333,15 +1416,11 @@ module.exports = [
                 isInfo: true
               };
               return AgDataServices.save($scope.service).then(function(data) {
-                if ($scope.isNew()) {
-                  $modalInstance.dismiss("cancel");
-                  return;
-                }
-                $scope.service = Restangular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The service was saved.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the service.",
@@ -1362,12 +1441,12 @@ module.exports = [
                 isInfo: true
               };
               return AgDataServices.destroy($scope.service).then(function(data) {
-                $modalInstance.dismiss("cancel");
                 $scope.hasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The service was removed.",
                   isSuccess: true
                 };
+                return $modalInstance.dismiss("cancel");
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the service.",
@@ -1411,7 +1490,7 @@ module.exports = [
 ];
 
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -1435,40 +1514,45 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
 
 
   $templateCache.put('/appgyver/data-configurator/providers/data-model.html',
-    "<table class=\"table table-striped full-width ag__form\">\n" +
-    "  <thead>\n" +
-    "    <tr>\n" +
-    "      <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
-    "      <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
-    "      <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
-    "      <th ng-hide=\"hideRequired\">Required?</th>\n" +
-    "      <th ng-hide=\"hideExample\">Example data</th>\n" +
-    "      <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
-    "    </tr>\n" +
-    "  </thead>\n" +
-    "  <tbody>\n" +
-    "    <tr ng-repeat=\"column in columns | orderBy:'name'\">\n" +
-    "      <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
-    "      <td>{{column.name}}</td>\n" +
-    "      <td>{{column.type}}</td>\n" +
-    "      <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
-    "      <td ng-hide=\"hideExample\">{{column.example_value}}</td>\n" +
-    "      <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
-    "    </tr>\n" +
-    "    <tr ng-if=\"columnsEditable\">\n" +
-    "      <td ng-if=\"identifierKeyEditable\"></td>\n" +
-    "      <td><input type=\"text\" class=\"form-control\" ng-model=\"temp.name\" placeholder=\"Name...\"></td>\n" +
-    "      <td>\n" +
-    "        <div class=\"form-control-select\">\n" +
-    "          <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
-    "        </div>\n" +
-    "      </td>\n" +
-    "      <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\" style=\"margin: 0px;\"></td>\n" +
-    "      <td ng-hide=\"hideExample\"></td>\n" +
-    "      <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
-    "    </tr>\n" +
-    "  </tbody>\n" +
-    "</table>"
+    "<form ng-submit=\"add()\">\n" +
+    "  <table class=\"table table-striped full-width ag__form\">\n" +
+    "    <thead>\n" +
+    "      <tr>\n" +
+    "        <th ng-if=\"identifierKeyEditable\"><abbr title=\"\" tooltip=\"Set a column to be used as the unique identifier\">ID</abbr></th>\n" +
+    "        <th><div style=\"min-width: 120px !important;\">Name</div></th>\n" +
+    "        <th><div style=\"width: 120px !important;\">Type</div></th>\n" +
+    "        <th ng-hide=\"hideRequired\">Required?</th>\n" +
+    "        <th ng-hide=\"hideExample\">Example data</th>\n" +
+    "        <th class=\"action-button-container\" ng-if=\"columnsEditable\"></th>\n" +
+    "      </tr>\n" +
+    "    </thead>\n" +
+    "    <tbody>\n" +
+    "      <tr ng-repeat=\"column in columns | orderBy:'name'\">\n" +
+    "        <td ng-if=\"identifierKeyEditable\"><input type=\"radio\" name=\"identifierKey\" ng-change=\"setIdentifierKey(identifierKey)\" ng-model=\"identifierKey\" ng-value=\"column.name\"></td>\n" +
+    "        <td>{{column.name}}</td>\n" +
+    "        <td>{{column.type}}</td>\n" +
+    "        <td ng-hide=\"hideRequired\">{{column.required ? 'yes' : 'no'}}</td>\n" +
+    "        <td ng-hide=\"hideExample\">\n" +
+    "          <div ng-if=\"column.type!='object'\">{{column.example_value}}</div>\n" +
+    "          <div ng-if=\"column.type=='object'\" prettify-json-string=\"{{column.example_value}}\" style=\"white-space: pre; max-width: 627px; max-height: 300px; overflow: auto;\"></div>\n" +
+    "        </td>\n" +
+    "        <td class=\"action-button-container\" ng-if=\"columnsEditable\"><button type=\"button\" class=\"btn btn-danger\" ng-click=\"removeByName(column.name)\"><span class=\"glyphicon glyphicon-remove\"></span></button></td>\n" +
+    "      </tr>\n" +
+    "      <tr ng-if=\"columnsEditable\">\n" +
+    "        <td ng-if=\"identifierKeyEditable\"></td>\n" +
+    "        <td><input type=\"text\" class=\"form-control\" ng-model=\"temp.name\" placeholder=\"Name...\"></td>\n" +
+    "        <td>\n" +
+    "          <div class=\"form-control-select\">\n" +
+    "            <select ng-model=\"temp.type\" ng-options=\"x for x in availableTypes\"></select>\n" +
+    "          </div>\n" +
+    "        </td>\n" +
+    "        <td ng-hide=\"hideRequired\"><input type=\"checkbox\" class=\"form-control\" ng-model=\"temp.required\" style=\"margin: 0px;\"></td>\n" +
+    "        <td ng-hide=\"hideExample\"></td>\n" +
+    "        <td class=\"action-button-container\"><button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\" ng-disabled=\"!canAdd()\"><span class=\"glyphicon glyphicon-ok\"></span></button></td>\n" +
+    "      </tr>\n" +
+    "    </tbody>\n" +
+    "  </table>\n" +
+    "</form>"
   );
 
 
@@ -1617,28 +1701,30 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ProviderNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"provider.name\" type=\"text\" class=\"form-control\" id=\"ProviderNameInput\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ProviderNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"provider.name\" type=\"text\" class=\"form-control\" id=\"ProviderNameInput\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"template | agCanManage:'provider_base_url'\">\n" +
-    "      <label for=\"ProviderBaseUrlInput\">Base URL:</label>\n" +
-    "      <input ng-model=\"provider.baseUrl\" type=\"text\" class=\"form-control\" id=\"ProviderBaseUrlInput\" placeholder=\"http://example.com/api\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"template | agCanManage:'provider_base_url'\">\n" +
+    "        <label for=\"ProviderBaseUrlInput\">Base URL:</label>\n" +
+    "        <input ng-model=\"provider.baseUrl\" type=\"text\" class=\"form-control\" id=\"ProviderBaseUrlInput\" placeholder=\"http://example.com/api\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-provider-authentication can-change-type=\"true\" ng-if=\"template | agCanManage:'provider_authentication'\"></ag-provider-authentication>\n" +
+    "      <ag-provider-authentication can-change-type=\"true\" ng-if=\"template | agCanManage:'provider_authentication'\"></ag-provider-authentication>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-class=\"{'has-error': providerForm[field.name].$invalid}\" ng-repeat=\"field in template.keys\">\n" +
-    "      <label for=\"ProviderCustomInput_{{field.name}}\">{{field.human_name}}</label>\n" +
-    "      <input ng-required=\"field.required\" ag-name=\"field.name\" ng-model=\"provider.configurationKeys[field.name]\" type=\"text\" class=\"form-control\" id=\"ProviderCustomInput_{{field.name}}\" placeholder=\"\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': providerForm[field.name].$invalid}\" ng-repeat=\"field in template.keys\">\n" +
+    "        <label for=\"ProviderCustomInput_{{field.name}}\">{{field.human_name}}</label>\n" +
+    "        <input ng-required=\"field.required\" ag-name=\"field.name\" ng-model=\"provider.configurationKeys[field.name]\" type=\"text\" class=\"form-control\" id=\"ProviderCustomInput_{{field.name}}\" placeholder=\"\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"provider.headers\" for-resource=\"{{false}}\" ng-if=\"template | agCanManage:'provider_headers'\"></ag-headers>\n" +
+    "      <ag-headers headers=\"provider.headers\" for-resource=\"{{false}}\" ng-if=\"template | agCanManage:'provider_headers'\"></ag-headers>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -1776,50 +1862,54 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <ul class=\"nav nav-pills\">\n" +
-    "    <li ng-class=\"{'active': selectedAction == actionName}\" ng-repeat=\"(actionName, actionMeta) in availableActions\">\n" +
-    "      <a ng-click=\"selectAction(actionName)\">{{actionMeta.label}}</a>\n" +
-    "    </li>\n" +
-    "  </ul>\n" +
-    "  <br>\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
     "\n" +
-    "  <div class=\"well\">{{availableActions[selectedAction].description}}</div>\n" +
+    "    <ul class=\"nav nav-pills\">\n" +
+    "      <li ng-class=\"{'active': selectedAction == actionName}\" ng-repeat=\"(actionName, actionMeta) in availableActions\">\n" +
+    "        <a ng-click=\"selectAction(actionName)\">{{actionMeta.label}}</a>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "    <br>\n" +
     "\n" +
-    "  <form class=\"ag__form\">\n" +
+    "    <div class=\"well\">{{availableActions[selectedAction].description}}</div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ActionPathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}{{getAction().path}}<br>(the {id} will be replaced with resource's unique identifier)</small>\n" +
-    "      <input ng-model=\"getAction().path\" type=\"text\" class=\"form-control\" id=\"ActionPathInput\">\n" +
-    "    </div>\n" +
+    "    <form class=\"ag__form\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Root keys:</label>\n" +
-    "      <small class=\"text-muted\">If your desired data is nested under a certain property (eg. \"data\", \"results\"), you can set that property as the root key here for requests and responses individually.</small>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-3\">Response:</div>\n" +
-    "        <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.response\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyResponseInput\"></div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ActionPathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}{{getAction().path}}<br>(the {id} will be replaced with resource's unique identifier)</small>\n" +
+    "        <input ng-model=\"getAction().path\" type=\"text\" class=\"form-control\" id=\"ActionPathInput\">\n" +
     "      </div>\n" +
-    "      <div class=\"row\" style=\"margin-top: 10px;\">\n" +
-    "        <div class=\"col-xs-3\">Request:</div>\n" +
-    "        <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.request\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyRequestInput\"></div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Root keys:</label>\n" +
+    "        <small class=\"text-muted\">If your desired data is nested under a certain property (eg. \"data\", \"results\"), you can set that property as the root key here for requests and responses individually.</small>\n" +
+    "        <div class=\"row\">\n" +
+    "          <div class=\"col-xs-3\">Response:</div>\n" +
+    "          <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.response\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyResponseInput\"></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"row\" style=\"margin-top: 10px;\">\n" +
+    "          <div class=\"col-xs-3\">Request:</div>\n" +
+    "          <div class=\"col-xs-9\"><input ng-model=\"getAction().rootKeys.request\" type=\"text\" class=\"form-control\" id=\"ActionRootkeyRequestInput\"></div>\n" +
+    "        </div>\n" +
     "      </div>\n" +
-    "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Query parameters:</label>\n" +
-    "      <ag-query-parameters query-parameters=\"getAction().queryParameters\"></ag-query-parameters>\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Query parameters:</label>\n" +
+    "        <ag-query-parameters query-parameters=\"getAction().queryParameters\"></ag-query-parameters>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>URL substitutions:</label>\n" +
-    "      <small class=\"text-muted\">URL subsitutions can be used in resource path by wrapping the name in curly brackets, like {id}. Note, that {id} is automatically repalced with resource's unique identifier.</small>\n" +
-    "      <ag-url-substitutions url-substitutions=\"getAction().urlSubstitutions\"></ag-url-substitutions>\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>URL substitutions:</label>\n" +
+    "        <small class=\"text-muted\">URL subsitutions can be used in resource path by wrapping the name in curly brackets, like {id}. Note, that {id} is automatically repalced with resource's unique identifier.</small>\n" +
+    "        <ag-url-substitutions url-substitutions=\"getAction().urlSubstitutions\"></ag-url-substitutions>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"getAction().headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "      <ag-headers headers=\"getAction().headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -1881,6 +1971,10 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
+    "        <div class=\"alert alert-danger\" ng-if=\"(providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')) && (!resource.identifierKey || resource.identifierKey=='') && (columns && columns.length > 0)\">\n" +
+    "          <b>Important!</b> Choose the unique identifier by selecting one of the radio buttons below and save the resource.\n" +
+    "        </div>\n" +
+    "\n" +
     "        <ag-data-model column-types=\"availableColumnTypes\" hide-required=\"{{hideRequired}}\" hide-example=\"{{hideExample}}\" columns=\"columns\" columns-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_columns_edit')}}\" identifier-key=\"resource.identifierKey\" identifier-key-editable=\"{{providerTemplate && (providerTemplate | agCanManage:'resource_identifier_key')}}\" ng-if=\"!columnsMeta.loading && (!columnsMeta.error || (providerTemplate | agCanManage:'resource_columns_edit'))\"></ag-data-model>\n" +
     "\n" +
     "      </div>\n" +
@@ -1923,25 +2017,28 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ResourceNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"resource.name\" type=\"text\" class=\"form-control\" id=\"ResourceNameInput\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ResourceNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"resource.name\" type=\"text\" class=\"form-control\" id=\"ResourceNameInput\">\n" +
+    "        <p ng-show=\"!isValidResourceName()\" class=\"text-red\" style=\"margin-top: 6px;\">Name cannot end in letter \"s\". Please use singular words.</p>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid==1\">\n" +
-    "      <label for=\"ResourcePathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}</small>\n" +
-    "      <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"car\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid==1\">\n" +
+    "        <label for=\"ResourcePathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{resource.path}}</small>\n" +
+    "        <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid!=1\">\n" +
-    "      <label for=\"ResourcePathInput\">Class UID:</label>\n" +
-    "      <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"Car\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\" ng-if=\"(template | agCanManage:'resource_path') && template.uid!=1\">\n" +
+    "        <label for=\"ResourcePathInput\">Class UID:</label>\n" +
+    "        <input ng-model=\"resource.path\" type=\"text\" class=\"form-control\" id=\"ResourcePathInput\" placeholder=\"Car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "  </form>\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -2055,29 +2152,31 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
+    "  <div ng-hide=\"statusMessage.isSuccess || statusMessage.isInfo\">\n" +
+    "    <form class=\"ag__form\" ng-if=\"!hasBeenDeleted\">\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServiceNameInput\">Name:</label>\n" +
-    "      <input ng-model=\"service.name\" type=\"text\" class=\"form-control\" id=\"ServiceNameInput\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServicePathInput\">URL path:</label>\n" +
-    "      <small class=\"text-muted\">{{provider.baseUrl}}{{service.path}}</small>\n" +
-    "      <input ng-model=\"service.path\" type=\"text\" class=\"form-control\" id=\"ServicePathInput\" placeholder=\"car\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label for=\"ServiceNameInput\">Service method:</label>\n" +
-    "      <div class=\"form-control-select\">\n" +
-    "        <select ng-change=\"setAction(actionName)\" ng-model=\"actionName\" ng-options=\"action as method for (action, method) in actionToMethod\"></select>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServiceNameInput\">Name:</label>\n" +
+    "        <input ng-model=\"service.name\" type=\"text\" class=\"form-control\" id=\"ServiceNameInput\">\n" +
     "      </div>\n" +
-    "    </div>\n" +
     "\n" +
-    "    <ag-headers headers=\"service.headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServicePathInput\">URL path:</label>\n" +
+    "        <small class=\"text-muted\">{{provider.baseUrl}}{{service.path}}</small>\n" +
+    "        <input ng-model=\"service.path\" type=\"text\" class=\"form-control\" id=\"ServicePathInput\" placeholder=\"car\">\n" +
+    "      </div>\n" +
     "\n" +
-    "  </form>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label for=\"ServiceNameInput\">Service method:</label>\n" +
+    "        <div class=\"form-control-select\">\n" +
+    "          <select ng-change=\"setAction(actionName)\" ng-model=\"actionName\" ng-options=\"action as method for (action, method) in actionToMethod\"></select>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <ag-headers headers=\"service.headers\" for-resource=\"{{true}}\"></ag-headers>\n" +
+    "\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n" +
     "\n" +
@@ -2189,7 +2288,7 @@ angular.module('AppGyver.DataConfigurator').run(['$templateCache', function($tem
 
 }]);
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 module.exports = [
   "$rootScope", "Restangular", "AgDataSettings", function($rootScope, Restangular, AgDataSettings) {
@@ -2288,42 +2387,51 @@ module.exports = [
         Events
          */
         $rootScope.$on("ag.data-configurator.provider.created", function($event, newProvider) {
-          return $scope.navigation.showProvider(newProvider);
+          $scope.navigation.showProvider(newProvider);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.provider.updated", function($event, updatedProvider) {
           if ($scope.provider.uid === updatedProvider.uid) {
-            return $scope.provider = updatedProvider;
+            $scope.provider = updatedProvider;
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.provider.destroyed", function($event, destroyedProviderId) {
           if ($scope.provider.uid === destroyedProviderId) {
-            return $scope.navigation.listProviders();
+            $scope.navigation.listProviders();
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.resource.created", function($event, newResource) {
-          return $scope.navigation.showResource(newResource);
+          $scope.navigation.showResource(newResource);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.resource.updated", function($event, updatedResource) {
           if ($scope.resource.uid === updatedResource.uid) {
-            return $scope.resource = updatedResource;
+            $scope.resource = updatedResource;
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.resource.destroyed", function($event, destroyedResourceId) {
           if ($scope.resource.uid === destroyedResourceId) {
-            return $scope.navigation.showProvider();
+            $scope.navigation.showProvider();
+            return _updateStickyViewSettings();
           }
         });
         $rootScope.$on("ag.data-configurator.service.created", function($event, newService) {
-          return $scope.navigation.showService(newService);
+          $scope.navigation.showService(newService);
+          return _updateStickyViewSettings();
         });
         $rootScope.$on("ag.data-configurator.service.updated", function($event, updatedService) {
           if ($scope.service.uid === updatedService.uid) {
-            return $scope.service = updatedService;
+            $scope.service = updatedService;
+            return _updateStickyViewSettings();
           }
         });
         return $rootScope.$on("ag.data-configurator.service.destroyed", function($event, destroyedServiceId) {
           if ($scope.service.uid === destroyedServiceId) {
-            return $scope.navigation.showProvider();
+            $scope.navigation.showProvider();
+            return _updateStickyViewSettings();
           }
         });
       }
@@ -2332,12 +2440,12 @@ module.exports = [
 ];
 
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 module.exports = angular.module("AppGyver.DataConfigurator.UI", []).directive("agDataConfigurator", require("./directives/agDataConfigurator")).service("AgDataSettings", require("./services/AgDataSettings"));
 
 
-},{"./directives/agDataConfigurator":22,"./services/AgDataSettings":24}],24:[function(require,module,exports){
+},{"./directives/agDataConfigurator":23,"./services/AgDataSettings":25}],25:[function(require,module,exports){
 "use strict";
 module.exports = [
   function() {
