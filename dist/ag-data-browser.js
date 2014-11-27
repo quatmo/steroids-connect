@@ -1045,6 +1045,7 @@ module.exports = [
             Modal methods
              */
             $scope.save = function() {
+              var _stillNew;
               if ($scope.isLoading) {
                 return false;
               }
@@ -1053,12 +1054,16 @@ module.exports = [
                 text: "Saving record...",
                 isInfo: true
               };
+              _stillNew = $scope.isNewRecord();
               $scope.resource.save($scope.record).then(function(data) {
                 $scope.record = angular.copy(data);
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The record was saved.",
                   isSuccess: true
                 };
+                if (_stillNew) {
+                  return $scope.cancel();
+                }
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't save the record.",
@@ -1080,10 +1085,11 @@ module.exports = [
               };
               return $scope.resource.destroy($scope.record.id).then(function(data) {
                 $scope.recordHasBeenDeleted = true;
-                return $scope.statusMessage = {
+                $scope.statusMessage = {
                   text: "The record was removed.",
                   isSuccess: true
                 };
+                return $scope.cancel();
               }, function(err) {
                 return $scope.statusMessage = {
                   text: "Couldn't remove the record.",
