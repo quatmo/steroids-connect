@@ -36,7 +36,7 @@ module.exports =
           scope.getAppConfig = ->
             BuildServerApi.getAppConfig().then(
               (res) ->
-                if res.status == 204
+                if res.status == 200 and res.data.legacy
                   newTabs = []
                   angular.forEach scope.tabs, (tab) ->
                     @.push tab unless tab.legacyAppIncompatible?
