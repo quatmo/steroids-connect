@@ -627,6 +627,22 @@ colorpicker-preview {
   clear: both;
   background-position: 0 100%; }
 
+@font-face {
+  font-family: "Proxima Nova Soft W03 Reg";
+  src: url("/resources/fonts/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix");
+  src: url("/resources/fonts/cd286751-96d9-485a-bfe6-e074cab7fbc5.eot?#iefix") format("eot"), url("/resources/fonts/198fa8c4-b0f0-4203-bcfc-0c2b956f6784.woff") format("woff"), url("/resources/fonts/587b832a-8371-49fe-b902-0adad1aaf3dc.ttf") format("truetype"), url("/resources/fonts/e28c18e1-aaa4-43ab-96df-94b8bb15cbaa.svg#e28c18e1-aaa4-43ab-96df-94b8bb15cbaa") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Medium";
+  src: url("/resources/fonts/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix");
+  src: url("/resources/fonts/5793ad10-68c5-49d3-9814-144eb961729d.eot?#iefix") format("eot"), url("/resources/fonts/b2f276ad-1e77-4185-8b1f-3dd39d9a8290.woff") format("woff"), url("/resources/fonts/08f55ece-01d7-4e92-86bc-d1f217e8559d.ttf") format("truetype"), url("/resources/fonts/c66d5a3f-4b8c-4b93-bb11-926a24104f29.svg#c66d5a3f-4b8c-4b93-bb11-926a24104f29") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Bd";
+  src: url("/resources/fonts/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix");
+  src: url("/resources/fonts/45bef099-6ce5-4767-94f9-e2c2a0d34c18.eot?#iefix") format("eot"), url("/resources/fonts/2872b823-fc6d-455c-a05e-fe9554da8ba1.woff") format("woff"), url("/resources/fonts/e114d697-9817-4b4a-ac3f-456f1f39a381.ttf") format("truetype"), url("/resources/fonts/b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf.svg#b1b45077-0c3f-418d-ae8a-7f8b4cdf99cf") format("svg"); }
+@font-face {
+  font-family: "Proxima Nova Soft W03 Smbd";
+  src: url("/resources/fonts/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix");
+  src: url("/resources/fonts/e995ff73-b86d-4141-9b04-04ded2bdbf06.eot?#iefix") format("eot"), url("/resources/fonts/1b4cb635-3c1e-49aa-b391-55b5f85708be.woff") format("woff"), url("/resources/fonts/9107c65c-774a-4893-b490-87c1b9932967.ttf") format("truetype"), url("/resources/fonts/78bc3037-273c-43cb-bb0b-59a7ba5263d8.svg#78bc3037-273c-43cb-bb0b-59a7ba5263d8") format("svg"); }
 .ag__steroids-connect .ag__steroids-connect__header {
   background-color: #00b5ff;
   color: white;

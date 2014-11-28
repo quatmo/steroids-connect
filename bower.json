@@ -1,0 +1,18 @@
+{
+  "name": "steroids-connect",
+  "version": "1.0.23",
+  "authors": [
+    "Tomi Hiltunen <tomi.hiltunen@appgyver.com>"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.2.0",
+    "angular": "~1.2.18",
+    "angular-qrcode": "~3.1.0",
+    "angular-ui-router": "~0.2.13",
+    "qrcode-generator": "git://github.com/monospaced/bower-qrcode-generator.git#master",
+    "angular-bootstrap": "~0.12.0",
+    "lodash": "~2.4.1",
+    "restangular": "~1.4.0"
+  }
+}

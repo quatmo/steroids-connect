@@ -4342,7 +4342,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <span class=\"icon-bar\"></span>\n" +
     "        </button>\n" +
     "        <div class=\"navbar-brand\">\n" +
-    "          <img src=\"//s3.amazonaws.com/appgyver.assets/global-assets/images/appgyver-universal-logos/appgyver-logo-white.svg\" alt=\"Steroids Connect\">\n" +
+    "          <img src=\"/resources/img/appgyver-logo-white.svg\" alt=\"Steroids Connect\">\n" +
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
@@ -5132,12 +5132,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
     "          <a href=\"https://itunes.apple.com/fi/app/appgyver-scanner/id575076515\" target=\"_blank\" title=\"AppGyver Scanner on App Store\">\n" +
-    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
+    "            <img src=\"/resources/img/badge-app-store.png\" alt=\"Download Scanner from App Store\" class=\"img-responsive\">\n" +
     "          </a>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-6\">\n" +
     "          <a href=\"https://play.google.com/store/apps/details?id=com.appgyver.freshandroid\" target=\"_blank\" title=\"AppGyver Scanner on Google Play\">\n" +
-    "            <img src=\"//appgyver.assets.s3.amazonaws.com/steroids-connect/images/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
+    "            <img src=\"/resources/img/badge-google-play.png\" alt=\"Download Scanner from Google Play\" class=\"img-responsive\">\n" +
     "          </a>\n" +
     "        </div>\n" +
     "      </div>\n" +

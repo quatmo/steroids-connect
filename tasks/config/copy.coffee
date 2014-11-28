@@ -29,3 +29,15 @@ module.exports =
     cwd: 'node_modules/ag-data-configurator/dist/'
     src: '*'
     dest: '<%= dir.dist %>/'
+
+  bower_components:
+    expand: true
+    cwd: 'bower_components/'
+    src: '**/*'
+    dest: '<%= dir.dist %>/components'
+
+  resources:
+    expand: true
+    cwd: 'resources/'
+    src: '**/*'
+    dest: '<%= dir.dist %>/resources'
