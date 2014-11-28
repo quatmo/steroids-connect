@@ -14,7 +14,10 @@
   <div class="row text-noselect">
 
     <div class="col-xs-12 col-sm-6">
-      <form class="form-horizontal" role="form">
+      <div class="alert alert-danger" ng-if="!loadingResources && resources.length == 0">
+        <b>Oops!</b> You don't have any resources configured yet.
+      </div>
+      <form class="form-horizontal" role="form" ng-if="loadingResources || resources.length > 0">
 
         <div class="form-group">
           <label for="resourceName" class="col-sm-4 control-label">Data Resource</label>

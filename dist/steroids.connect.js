@@ -4409,7 +4409,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "  <div class=\"row text-noselect\">\n" +
     "\n" +
     "    <div class=\"col-xs-12 col-sm-6\">\n" +
-    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "      <div class=\"alert alert-danger\" ng-if=\"!loadingResources && resources.length == 0\">\n" +
+    "        <b>Oops!</b> You don't have any resources configured yet.\n" +
+    "      </div>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\" ng-if=\"loadingResources || resources.length > 0\">\n" +
     "\n" +
     "        <div class=\"form-group\">\n" +
     "          <label for=\"resourceName\" class=\"col-sm-4 control-label\">Data Resource</label>\n" +
