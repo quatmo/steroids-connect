@@ -1846,7 +1846,7 @@ module.exports = [
         scope.getAppConfig = function() {
           return BuildServerApi.getAppConfig().then(function(res) {
             var newTabs;
-            if (res.status === 204) {
+            if (res.status === 200 && res.data.legacy) {
               newTabs = [];
               angular.forEach(scope.tabs, function(tab) {
                 if (tab.legacyAppIncompatible == null) {
