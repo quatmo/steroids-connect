@@ -4305,6 +4305,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <a class=\"btn btn-lg btn-primary\" ng-href=\"http://cloud.appgyver.com/applications/{{cloudId}}\" target=\"_blank\">\n" +
     "            <span class=\"glyphicon glyphicon-cog\"></span> Open Build Service\n" +
     "          </a>\n" +
+    "          <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/build-service/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-build-service\"></span></a>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-6\">\n" +
@@ -4363,7 +4364,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <p class=\"ag__steroids-connect__status-bar__status-text\">{{workingOn}}</p>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!workingOn\">\n" +
-    "          <span class=\"ag__steroids-connect__status-bar__iconbox glyphicon glyphicon-ok\"></span>\n" +
+    "          <span class=\"ag__steroids-connect__status-bar__iconbox halflings halflings-question-sign\"></span>\n" +
     "          <p class=\"ag__steroids-connect__status-bar__status-text\">Connection established with the Steroids Development Server, all good!</p>\n" +
     "        </div>\n" +
     "        <div class=\"col-xs-12\" ng-if=\"!isConnected\">\n" +
@@ -4511,7 +4512,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "\n" +
     "      </ul>\n" +
     "      <h1 class=\"no-margin\">Data</h1>\n" +
-    "      <p>Configure Supersonic Data for your app.</p>\n" +
+    "      <p>Configure Supersonic Data for your app. <a class=\"guide-link\" href=\"http://docs.appgyver.com/supersonic/guides/data/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-data\"></span></a></p>\n" +
     "      <br><br>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -4664,6 +4665,10 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "    <!-- Button for clearing all of logs -->\n" +
     "    <div class=\"form-group\" style=\"margin-left: 10px;\">\n" +
     "      <button name=\"clearFiltersBtn\" type=\"button\" ng-click=\"LogsAPI.clear()\" class=\"btn btn-danger\">Clear log</button>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\" style=\"margin-left:10px;\">\n" +
+    "      <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/debugging/logging/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-logs\"></span></a>\n" +
     "    </div>\n" +
     "\n" +
     "  </form>\n" +
@@ -5154,11 +5159,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "      <ul class=\"devices-list\">\n" +
     "        <li ng-repeat=\"device in DevicesAPI.devices\">\n" +
     "          <!-- S/ DEBUG -->\n" +
-    "          <div class=\"dropdown pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.device!='Android' && device.simulator\">\n" +
+    "          <div class=\"dropdown pull-right\" ng-if=\"device.device!='Android' && device.simulator\">\n" +
     "            <button class=\"btn btn-lg btn-primary dropdown-toggle\" type=\"button\" id=\"ios_simulator_debug_dropdown\" data-toggle=\"dropdown\" aria-expanded=\"true\" ng-click=\"reloadViewsToDebug()\">\n" +
     "              Debug\n" +
     "              <span class=\"caret\"></span>\n" +
     "            </button>\n" +
+    "            <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/emulators/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-debug\"></span></a>\n" +
     "            <ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"ios_simulator_debug_dropdown\">\n" +
     "              <li ng-hide=\"loadingViewsToDebug\" ng-repeat=\"debuggable in viewsToDebug\"><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"debugViewByUrl(debuggable)\">{{debuggable | viewUrlToRouteName}}</a></li>\n" +
     "              <li ng-show=\"loadingViewsToDebug\" class=\"clearfix\" style=\"padding-left: 10px; padding-right: 10px;\">\n" +
@@ -5166,9 +5172,12 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "              </li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
-    "          <button class=\"btn btn-lg btn-primary pull-right\" style=\"margin-top: 6px;\" ng-if=\"device.device=='Android'\" type=\"button\" ng-click=\"openChromeInspector()\">\n" +
-    "            Debug\n" +
-    "          </button>\n" +
+    "          <div ng-if=\"device.device=='Android'\" class=\"pull-right\">\n" +
+    "            <button class=\"btn btn-lg btn-primary\" type=\"button\" ng-click=\"openChromeInspector()\">\n" +
+    "              Debug\n" +
+    "            </button>\n" +
+    "            <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/debugging/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-debug\"></span></a>\n" +
+    "          </div>\n" +
     "          <!-- E/ DEBUG -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
     "          <h2 class=\"no-margin\"><b>{{device.device}}{{device.simulator? \" simulator\" : \"\"}}</b></h2>\n" +
@@ -5204,6 +5213,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "             <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchGenymotion()\">Genymotion</a></li>\n" +
     "           </ul>\n" +
     "         </div>\n" +
+    "         <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/emulators/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-emulate\"></span></a>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Emulator/Simulator status -->\n" +

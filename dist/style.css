@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Basics
  */
 /* breaking_points.css.sass
@@ -257,7 +258,7 @@
     position: relative;
     cursor: pointer; }
     .ag__global__products .ag__form .form-group .form-control-select:after {
-      content: "\25BC";
+      content: "▼";
       position: absolute;
       top: 0px;
       right: 0;
@@ -494,7 +495,7 @@ colorpicker-saturation {
     display: block;
     height: 7px;
     width: 7px;
-    border: 1px solid black;
+    border: 1px solid #000;
     border-radius: 5px;
     position: absolute;
     top: 0;
@@ -505,7 +506,7 @@ colorpicker-saturation {
       display: block;
       height: 7px;
       width: 7px;
-      border: 1px solid white;
+      border: 1px solid #fff;
       border-radius: 5px; }
 
 colorpicker-hue, colorpicker-alpha {
@@ -519,8 +520,8 @@ colorpicker-hue, colorpicker-alpha {
 colorpicker-hue i, colorpicker-alpha i {
   display: block;
   height: 2px;
-  background: black;
-  border-top: 1px solid white;
+  background: #000;
+  border-top: 1px solid #fff;
   position: absolute;
   top: 0;
   left: 0;
@@ -547,8 +548,8 @@ colorpicker-alpha {
   .colorpicker input {
     width: 100px;
     font-size: 11px;
-    color: black;
-    background-color: white; }
+    color: #000;
+    background-color: #fff; }
   .colorpicker.alpha {
     min-width: 140px; }
     .colorpicker.alpha colorpicker-alpha {
@@ -579,7 +580,7 @@ colorpicker-alpha {
       left: 6px; }
 
 .colorpicker-position-top .dropdown-menu::after {
-  border-top: 6px solid white;
+  border-top: 6px solid #fff;
   border-bottom: 0;
   top: auto;
   bottom: -5px; }
@@ -590,7 +591,7 @@ colorpicker-alpha {
   bottom: -6px; }
 
 .colorpicker-position-right .dropdown-menu::after {
-  border-right: 6px solid white;
+  border-right: 6px solid #fff;
   border-left: 0;
   top: 11px;
   left: -5px; }
@@ -601,14 +602,14 @@ colorpicker-alpha {
   left: -6px; }
 
 .colorpicker-position-bottom .dropdown-menu::after {
-  border-bottom: 6px solid white;
+  border-bottom: 6px solid #fff;
   border-top: 0; }
 .colorpicker-position-bottom .dropdown-menu::before {
   border-bottom: 7px solid rgba(0, 0, 0, 0.2);
   border-top: 0; }
 
 .colorpicker-position-left .dropdown-menu::after {
-  border-left: 6px solid white;
+  border-left: 6px solid #fff;
   border-right: 0;
   top: 11px;
   left: auto;
@@ -790,7 +791,7 @@ colorpicker-preview {
       .ag__steroids-connect .logs-container table .logMsg.level-error .logMsg-content {
         color: #fa5252; }
       .ag__steroids-connect .logs-container table .logMsg .glyphicon {
-        color: #eeeeee;
+        color: #eee;
         display: none; }
       .ag__steroids-connect .logs-container table .logMsg .caret {
         cursor: pointer; }
@@ -798,13 +799,11 @@ colorpicker-preview {
 @-webkit-keyframes bg-fade {
   0% {
     background-color: #e5f7ff; }
-
   100% {
     background-color: transparent; } }
 @-moz-keyframes bg-fade {
   0% {
     background-color: #e5f7ff; }
-
   100% {
     background-color: transparent; } }
 #view-preview-view {
@@ -841,3 +840,32 @@ colorpicker-preview {
 #view-data {
   padding-top: 40px;
   padding-bottom: 40px; }
+
+.guide-link {
+  color: #36383b;
+  font-size: 20px; }
+
+.guide-link:hover {
+  color: #00b5ff;
+  text-decoration: none; }
+
+.guide-glyphicon-emulate {
+  top: 4px;
+  left: 8px; }
+
+.guide-glyphicon-debug {
+  top: 6px;
+  left: 5px; }
+
+.guide-glyphicon-logs {
+  color: #fff; }
+
+.guide-glyphicon-data {
+  top: 3px;
+  left: 8px; }
+
+.guide-glyphicon-build-service {
+  top: 6px;
+  left: 5px; }
+
+/*# sourceMappingURL=style.css.map */
