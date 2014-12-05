@@ -86,6 +86,9 @@ module.exports = [
       $scope.generatorSuccess = false
       $scope.generatorSuccessMessage = ""
 
+      $scope.setFormat = (newFormat) ->
+        $scope.format = newFormat
+
       $scope.generate = () ->
         return if $scope.isGenerating or $scope.loadingResources or not $scope.selectedResource
         $scope.generatorError = false

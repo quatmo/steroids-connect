@@ -2033,6 +2033,9 @@ module.exports = [
         $scope.generatorErrorMessage = "";
         $scope.generatorSuccess = false;
         $scope.generatorSuccessMessage = "";
+        $scope.setFormat = function(newFormat) {
+          return $scope.format = newFormat;
+        };
         return $scope.generate = function() {
           if ($scope.isGenerating || $scope.loadingResources || !$scope.selectedResource) {
             return;
@@ -4428,13 +4431,13 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "          <div class=\"col-sm-8\">\n" +
     "            <div class=\"radio\">\n" +
     "              <label>\n" +
-    "                <input type=\"radio\" name=\"format\" value=\"coffee\" ng-model=\"format\" checked>\n" +
+    "                <input type=\"radio\" name=\"format\" value=\"coffee\" ng-model=\"format\" ng-click=\"setFormat('coffee')\">\n" +
     "                CoffeeScript\n" +
     "              </label>\n" +
     "            </div>\n" +
     "            <div class=\"radio\">\n" +
     "              <label>\n" +
-    "                <input type=\"radio\" name=\"format\" value=\"js\" ng-model=\"format\">\n" +
+    "                <input type=\"radio\" name=\"format\" value=\"js\" ng-model=\"format\" ng-click=\"setFormat('js')\">\n" +
     "                JavaScript\n" +
     "              </label>\n" +
     "            </div>\n" +
