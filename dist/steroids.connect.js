@@ -5176,7 +5176,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "            <button class=\"btn btn-lg btn-primary\" type=\"button\" ng-click=\"openChromeInspector()\">\n" +
     "              Debug\n" +
     "            </button>\n" +
-    "            <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/debugging/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-debug\"></span></a>\n" +
+    "            <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/debugging/\" target=\"_blank\">?</a>\n" +
     "          </div>\n" +
     "          <!-- E/ DEBUG -->\n" +
     "          <div class=\"status-indicator\" ng-class=\"{'yellow': false, 'green': true}\"></div>\n" +
@@ -5213,7 +5213,7 @@ angular.module('SteroidsConnect').run(['$templateCache', function($templateCache
     "             <li><a role=\"menuitem\" tabindex=\"-1\" ng-click=\"launchGenymotion()\">Genymotion</a></li>\n" +
     "           </ul>\n" +
     "         </div>\n" +
-    "         <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/emulators/\" target=\"_blank\"><span class=\"glyphicon glyphicon-question-sign guide-glyphicon-emulate\"></span></a>\n" +
+    "         <a class=\"guide-link\" href=\"http://docs.appgyver.com/tooling/cli/emulators/\" target=\"_blank\">?</a>\n" +
     "      </div>\n" +
     "\n" +
     "      <!-- Emulator/Simulator status -->\n" +
